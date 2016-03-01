@@ -25,7 +25,7 @@ public class StartPage extends AppCompatActivity {
     }
 
     private void exploreRecommendations() {
-        Intent intent = new Intent(this, recommendationsForYou.class);
+        Intent intent = new Intent(this, RecommendationsForYou.class);
         startActivity(intent);
     }
 }

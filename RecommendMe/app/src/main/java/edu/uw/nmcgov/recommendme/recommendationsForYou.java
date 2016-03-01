@@ -7,7 +7,7 @@ import android.widget.GridView;
 
 import java.util.ArrayList;
 
-public class recommendationsForYou extends AppCompatActivity {
+public class RecommendationsForYou extends AppCompatActivity {
 
     private GridView tileGrid;
     private ArrayList<String> recommendationList;
