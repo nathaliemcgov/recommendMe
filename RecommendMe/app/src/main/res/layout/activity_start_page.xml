@@ -9,8 +9,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.uw.nmcgov.recommendme.StartPage">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+    <Button
+        android:id="@+id/exploreButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Explore"
+        android:background="#ADD8E6"/>
 </RelativeLayout>
