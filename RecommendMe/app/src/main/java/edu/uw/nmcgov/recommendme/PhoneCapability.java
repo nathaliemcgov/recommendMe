@@ -1,6 +1,5 @@
 package edu.uw.nmcgov.recommendme;
 
-import android.app.DownloadManager;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,17 +8,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class PhoneCapability extends AppCompatActivity {
 
     private static final String TAG = "MAIN";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_main);
+        setContentView(R.layout.phone_capability_buttons);
 
+        YelpAPIAuth api_keys = new YelpAPIAuth();
 
+        Yelp yelp = new Yelp(api_keys.getYelpConsumerKey(), api_keys.getYelpConsumerSecret(),
+                api_keys.getYelpToken(), api_keys.getYelpTokenSecret());
+        String response = yelp.search("burritos", 30.361471, -87.164326);
+        Log.v(TAG, response);
     }
 
 

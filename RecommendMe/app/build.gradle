@@ -25,3 +25,17 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
 }
+
+
+
+
+apply plugin: 'android'
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.scribe:scribe:1.3.5'
+}
