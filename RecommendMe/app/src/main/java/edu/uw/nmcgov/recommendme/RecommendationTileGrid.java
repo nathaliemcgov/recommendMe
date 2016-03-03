@@ -1,6 +1,7 @@
 package edu.uw.nmcgov.recommendme;
 
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,12 +28,29 @@ public class RecommendationTileGrid extends Fragment {
     private ArrayList<String> recommendationList;
     ArrayAdapter<String> adapter;
 
+    private OnMediaSelectionListener callback;
+
     static final String[] recommendations = new String[] {
             "The Departed", "The Illiad"
     };
 
     public RecommendationTileGrid() {
         // Required empty public constructor
+    }
+
+    public interface OnMediaSelectionListener {
+        void onMediaSelected(Cursor mediaTile);
+    }
+
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+
+        try {
+            callback = (OnMediaSelectionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnMediaSelectionListener");
+        }
     }
 
     @Override
@@ -47,7 +65,7 @@ public class RecommendationTileGrid extends Fragment {
         recommendationList.add("");
 
         // Tile grid area
-        AdapterView gridView = (AdapterView)rootView.findViewById(R.id.recommendationList);
+        AdapterView gridView = (AdapterView) rootView.findViewById(R.id.recommendationList);
         gridView.setAdapter(adapter);
 
         // Listens for click on specific media recommendation
@@ -57,8 +75,7 @@ public class RecommendationTileGrid extends Fragment {
                 Cursor selectedMedia = (Cursor) parent.getItemAtPosition(position);
                 Log.i(TAG, "Selected media: " + selectedMedia.toString());
 
-                // Switches fragments in order to show the details about the media selected
-
+                ((OnMediaSelectionListener) getActivity()).onMediaSelected(selectedMedia);
             }
         });
         return rootView;
