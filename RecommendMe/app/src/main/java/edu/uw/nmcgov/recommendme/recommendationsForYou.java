@@ -27,29 +27,28 @@ public class RecommendationsForYou extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommendations_for_you);
 
-        tileGrid = (GridView) findViewById(R.id.recommendationList);
-
-        recommendationList = new ArrayList<String>();
-        recommendationList.add("");
-
-        adapter = new ArrayAdapter<String>(this,
-                R.layout.recommendation_element, recommendations);
-
-        tileGrid.setAdapter(adapter);
-
-        // Listens for click on specific media recommendation
-        tileGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Toast.makeText(RecommendationsForYou.this, "" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
+//        tileGrid = (GridView) findViewById(R.id.recommendationList);
+//
+//        recommendationList = new ArrayList<String>();
+//        recommendationList.add("");
+//
+//        adapter = new ArrayAdapter<String>(this,
+//                R.layout.recommendation_element, recommendations);
+//
+//        tileGrid.setAdapter(adapter);
+//
+//        // Listens for click on specific media recommendation
+//        tileGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+//                Toast.makeText(RecommendationsForYou.this, "" + position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     private void showMediaDetails(Cursor mediaSelected) {
         MediaDetails mediaDetails = new MediaDetails();
 
         Bundle bundle = new Bundle();
-
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.recommendationGrid, new MediaDetails())

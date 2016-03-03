@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class SearchForRecommendations extends AppCompatActivity {
 
@@ -48,9 +49,16 @@ public class SearchForRecommendations extends AppCompatActivity {
         String titleSearched = searchMediaText.getText().toString();
         Log.v(TAG, titleSearched);
 
-        // Adds title searched for as an extra for next activity
-        Intent intent = new Intent(this, RecommendationSearchResults.class);
-        intent.putExtra("title", titleSearched);
-        startActivity(intent);
+        // Check to ensure user entered title to search for
+        if (titleSearched.length() > 0) {
+            // Adds title searched for as an extra for next activity
+            Intent intent = new Intent(this, RecommendationSearchResults.class);
+            intent.putExtra("title", titleSearched);
+            startActivity(intent);
+        } else {
+            // Shows toast to remind user to enter title in search field before pressing search
+            Toast.makeText(SearchForRecommendations.this, "Please enter a book title, music artist,"
+                    + " or movie title.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
