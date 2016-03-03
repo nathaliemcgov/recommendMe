@@ -15,7 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RecommendationsForYou"></activity>
+        <activity android:name=".RecommendationsForYou" />
+        <activity android:name=".RecommendationsForYou" />
+        <activity android:name=".SearchForRecommendations" />
+        <activity android:name=".RecommendationSearchResults"></activity>
     </application>
 
 </manifest>

@@ -8,8 +8,9 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    android:background="#f5b93d"
-    tools:context="edu.uw.nmcgov.recommendme.recommendationsForYou">
+    android:background="@color/background"
+    tools:context="edu.uw.nmcgov.recommendme.recommendationsForYou"
+    android:id="@+id/recommendationGrid">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,46 +24,5 @@
             android:textSize="30dp"
             android:textAlignment="center"/>
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/filters"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Movies"
-            android:textSize="20dp"
-            android:layout_below="@+id/tileHeader"
-            android:checked="true"/>
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Books"
-            android:textSize="20dp"
-            android:layout_below="@+id/tileHeader"
-            android:checked="true"/>
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Music"
-            android:textSize="20dp"
-            android:layout_below="@+id/tileHeader"
-            android:checked="true"/>
-    </LinearLayout>
-
-    <GridView
-        android:id="@+id/recommendationList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="15dp"
-        android:numColumns="2"
-        android:gravity="center"
-        android:horizontalSpacing="15dp"
-        android:verticalSpacing="15dp"
-        android:clickable="true"
-        android:descendantFocusability="beforeDescendants"
-        android:layout_below="@+id/filters">
-    </GridView>
 
 </LinearLayout>
