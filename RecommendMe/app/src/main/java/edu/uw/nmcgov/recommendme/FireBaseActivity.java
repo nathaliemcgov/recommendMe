@@ -18,6 +18,8 @@ import java.util.Map;
  */
 public class FireBaseActivity extends AppCompatActivity {
 
+    RCMDFirebase firebase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +27,7 @@ public class FireBaseActivity extends AppCompatActivity {
 
         Firebase.setAndroidContext(this);
 
-        final Firebase myFirebaseRef = new Firebase("https://rcmd.firebaseio.com/Movies");
+        firebase = new RCMDFirebase();
 
 
 
@@ -35,83 +37,10 @@ public class FireBaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final String movieOne = ((EditText) findViewById(R.id.editText)).getText().toString();
-                final String movieTwo = ((EditText) findViewById(R.id.editText2)).getText().toString();
+                String movieOne = ((EditText) findViewById(R.id.editText)).getText().toString();
+                String movieTwo = ((EditText) findViewById(R.id.editText2)).getText().toString();
+                firebase.createConnection(movieOne, movieTwo);
 
-                final Query movieQuery1 = myFirebaseRef.orderByChild("name").equalTo(movieOne);
-                final Query movieQuery2 = myFirebaseRef.orderByChild("name").equalTo(movieTwo);
-
-                if (movieOne.length() > 0 && movieTwo.length() > 0) {
-                    movieQuery1.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() == null) {
-                                Log.v("TAG", "HERE");
-                                //Pushes a new link from MovieOne to MovieTwo
-                                Firebase newPostRef = myFirebaseRef.push();
-                                newPostRef.child("name").setValue(movieOne);
-                                Map<String, Integer> map = new HashMap<String, Integer>();
-                                map.put(movieTwo, 1);
-                                newPostRef.child("related").setValue(map);
-                            } else {
-                                Log.v("movieOne", dataSnapshot.getValue().toString());
-                                for(DataSnapshot singleObject : dataSnapshot.getChildren()) {
-                                    MediaObject object = singleObject.getValue(MediaObject.class);
-                                    Log.v("asdf", object.getName());
-                                    Log.v("asdf", object.getRelated().toString());
-                                    Map<String, Integer> map = object.getRelated();
-                                    map.put(movieOne, map.get(movieTwo) + 1);
-                                    Firebase postRef = singleObject.getRef();
-                                    postRef.child("related").setValue(map);
-                                }
-
-//
-//                                Log.v("movieONe", dataSnapshot.getValue().toString());
-//                                //
-//                                Map<String, Integer> map = (Map<String, Integer>) dataSnapshot.child("related").getValue();
-//                                map.put(movieOne, map.get(movieTwo) + 1);
-//                                Firebase postRef = dataSnapshot.getRef();
-//                                postRef.child("related").setValue(map);
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-
-                        }
-                    });
-
-                    movieQuery2.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() == null) {
-                                Firebase newPostRef = myFirebaseRef.push();
-                                newPostRef.child("name").setValue(movieTwo);
-                                Map<String, Integer> map = new HashMap<String, Integer>();
-                                map.put(movieOne, 1);
-                                newPostRef.child("related").setValue(map);
-                            } else {
-                                Log.v("movieTwo", dataSnapshot.getValue().toString());
-                                for(DataSnapshot singleObject : dataSnapshot.getChildren()) {
-                                    MediaObject object = singleObject.getValue(MediaObject.class);
-                                    Log.v("asdf", object.getName());
-                                    Log.v("asdf", object.getRelated().toString());
-                                    Map<String, Integer> map = object.getRelated();
-                                    map.put(movieTwo, map.get(movieOne) + 1);
-                                    Firebase postRef = singleObject.getRef();
-                                    postRef.child("related").setValue(map);
-                                }
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-
-                        }
-                    });
-                }
 
             }
         });
