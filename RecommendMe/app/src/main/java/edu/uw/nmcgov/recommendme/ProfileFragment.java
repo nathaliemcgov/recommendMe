@@ -24,6 +24,10 @@ public class ProfileFragment extends Fragment {
         void onPicksSelected();
     }
 
+    public interface OnProfileSelectedListener {
+        void onProfileSelected();
+    }
+
 
     public ProfileFragment(){
 
@@ -35,13 +39,17 @@ public class ProfileFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
-        final View rootView = inflater.inflate(R.layout.activity_profile_page, container, false);
+        final View rootView = inflater.inflate(R.layout.profile_fragment, container, false);
 
         Button linked = (Button)rootView.findViewById(R.id.linked);
         linked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
                 Log.v(TAG, "linked");
+                AccountsFragment accounts = new AccountsFragment();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.mainContainer, accounts)
+                        .commit();
 
             }
         });

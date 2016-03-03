@@ -12,11 +12,15 @@ import android.widget.Button;
 /**
  * Created by austinweale on 3/3/16.
  */
-public class StartFragment extends Fragment {
+public class AccountsFragment extends Fragment {
 
-    private static final String TAG = "profile";
+    private static final String TAG = "linked";
 
-    public StartFragment(){
+    public interface OnProfileSelectedListener {
+        void onProfileSelected();
+    }
+
+    public AccountsFragment(){
 
     }
 
@@ -26,21 +30,17 @@ public class StartFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
-        final View rootView = inflater.inflate(R.layout.start_fragment, container, false);
+        final View rootView = inflater.inflate(R.layout.account_fragment, container, false);
 
-        Button button = (Button)rootView.findViewById(R.id.profile_button);
+        Button button = (Button)rootView.findViewById(R.id.linked_back);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                Log.v(TAG, "clicked");
-                ProfileFragment profile = new ProfileFragment();
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.mainContainer, profile)
-                        .commit();
+                Log.v(TAG, "back");
+                ((OnProfileSelectedListener)getActivity()).onProfileSelected();
 
             }
         });
-
 
         return rootView;
 

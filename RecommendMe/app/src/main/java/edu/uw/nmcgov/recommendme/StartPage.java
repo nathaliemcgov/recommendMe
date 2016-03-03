@@ -17,9 +17,17 @@ public class StartPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_page);
 
-        StartFragment start = new StartFragment();
-        getFragmentManager().beginTransaction()
-                .replace(R.id.mainContainer, start)
-                .commit();
+        Button button = (Button)findViewById(R.id.profile_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View V) {
+                Log.v(TAG, "clicked");
+                ProfileFragment profile = new ProfileFragment();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.mainContainer, profile)
+                        .commit();
+
+            }
+        });
     }
 }
