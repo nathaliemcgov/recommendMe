@@ -10,13 +10,16 @@ import android.widget.EditText;
 
 import com.firebase.client.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Created by iguest on 2/29/16.
  */
-public class FireBaseActivity extends AppCompatActivity {
+public class FireBaseActivity extends AppCompatActivity  {
 
     RCMDFirebase firebase;
 
@@ -28,6 +31,22 @@ public class FireBaseActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
 
         firebase = new RCMDFirebase();
+
+        Map<String, String> tyler = new HashMap<String, String>();
+
+        tyler.put("name", "tyler");
+
+        //firebase.createUser(tyler);
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(new File("movies.csv"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Log.v("Tag", scanner.nextLine());
+
+        firebase.setLike("Rat King", "tyler");
 
 
 
