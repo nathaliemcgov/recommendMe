@@ -39,7 +39,7 @@ public class RecommendationTileGrid extends Fragment {
     }
 
     public interface OnMediaSelectionListener {
-        void onMediaSelected(Cursor mediaTile);
+        void onMediaSelected(String mediaTile);
     }
 
     @Override
@@ -77,8 +77,9 @@ public class RecommendationTileGrid extends Fragment {
         tileGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 // Gets the media tile that was selected
-                Cursor selectedMedia = (Cursor) parent.getItemAtPosition(position);
-                Log.i(TAG, "Selected media: " + selectedMedia.toString());
+                String selectedMedia = parent.getItemAtPosition(position).toString();
+
+                Log.v(TAG, "Selected media: " + selectedMedia);
 
                 ((OnMediaSelectionListener) getActivity()).onMediaSelected(selectedMedia);
             }

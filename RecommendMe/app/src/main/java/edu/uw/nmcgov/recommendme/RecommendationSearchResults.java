@@ -41,15 +41,12 @@ public class RecommendationSearchResults extends AppCompatActivity
 
     // When a tile is selected, move to fragment that gives details about the tile selected
     @Override
-    public void onMediaSelected(Cursor mediaTile) {
+    public void onMediaSelected(String mediaTile) {
         // Fragment that contains details about the selected tile
         MediaDetails details = new MediaDetails();
 
-        // Gets the title of the selected title
-        String selectedMedia = mediaTile.getString(0);
-
         Bundle bundle = new Bundle();
-        bundle.putString("mediaTitle", selectedMedia);
+        bundle.putString("mediaTitle", mediaTile);
 
         details.setArguments(bundle);
 
