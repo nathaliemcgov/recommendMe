@@ -1,7 +1,9 @@
 package edu.uw.nmcgov.recommendme;
 
+import android.app.LoaderManager;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.content.Loader;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -17,12 +19,23 @@ public class PhoneCapability extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.phone_capability_buttons);
 
-        YelpAPIAuth api_keys = new YelpAPIAuth();
+        getLoaderManager().initLoader(0, savedInstanceState,
+                new LoaderManager.LoaderCallbacks<String>() {
+                    @Override
+                    public Loader<String> onCreateLoader(int id, Bundle args) {
+                        return new Yelp(PhoneCapability.this);
+                    }
 
-        Yelp yelp = new Yelp(api_keys.getYelpConsumerKey(), api_keys.getYelpConsumerSecret(),
-                api_keys.getYelpToken(), api_keys.getYelpTokenSecret());
-        String response = yelp.search("burritos", 30.361471, -87.164326);
-        Log.v(TAG, response);
+                    @Override
+                    public void onLoadFinished(Loader<String> loader, String data) {
+                        Log.v(TAG, data);
+                    }
+
+                    @Override
+                    public void onLoaderReset(Loader<String> loader) {
+
+                    }
+                }).forceLoad();
     }
 
 

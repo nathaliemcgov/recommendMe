@@ -1,5 +1,8 @@
 package edu.uw.nmcgov.recommendme;
 
+import android.content.AsyncTaskLoader;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.scribe.builder.ServiceBuilder;
@@ -13,41 +16,37 @@ import org.scribe.oauth.OAuthService;
 /**
  * Created by madis on 3/3/2016.
  */
-public class Yelp {
-    private OAuthService service;
-    private Token accessToken;
+public class Yelp extends AsyncTaskLoader<String> {
+        private OAuthService service;
+        private Token accessToken;
 
-    /**
-     * Setup the Yelp API OAuth credentials.
-     *
-     * OAuth credentials are available from the developer site, under Manage API access (version 2 API).
-     *
-     * @param consumerKey Consumer key
-     * @param consumerSecret Consumer secret
-     * @param token Token
-     * @param tokenSecret Token secret
-     */
-    public Yelp(String consumerKey, String consumerSecret, String token, String tokenSecret) {
-        this.service = new ServiceBuilder().provider(YelpApi2.class).apiKey(consumerKey).apiSecret(consumerSecret).build();
-        this.accessToken = new Token(token, tokenSecret);
-    }
+        public Yelp(Context context) {
+            super(context);
+        }
 
-    /**
-     * Search with term and location.
-     *
-     * @param term Search term
-     * @param latitude Latitude
-     * @param longitude Longitude
-     * @return JSON string response
-     */
-    public String search(String term, double latitude, double longitude) {
-        OAuthRequest request = new OAuthRequest(Verb.GET, "http://api.yelp.com/v2/search");
-        request.addQuerystringParameter("term", term);
-        request.addQuerystringParameter("ll", latitude + "," + longitude);
-        this.service.signRequest(this.accessToken, request);
-        Response response = request.send();
-        String s = response.toString();
-        Log.v("YELP", s);
-        return response.getBody();
+        @Override
+        public String loadInBackground() {
+            YelpAPIAuth api_keys = new YelpAPIAuth();
+
+            String consumerKey = api_keys.getYelpConsumerKey();
+            String consumerSecret = api_keys.getYelpConsumerSecret();
+            String token = api_keys.getYelpToken();
+            String tokenSecret = api_keys.getYelpTokenSecret();
+
+            this.service = new ServiceBuilder().provider(YelpApi2.class).apiKey(consumerKey).apiSecret(consumerSecret).build();
+            this.accessToken = new Token(token, tokenSecret);
+
+
+            OAuthRequest request = new OAuthRequest(Verb.GET, "http://api.yelp.com/v2/search");
+            String term = "burrito";
+            float latitude = 47.6097f;
+            float longitude = -122.3331f;
+            request.addQuerystringParameter("term", term);
+            request.addQuerystringParameter("ll", latitude + "," + longitude);
+            this.service.signRequest(this.accessToken, request);
+            Response response = request.send();
+            String s = response.toString();
+            Log.v("YELP", s);
+           return response.getBody();
+        }
     }
-}

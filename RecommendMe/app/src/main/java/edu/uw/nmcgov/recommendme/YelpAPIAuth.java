@@ -13,8 +13,8 @@ public class YelpAPIAuth {
 
     private final String YELP_CONSUMER_KEY ="uMea7WzCEhGKmKpTNbAllQ";
     private final String YELP_CONSUMER_SECRET = "25mfVMm0Kf14GXjfMXsHsJbx68g";
-    private final String YELP_TOKEN = "BrC365x0a0YlUJC-ZGW93fkQyM7Rch8J";
-    private final String YELP_TOKEN_SECRET = "jkTNKstNuSHV3sj8u4-OSwwhJTU";
+    private final String YELP_TOKEN = "-JvIZgos9V_4k7_W64512qpEcSLTGj8J";
+    private final String YELP_TOKEN_SECRET = "R9idFXJb-GzR5iXUW1TPzDutL7U";
 
 
     public String getYelpConsumerKey(){
