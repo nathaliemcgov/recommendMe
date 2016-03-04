@@ -69,10 +69,6 @@ public class RecommendationTileGrid extends Fragment {
         adapter = new ArrayAdapter<String>(getActivity(), R.layout.recommendation_element, recommendationList);
         tileGrid.setAdapter(adapter);
 
-        // Tile grid area
-//        AdapterView gridView = (AdapterView) rootView.findViewById(R.id.recommendationList);
-//        gridView.setAdapter(adapter);
-
         // Listens for click on specific media recommendation
         tileGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
