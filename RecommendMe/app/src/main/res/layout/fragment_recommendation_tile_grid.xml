@@ -1,14 +1,14 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/recommendationTileGrid"
     tools:context="edu.uw.nmcgov.recommendme.RecommendationTileGrid">
 
     <LinearLayout
         android:id="@+id/filters"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,9 +34,8 @@
 
     <GridView
         android:id="@+id/recommendationList"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:numColumns="2"
         android:gravity="center"
         android:horizontalSpacing="15dp"
@@ -45,4 +44,4 @@
         android:descendantFocusability="beforeDescendants"
         android:layout_below="@+id/filters">
     </GridView>
-</FrameLayout>
+</RelativeLayout>

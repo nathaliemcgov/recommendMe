@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/textColor"
+        android:textSize="25dp"
         android:text="Recommendations based on:"
         />
 
@@ -24,7 +25,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        android:textSize="30dp"
+        android:textStyle="bold"
         android:textColor="@color/textColor"
         android:layout_below="@+id/searchHeader"/>
+
+    <LinearLayout
+        android:id="@+id/gridContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/titleSearchedFor">
+    </LinearLayout>
 
 </RelativeLayout>

@@ -26,7 +26,7 @@ public class RecommendationTileGrid extends Fragment {
 
     private GridView tileGrid;
     private ArrayList<String> recommendationList;
-    ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> adapter;
 
     private OnMediaSelectionListener callback;
 
@@ -56,17 +56,22 @@ public class RecommendationTileGrid extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.v(TAG, "Reached tile grid fragment!");
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_recommendation_tile_grid, container, false);
 
         tileGrid = (GridView) rootView.findViewById(R.id.recommendationList);
 
         recommendationList = new ArrayList<String>();
-        recommendationList.add("");
+        recommendationList.add("The Departed");
+        recommendationList.add("The Illiad");
+
+        adapter = new ArrayAdapter<String>(getActivity(), R.layout.recommendation_element, recommendationList);
+        tileGrid.setAdapter(adapter);
 
         // Tile grid area
-        AdapterView gridView = (AdapterView) rootView.findViewById(R.id.recommendationList);
-        gridView.setAdapter(adapter);
+//        AdapterView gridView = (AdapterView) rootView.findViewById(R.id.recommendationList);
+//        gridView.setAdapter(adapter);
 
         // Listens for click on specific media recommendation
         tileGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
