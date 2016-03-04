@@ -15,4 +15,22 @@
         android:text="Click me for Netflix!!"
         android:onClick="goToNetflix"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find bookstores!!"
+        android:id="@+id/findBookstores"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find music!!"
+        android:id="@+id/findMusicStores"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find movie theaters!!"
+        android:id="@+id/findMovieTheaters"/>
+
 </LinearLayout>

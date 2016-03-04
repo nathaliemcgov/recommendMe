@@ -1,41 +1,112 @@
 package edu.uw.nmcgov.recommendme;
 
+
 import android.app.LoaderManager;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.Loader;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+//
+//import android.support.v4.app.LoaderManager;
+//import android.support.v4.content.Loader;
 
-public class PhoneCapability extends AppCompatActivity {
+public class PhoneCapability extends FragmentActivity implements LoaderManager.LoaderCallbacks<String> {
 
     private static final String TAG = "MAIN";
+
+    private static final int BOOKS_ID = 1;
+    private static final int MUSIC_ID = 2;
+    private static final int MOVIES_ID = 3;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.phone_capability_buttons);
 
-        getLoaderManager().initLoader(0, savedInstanceState,
-                new LoaderManager.LoaderCallbacks<String>() {
-                    @Override
-                    public Loader<String> onCreateLoader(int id, Bundle args) {
-                        return new Yelp(PhoneCapability.this);
-                    }
+        Button bookstoreButton = (Button) findViewById(R.id.findBookstores);
+        bookstoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.v(TAG, "bookstore button clicked");
+                // getLoaderManager().initLoader(1, null, PhoneCapability.this).forceLoad();
 
-                    @Override
-                    public void onLoadFinished(Loader<String> loader, String data) {
-                        Log.v(TAG, data);
-                    }
+                Loader loader = getLoaderManager().getLoader(0);
+                if (loader != null && loader.isReset()) {
+                    getLoaderManager().restartLoader(BOOKS_ID, null, PhoneCapability.this);
+                } else {
+                    getLoaderManager().restartLoader(BOOKS_ID, null, PhoneCapability.this);
+                }
+            }
+        });
 
-                    @Override
-                    public void onLoaderReset(Loader<String> loader) {
+        Button musicButton = (Button) findViewById(R.id.findMusicStores);
+        musicButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.v(TAG, "music store button clicked");
 
-                    }
-                }).forceLoad();
+                Loader loader = getLoaderManager().getLoader(1);
+                if (loader != null && loader.isReset()) {
+                    getLoaderManager().restartLoader(MUSIC_ID, null, PhoneCapability.this);
+                    getLoaderManager().restartLoader(MOVIES_ID, null, PhoneCapability.this);
+                } else {
+                    getLoaderManager().restartLoader(MUSIC_ID, null, PhoneCapability.this);
+                    getLoaderManager().restartLoader(MOVIES_ID, null, PhoneCapability.this);
+                }
+            }
+        });
+
+        Button movieButton = (Button) findViewById(R.id.findMovieTheaters);
+        movieButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.v(TAG, "movie theater button clicked");
+
+                Loader loader = getLoaderManager().getLoader(2);
+                if (loader != null && loader.isReset()) {
+                    getLoaderManager().restartLoader(MOVIES_ID, null, PhoneCapability.this);
+                } else {
+                    getLoaderManager().restartLoader(MOVIES_ID, null, PhoneCapability.this);
+                }
+            }
+        });
+    }
+
+
+
+    @Override
+    public Loader<String> onCreateLoader(int id, Bundle args) {
+        Log.v(TAG, "creating loader");
+        float latitude = 47.6097f;
+        float longitude = -122.3331f;
+        switch (id) {
+            case BOOKS_ID:
+                return new Yelp(this, "bookstores", latitude, longitude);
+            case MUSIC_ID:
+                return new Yelp(this, "music", latitude, longitude);
+            case MOVIES_ID:
+                return new Yelp(this, "movies", latitude, longitude);
+            default:
+                return new Yelp(this);
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+        if (data == null) {
+            Log.v(TAG, "give me a search term");
+        } else {
+            Log.v(TAG, data);
+        }
     }
 
 
@@ -85,5 +156,12 @@ public class PhoneCapability extends AppCompatActivity {
             //Toast.makeText(this, "Please install the NetFlix App!", Toast.LENGTH_SHORT).show();
 
         }
+    }
+
+
+
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+
     }
 }
