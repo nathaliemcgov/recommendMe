@@ -2,7 +2,9 @@ package edu.uw.nmcgov.recommendme;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.Button;
 public class ProfileFragment extends Fragment {
 
     private static final String TAG = "profile";
+    private static final int REQUEST_PICTURE = 1;
 
 
     /*allows interaction with the start page
@@ -80,6 +83,20 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+
+        View cameraButton = rootView.findViewById(R.id.pic);
+        cameraButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.v(TAG, "Camera button pressed");
+
+                //implicit intent
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivityForResult(intent, REQUEST_PICTURE);
+                }
+            }
+        });
+
 
 
         return rootView;

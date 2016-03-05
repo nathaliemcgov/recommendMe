@@ -14,28 +14,50 @@
         android:textSize="40dp"
         android:gravity="center"
         android:text="Desert Island Picks"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:gravity="center"
-        android:text="Books"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:id="@+id/book_button"
+            android:layout_weight=".33"
+            android:text="Books"/>
 
-    <EditText
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:id="@+id/movies_button"
+            android:layout_weight=".33"
+            android:layout_toRightOf="@+id/book_button"
+            android:text="Movies"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:layout_weight=".33"
+            android:id="@+id/music_button"
+            android:layout_toRightOf="@+id/movies_button"
+            android:text="Music"/>
+    </RelativeLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:hint="Write a book title..."/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:hint="Write a book title..."/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:hint="Write a book title..."/>
+        android:orientation="vertical"
+        android:id="@+id/edit_container">
+
+
+    </LinearLayout>
+
+
 
 </LinearLayout>

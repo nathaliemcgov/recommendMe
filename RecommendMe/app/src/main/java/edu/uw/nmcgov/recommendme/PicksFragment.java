@@ -42,6 +42,33 @@ public class PicksFragment extends Fragment {
             }
         });
 
+        Button books = (Button)rootView.findViewById(R.id.book_button);
+        books.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View V) {
+                Log.v(TAG, "book");
+
+            }
+        });
+
+        Button movies = (Button)rootView.findViewById(R.id.movies_button);
+        movies.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View V) {
+                Log.v(TAG, "movies");
+
+            }
+        });
+
+        Button music = (Button)rootView.findViewById(R.id.music_button);
+        music.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View V) {
+                Log.v(TAG, "music");
+
+            }
+        });
+
         return rootView;
 
     }
