@@ -17,7 +17,7 @@ public class ProfileFragment extends Fragment {
     private static final String TAG = "profile";
 
 
-    //allows interaction with the start page
+    /*allows interaction with the start page
     public interface OnButtonSelectionListener{
         void onLinkedSelected();
         void onSavedSelected();
@@ -26,7 +26,7 @@ public class ProfileFragment extends Fragment {
 
     public interface OnProfileSelectedListener {
         void onProfileSelected();
-    }
+    }*/
 
 
     public ProfileFragment(){
@@ -59,6 +59,11 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View V) {
                 Log.v(TAG, "saved");
+                SavedFragment saved = new SavedFragment();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.mainContainer, saved)
+                        .commit();
+
 
             }
         });
@@ -68,6 +73,10 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View V) {
                 Log.v(TAG, "picked");
+                PicksFragment picks = new PicksFragment();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.mainContainer, picks)
+                        .commit();
 
             }
         });
