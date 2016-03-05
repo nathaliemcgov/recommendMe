@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">RecommendMe</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="consumer_key"></string>
-    <string name="consumer_secret"></string>
-    <string name="token"></string>
-    <string name="token_secret"></string>
+    <string name="music_hint">Enter an artist:</string>
+    <string name="movie_hint">Enter a movie:</string>
 </resources>

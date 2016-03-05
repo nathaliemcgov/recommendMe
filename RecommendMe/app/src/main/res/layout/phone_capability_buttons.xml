@@ -3,12 +3,21 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/musicSearchText"
+        android:hint="@string/music_hint"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Click me for Music!!"
         android:onClick="goToMusic"/>
-
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/movieSearchText"
+        android:hint="@string/movie_hint"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

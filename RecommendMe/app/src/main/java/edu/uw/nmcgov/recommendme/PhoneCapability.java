@@ -13,15 +13,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
-//
-//import android.support.v4.app.LoaderManager;
-//import android.support.v4.content.Loader;
+
 
 public class PhoneCapability extends FragmentActivity implements LoaderManager.LoaderCallbacks<String> {
 
     private static final String TAG = "MAIN";
 
+    // different IDs for the API calls
     private static final int BOOKS_ID = 1;
     private static final int MUSIC_ID = 2;
     private static final int MOVIES_ID = 3;
@@ -32,6 +32,7 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.phone_capability_buttons);
 
+        // listening for the bookstore button click. Starts API call to yelp for bookstores
         Button bookstoreButton = (Button) findViewById(R.id.findBookstores);
         bookstoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +49,7 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
             }
         });
 
+        // listening for the music button click. Starts API call to yelp for music
         Button musicButton = (Button) findViewById(R.id.findMusicStores);
         musicButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,14 +59,13 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
                 Loader loader = getLoaderManager().getLoader(1);
                 if (loader != null && loader.isReset()) {
                     getLoaderManager().restartLoader(MUSIC_ID, null, PhoneCapability.this);
-                    getLoaderManager().restartLoader(MOVIES_ID, null, PhoneCapability.this);
                 } else {
                     getLoaderManager().restartLoader(MUSIC_ID, null, PhoneCapability.this);
-                    getLoaderManager().restartLoader(MOVIES_ID, null, PhoneCapability.this);
                 }
             }
         });
 
+        // listening for the movie button click. Starts API call to yelp for movie theaters
         Button movieButton = (Button) findViewById(R.id.findMovieTheaters);
         movieButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +84,8 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
 
 
 
+    // once the loader is complete, it will call the Yelp class to query for either a
+    // bookstore, latitude or longtitude
     @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
         Log.v(TAG, "creating loader");
@@ -100,6 +103,7 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
         }
     }
 
+    // once the onCreateLoader is done, onLoadFinished is called to handle the data returned
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
         if (data == null) {
@@ -114,7 +118,10 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
     // currently if they click on a button in the ui, different options will pop up
     public void goToMusic(View v) {
         Log.v(TAG, "sending spotify intent");
-        String artist = "Beyonce"; // hard coded. lol
+
+        EditText movieEntered = (EditText) findViewById(R.id.musicSearchText);
+        String artist = movieEntered.getText().toString();
+
 
         Intent intent = new Intent(MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH);
         //intent.putExtra(MediaStore.EXTRA_MEDIA_FOCUS, "vnd.android.cursor.item/*");
@@ -140,7 +147,10 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
 //            startActivity(intent);
 
             // I think this will work if the user types in a movie
-            String movieTitle = "Scandal";
+            //String movieTitle = "Scandal";
+
+            EditText movieEntered = (EditText) findViewById(R.id.movieSearchText);
+            String movieTitle = movieEntered.getText().toString();
 
             Intent intent = new Intent(Intent.ACTION_SEARCH);
             intent.setClassName("com.netflix.mediaclient", "com.netflix.mediaclient.ui.search.SearchActivity");
@@ -149,7 +159,7 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
         }
         catch(Exception e)
         {
-            // netflix app isn't installed, send to website.
+            // netflix app isn't installed, send to website instead.
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(watchUrl));
             startActivity(intent);
@@ -159,9 +169,7 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
     }
 
 
-
+    // not implemented
     @Override
-    public void onLoaderReset(Loader<String> loader) {
-
-    }
+    public void onLoaderReset(Loader<String> loader) {}
 }

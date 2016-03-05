@@ -23,20 +23,19 @@ public class Yelp extends AsyncTaskLoader<String> {
     private OAuthService service;
     private Token accessToken;
 
-//    private String searchTerm = "burritos";
-//    private float lat = 47.6097f;
-//    private float lng = -122.3331f;
 
-    private String searchTerm;
-    private float lat;
-    private float lng;
+    private String searchTerm; // what's going to be searched for on yelp
+    private float lat;  // current latitude
+    private float lng; // current longitude
 
+
+    // if there aren't search terms for some reason
     public Yelp(Context context) {
         super(context);
         Log.v(TAG, "blank constructor");
     }
 
-
+    // initializes the search parameters
     public Yelp(Context context, String searchTerm, float lat, float lng) {
         super(context);
         this.searchTerm = searchTerm;
@@ -45,6 +44,7 @@ public class Yelp extends AsyncTaskLoader<String> {
         Log.v(TAG, "constructor");
     }
 
+    // forces loadInBackground to run. If not implemented, it will never load
     @Override
     protected void onStartLoading() {
         super.onStartLoading();
@@ -59,6 +59,7 @@ public class Yelp extends AsyncTaskLoader<String> {
         }
         YelpAPIAuth api_keys = new YelpAPIAuth();
 
+        // these are kept secret
         String consumerKey = api_keys.getYelpConsumerKey();
         String consumerSecret = api_keys.getYelpConsumerSecret();
         String token = api_keys.getYelpToken();
@@ -67,11 +68,8 @@ public class Yelp extends AsyncTaskLoader<String> {
         this.service = new ServiceBuilder().provider(YelpApi2.class).apiKey(consumerKey).apiSecret(consumerSecret).build();
         this.accessToken = new Token(token, tokenSecret);
 
-
+        // uses OAuth to query yelp
         OAuthRequest request = new OAuthRequest(Verb.GET, "http://api.yelp.com/v2/search");
-        //        String term = "burrito";
-        //        float latitude = 47.6097f;
-        //        float longitude = -122.3331f;
         request.addQuerystringParameter("term", searchTerm);
         request.addQuerystringParameter("ll", lat + "," + lng);
         this.service.signRequest(this.accessToken, request);
