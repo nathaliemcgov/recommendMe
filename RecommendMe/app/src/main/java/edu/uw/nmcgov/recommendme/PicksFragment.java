@@ -1,5 +1,6 @@
 package edu.uw.nmcgov.recommendme;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ public class PicksFragment extends Fragment {
 
     public interface OnProfileSelectedListener extends AccountsFragment.OnProfileSelectedListener {
         void onProfileSelected();
+        void onPickSelected();
     }
 
     public PicksFragment(){
@@ -47,7 +49,7 @@ public class PicksFragment extends Fragment {
             @Override
             public void onClick(View V) {
                 Log.v(TAG, "book");
-
+                ((AccountsFragment.OnProfileSelectedListener)getActivity()).onPickSelected();
             }
         });
 
@@ -56,7 +58,7 @@ public class PicksFragment extends Fragment {
             @Override
             public void onClick(View V) {
                 Log.v(TAG, "movies");
-
+                ((AccountsFragment.OnProfileSelectedListener)getActivity()).onPickSelected();
             }
         });
 
@@ -65,7 +67,7 @@ public class PicksFragment extends Fragment {
             @Override
             public void onClick(View V) {
                 Log.v(TAG, "music");
-
+                ((AccountsFragment.OnProfileSelectedListener)getActivity()).onPickSelected();
             }
         });
 

@@ -24,8 +24,6 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
         getFragmentManager().beginTransaction()
                 .replace(R.id.mainContainer, profile)
                 .commit();
-
-
     }
 
     @Override
@@ -33,6 +31,16 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
         ProfileFragment profile = new ProfileFragment();
         getFragmentManager().beginTransaction()
                 .replace(R.id.mainContainer, profile)
+                .commit();
+
+        
+    }
+
+    @Override
+    public void onPickSelected() {
+        EditFragment edit = new EditFragment();
+        getFragmentManager().beginTransaction()
+                .replace(R.id.edit_container, edit)
                 .commit();
     }
 }
