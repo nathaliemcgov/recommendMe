@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 
 public class PhoneCapability extends FragmentActivity implements LoaderManager.LoaderCallbacks<String> {
 
@@ -110,6 +112,14 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
             Log.v(TAG, "give me a search term");
         } else {
             Log.v(TAG, data);
+
+            try {
+                JSONObject jsonObject = new JSONObject(data);
+                JSONObject results = jsonObject.getJSONArray("businesses").getJSONObject(0);
+                Log.v(TAG, results.toString());
+            } catch (Exception ex) {
+                Log.v(TAG, ex.getMessage());
+            }
         }
     }
 
