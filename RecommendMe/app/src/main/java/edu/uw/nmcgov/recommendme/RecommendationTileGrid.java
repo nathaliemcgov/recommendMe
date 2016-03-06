@@ -30,10 +30,6 @@ public class RecommendationTileGrid extends Fragment {
 
     private OnMediaSelectionListener callback;
 
-    static final String[] recommendations = new String[] {
-            "The Departed", "The Illiad"
-    };
-
     public RecommendationTileGrid() {
         // Required empty public constructor
     }
