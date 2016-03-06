@@ -10,6 +10,7 @@ import java.util.Map;
 public class MediaObject {
     private String name;
     private Map<String, Integer> related;
+    private int totalUserLikes;
 
     public MediaObject() {
 
@@ -21,6 +22,15 @@ public class MediaObject {
 
     public Map<String, Integer> getRelated() {
         return related;
+    }
+
+    public int getTotalUserLikes() { return totalUserLikes; }
+
+    public String toString() {
+        String map = null;
+        if(related != null)
+            map = related.toString();
+        return name + " " + totalUserLikes + " " + map;
     }
 
 }

@@ -35,31 +35,35 @@ public class FireBaseActivity extends AppCompatActivity  {
         Map<String, String> tyler = new HashMap<String, String>();
 
         tyler.put("name", "tyler");
-
-        //firebase.createUser(tyler);
-        Scanner scanner = null;
-        try {
-            scanner = new Scanner(new File("movies.csv"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Log.v("Tag", scanner.nextLine());
-
-        firebase.setLike("Rat King", "tyler");
+        tyler.put("name", "josh");
 
 
-
+        final int[] i = {0};
         Button button = (Button) findViewById(R.id.button);
+        Button button2 = (Button) findViewById(R.id.button2);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Map<String, String> tyler = new HashMap<String, String>();
+                tyler.put("name", "tyler");
+                i[0]++;
+                if (i[0] == 1)
+                    firebase.createUser(tyler);
+                firebase.setLike(i[0] + "a", "tyler");
+            }
+        });
 
-                String movieOne = ((EditText) findViewById(R.id.editText)).getText().toString();
-                String movieTwo = ((EditText) findViewById(R.id.editText2)).getText().toString();
-                firebase.createConnection(movieOne, movieTwo);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> tyler = new HashMap<String, String>();
+                tyler.put("name", "josh");
+                if (i[0] == 1)
+                    firebase.createUser(tyler);
+                i[0]++;
 
+                firebase.setLike(i[0] + "a", "josh");
 
             }
         });

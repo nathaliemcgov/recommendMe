@@ -1,5 +1,6 @@
 package edu.uw.nmcgov.recommendme;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.EditText;
 
@@ -65,17 +66,19 @@ public class RCMDFirebase {
     private void pushToFirebase(DataSnapshot dataSnapshot, String movieOne, String movieTwo) {
         //Create a new movie object if the movieTwo doesn't exist, and create a relationship to movie one
         if (dataSnapshot.getValue() == null) {
-            Log.v("LIKEBUG", "Inside create new object" + movieOne.toString() + movieTwo.toString());
             //Pushes a new link from MovieOne to MovieTwo
             Firebase newPostRef = myFirebaseMoviesRef.push();
             newPostRef.child("name").setValue(movieOne);
             Map<String, Integer> map = new HashMap<String, Integer>();
             map.put(movieTwo, 1);
             newPostRef.child("related").setValue(map);
+            newPostRef.child("totalUserLikes").setValue(1);
         } else { //Create or add a relationship for movieOne and movieTwo if movieOne exists
-            Log.v("movieOne", dataSnapshot.getValue().toString());
+            int i = 0;
             for (DataSnapshot singleObject : dataSnapshot.getChildren()) { // this should really only loop once
+                i++;
                 MediaObject object = singleObject.getValue(MediaObject.class);
+                Log.v("jkljas", object.toString());
                 Map<String, Integer> map = object.getRelated();
                 if(map == null)
                     map = new HashMap<String, Integer>();
@@ -83,10 +86,11 @@ public class RCMDFirebase {
                     map.put(movieTwo, map.get(movieTwo) + 1);
                 else
                     map.put(movieTwo, 1);
+                Log.v("TAG", map.toString() + " " + movieOne + " " + movieTwo + " " + i);
                 Firebase postRef = singleObject.getRef();
                 postRef.child("related").setValue(map);
+                //postRef.child("totalUserLikes").setValue(object.getTotalUserLikes() + 1);
             }
-
         }
     }
 
@@ -103,23 +107,52 @@ public class RCMDFirebase {
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
+                for (DataSnapshot singleObject : dataSnapshot.getChildren()) { //Theoretically one loop
                     UserObject object = singleObject.getValue(UserObject.class);
                     //If user hasn't liked anything yet, create the liked map
                     Map<String, Boolean> userLikes = object.getLiked();
                     if(userLikes == null) {
                         userLikes = new HashMap<String, Boolean>();
                     } else { //Update everything in the map to have a relationship to the new object
-                        //Create the media object in firebase
+                        Query userQuery = myFirebaseMoviesRef.orderByChild("name").equalTo(liked);
+                        final Map<String, Boolean> finalUserLikes = userLikes;
+                        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
-                        Firebase newPostRef = myFirebaseMoviesRef.push();
-                        newPostRef.child("name").setValue(liked);
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        for(String key : userLikes.keySet()) {
-                            Log.v("Liked", key);
-                            createConnection(liked, key);
+                                //Create the media object in firebase
+                                //If movie doesn't exist
+                                if(dataSnapshot.getValue() == null) {
+                                    Firebase newPostRef = myFirebaseMoviesRef.push();
+                                    newPostRef.child("name").setValue(liked);
+                                    newPostRef.child("totalUserLikes").setValue(1);
+                                } else { //If movie does exist
+                                    for (DataSnapshot singleObject : dataSnapshot.getChildren()) { // this should really only loop once
+                                        MediaObject object = singleObject.getValue(MediaObject.class);
+                                        int totalUserLikes = object.getTotalUserLikes();
+                                        Firebase ref = singleObject.getRef();
+                                        ref.child("totalUserLikes").setValue(1 + totalUserLikes);
+                                    }
+                                }
 
-                        }
+                                for(String key : finalUserLikes.keySet()) {
+                                    if(!liked.equals(key))
+                                        createConnection(liked, key);
+
+                                    //It looks like what I'm going to have to do here is
+                                    //get a big list of all the connections, then set up the map connections
+                                    //so that I don't have to create a lot of little connections.
+                                    //
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
                     }
 
                     userLikes.put(liked, true);
