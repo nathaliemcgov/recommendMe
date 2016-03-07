@@ -1,12 +1,25 @@
 package edu.uw.nmcgov.recommendme;
 
 
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+
+import android.Manifest;
 import android.app.LoaderManager;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.Loader;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,7 +34,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 
-public class PhoneCapability extends FragmentActivity implements LoaderManager.LoaderCallbacks<String> {
+public class PhoneCapability extends FragmentActivity implements LoaderManager.LoaderCallbacks<String>, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private static final String TAG = "MAIN";
 
@@ -30,11 +44,27 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
     private static final int MUSIC_ID = 2;
     private static final int MOVIES_ID = 3;
 
+    // constants for the location services
+    private static final int MY_PERMISSIONS_REQUEST = 1;
+    private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+
+    private Location mLastLocation;
+    private GoogleApiClient mGoogleApiClient;
+    private float latitude;
+    private float longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.phone_capability_buttons);
+
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
 
         // listening for the bookstore button click. Starts API call to yelp for bookstores
         Button bookstoreButton = (Button) findViewById(R.id.findBookstores);
@@ -44,12 +74,13 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
                 Log.v(TAG, "bookstore button clicked");
                 // getLoaderManager().initLoader(1, null, PhoneCapability.this).forceLoad();
 
-                Loader loader = getLoaderManager().getLoader(0);
+                Loader loader = getLoaderManager().getLoader(BOOKS_ID);
                 if (loader != null && loader.isReset()) {
                     getLoaderManager().restartLoader(BOOKS_ID, null, PhoneCapability.this);
                 } else {
                     getLoaderManager().restartLoader(BOOKS_ID, null, PhoneCapability.this);
                 }
+                handleNewLocation();
             }
         });
 
@@ -60,7 +91,7 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
             public void onClick(View view) {
                 Log.v(TAG, "music store button clicked");
 
-                Loader loader = getLoaderManager().getLoader(1);
+                Loader loader = getLoaderManager().getLoader(MUSIC_ID);
                 if (loader != null && loader.isReset()) {
                     getLoaderManager().restartLoader(MUSIC_ID, null, PhoneCapability.this);
                 } else {
@@ -76,7 +107,7 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
             public void onClick(View view) {
                 Log.v(TAG, "movie theater button clicked");
 
-                Loader loader = getLoaderManager().getLoader(2);
+                Loader loader = getLoaderManager().getLoader(MOVIES_ID);
                 if (loader != null && loader.isReset()) {
                     getLoaderManager().restartLoader(MOVIES_ID, null, PhoneCapability.this);
                 } else {
@@ -93,8 +124,6 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
     @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
         Log.v(TAG, "creating loader");
-        float latitude = 47.6097f;
-        float longitude = -122.3331f;
         switch (id) {
             case BOOKS_ID:
                 return new Yelp(this, "bookstores", latitude, longitude);
@@ -118,16 +147,21 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
             try {
 
                 JSONObject jsonObject = new JSONObject(data);
-                JSONObject results = jsonObject.getJSONArray("businesses").getJSONObject(0);
+                //JSONObject results = jsonObject.getJSONArray("businesses").getJSONObject(0);
                 // Log.v(TAG, results.toString());
 
 
 //                TextView textView = (TextView) findViewById(R.id.temp);
 //                textView.setText(jsonObject.getJSONArray("businesses").getJSONObject(1).toString());
 
+                // array of the businesses that we were returned by the query
                 JSONArray jsonArray = jsonObject.getJSONArray("businesses");
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    Log.v(TAG, jsonArray.getJSONObject(i).toString());
+                    JSONObject business = jsonArray.getJSONObject(i);
+                    double rating = business.getDouble("rating");
+                    String mobileUrl = business.getString("mobile_url");
+                    String phoneNumber = business.getString("phone");
+                    Log.v(TAG, rating + " " + mobileUrl + " " + phoneNumber);
                 }
 
 
@@ -137,6 +171,10 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
         }
     }
 
+
+    // not implemented
+    @Override
+    public void onLoaderReset(Loader<String> loader) {}
 
     // intent shows the options the user can go to in order to listen to music
     // currently if they click on a button in the ui, different options will pop up
@@ -192,8 +230,111 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
         }
     }
 
-
-    // not implemented
+    // requests permission to get the last location. If connected and there is a last location, handleNewLocation() is called
     @Override
-    public void onLoaderReset(Loader<String> loader) {}
+    public void onConnected(Bundle bundle) {
+        Log.v(TAG, "location services connected");
+        // Create the LocationRequest object
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(0);
+        mLocationRequest.setFastestInterval(0);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // go to onRequestPermissionsResult to handle if the person says to allow or not
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST);
+            Log.v(TAG, "asking for permission");
+        } else {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (mLastLocation != null) {
+                Log.v(TAG, "last loc = true, getting new location");
+                // if there is a last location
+                onLocationChanged(mLastLocation);
+            } else {
+                // not a last location, so ask for one
+                Log.v(TAG, "udpate location");
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            }
+        }
+    }
+
+    // whenever the location of the phone changes, this method is called
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.v(TAG, "location changed!! WAHOO " + location.toString());
+        mLastLocation = location;
+        handleNewLocation();
+    }
+
+    // updates yelp api calls
+    private void handleNewLocation() {
+        Log.v(TAG, "handling new location " + mLastLocation);
+
+        if (mLastLocation != null) {
+            latitude = (float) mLastLocation.getLatitude();
+            longitude = (float) mLastLocation.getLongitude();
+
+            Log.v(TAG, "location = " + latitude + " " + longitude);
+        }
+
+    }
+
+    // if the permission is granted, then try getting the last location
+    // else the permission is dendied.
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Log.v(TAG, "permission granted");
+                    onConnected(null);
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+                    Log.v(TAG, "permission denied");
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+        }
+    }
+
+    // the connection was suspended
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.v(TAG, "Location services suspended");
+    }
+
+    // if the connection fails, try to resolve the error
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        if (connectionResult.hasResolution()) {
+            try {
+                // Start an Activity that tries to resolve the error
+                connectionResult.startResolutionForResult(this, CONNECTION_FAILURE_RESOLUTION_REQUEST);
+            } catch (IntentSender.SendIntentException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.i(TAG, "Location services connection failed with code " + connectionResult.getErrorCode());
+        }
+    }
+
+    // connects the google client when the app starts
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    // stops the google client when the app ends
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
 }
