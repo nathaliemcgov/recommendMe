@@ -19,10 +19,10 @@ import org.scribe.oauth.OAuthService;
 public class Yelp extends AsyncTaskLoader<String> {
 
     private static final String TAG = "YELP";
+    private static final String LIMIT = "2";
 
     private OAuthService service;
     private Token accessToken;
-
 
     private String searchTerm; // what's going to be searched for on yelp
     private float lat;  // current latitude
@@ -51,6 +51,8 @@ public class Yelp extends AsyncTaskLoader<String> {
         forceLoad();
     }
 
+    // queries the api based on the lat/lng and limits the results based off of the constant, LIMIT
+    // returns the json response of the yelp API and the search term for caching purposes
     @Override
     public String loadInBackground() {
         Log.v(TAG, "loading yelp");
@@ -58,14 +60,14 @@ public class Yelp extends AsyncTaskLoader<String> {
             return null;
         }
         YelpAPIAuth api_keys = new YelpAPIAuth();
-
         // these are kept secret
         String consumerKey = api_keys.getYelpConsumerKey();
         String consumerSecret = api_keys.getYelpConsumerSecret();
         String token = api_keys.getYelpToken();
         String tokenSecret = api_keys.getYelpTokenSecret();
 
-        this.service = new ServiceBuilder().provider(YelpApi2.class).apiKey(consumerKey).apiSecret(consumerSecret).build();
+        this.service = new ServiceBuilder().provider(YelpApi2.class)
+                            .apiKey(consumerKey).apiSecret(consumerSecret).build();
         this.accessToken = new Token(token, tokenSecret);
 
 
@@ -73,21 +75,11 @@ public class Yelp extends AsyncTaskLoader<String> {
         OAuthRequest request = new OAuthRequest(Verb.GET, "http://api.yelp.com/v2/search");
         request.addQuerystringParameter("term", searchTerm);
         request.addQuerystringParameter("ll", lat + "," + lng);
-        request.addQuerystringParameter("limit", "2");
-        //request.addQuerystringParameter("bounds", );
-
-
-        Log.v(TAG, request.toString());
+        request.addQuerystringParameter("limit", LIMIT);
 
         this.service.signRequest(this.accessToken, request);
         Response response = request.send();
-        String s = response.toString();
-        Log.v(TAG, s);
         return searchTerm + " " + response.getBody();
 
-    }
-
-    public String getSearchTerm() {
-        return searchTerm;
     }
 }

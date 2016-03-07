@@ -4,6 +4,8 @@ import android.util.Log;
 
 import org.json.JSONObject;
 
+import java.util.Dictionary;
+
 /**
  * Created by madis on 3/6/2016.
  */
