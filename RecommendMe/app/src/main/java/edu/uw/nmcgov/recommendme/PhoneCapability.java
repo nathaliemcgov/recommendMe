@@ -33,6 +33,11 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 
 public class PhoneCapability extends FragmentActivity implements LoaderManager.LoaderCallbacks<String>, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -53,6 +58,9 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
     private float latitude;
     private float longitude;
 
+    private Map<String, Set<JSONObject>> mapOfNearbyBusinesses;
+    private String key;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +73,9 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
                     .addApi(LocationServices.API)
                     .build();
         }
+        key = "";
+        mapOfNearbyBusinesses = new HashMap<String, Set<JSONObject>>();
+
 
         // listening for the bookstore button click. Starts API call to yelp for bookstores
         Button bookstoreButton = (Button) findViewById(R.id.findBookstores);
@@ -74,15 +85,10 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
                 Log.v(TAG, "bookstore button clicked");
                 // getLoaderManager().initLoader(1, null, PhoneCapability.this).forceLoad();
 
-                Loader loader = getLoaderManager().getLoader(BOOKS_ID);
-                if (loader != null && loader.isReset()) {
-                    getLoaderManager().restartLoader(BOOKS_ID, null, PhoneCapability.this);
-                } else {
-                    getLoaderManager().restartLoader(BOOKS_ID, null, PhoneCapability.this);
-                }
-                handleNewLocation();
+                getNearbyBusinesses("bookstores");
             }
         });
+
 
         // listening for the music button click. Starts API call to yelp for music
         Button musicButton = (Button) findViewById(R.id.findMusicStores);
@@ -90,13 +96,7 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
             @Override
             public void onClick(View view) {
                 Log.v(TAG, "music store button clicked");
-
-                Loader loader = getLoaderManager().getLoader(MUSIC_ID);
-                if (loader != null && loader.isReset()) {
-                    getLoaderManager().restartLoader(MUSIC_ID, null, PhoneCapability.this);
-                } else {
-                    getLoaderManager().restartLoader(MUSIC_ID, null, PhoneCapability.this);
-                }
+                getNearbyBusinesses("music");
             }
         });
 
@@ -106,17 +106,22 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
             @Override
             public void onClick(View view) {
                 Log.v(TAG, "movie theater button clicked");
-
-                Loader loader = getLoaderManager().getLoader(MOVIES_ID);
-                if (loader != null && loader.isReset()) {
-                    getLoaderManager().restartLoader(MOVIES_ID, null, PhoneCapability.this);
-                } else {
-                    getLoaderManager().restartLoader(MOVIES_ID, null, PhoneCapability.this);
-                }
+                getNearbyBusinesses("movies");
             }
         });
     }
 
+    public void getNearbyBusinesses(String businessType) {
+        try {
+            Set<JSONObject> set = mapOfNearbyBusinesses.get(businessType);
+            for (JSONObject keyToBusiness : set) {
+                YelpData temp = new YelpData(keyToBusiness);
+                Log.v(TAG, temp.toString());
+            }
+        } catch (Exception ex) {
+            Log.v(TAG, ex.getMessage());
+        }
+    }
 
 
     // once the loader is complete, it will call the Yelp class to query for either a
@@ -138,12 +143,17 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
 
     // once the onCreateLoader is done, onLoadFinished is called to handle the data returned
     @Override
-    public void onLoadFinished(Loader<String> loader, String data) {
-        if (data == null) {
+    public void onLoadFinished(Loader<String> loader, String dataHacked) {
+        if (dataHacked == null) {
             Log.v(TAG, "give me a search term");
         } else {
-            Log.v(TAG, data);
+            Log.v(TAG, dataHacked);
 
+            String searchTerm = dataHacked.substring(0, dataHacked.indexOf(' '));
+            String data = dataHacked.substring(dataHacked.indexOf(' ') + 1);
+
+            Log.v(TAG, searchTerm);
+            Log.v(TAG, data);
             try {
 
                 JSONObject jsonObject = new JSONObject(data);
@@ -151,17 +161,19 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
                 // Log.v(TAG, results.toString());
 
 
-//                TextView textView = (TextView) findViewById(R.id.temp);
-//                textView.setText(jsonObject.getJSONArray("businesses").getJSONObject(1).toString());
-
                 // array of the businesses that we were returned by the query
                 JSONArray jsonArray = jsonObject.getJSONArray("businesses");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject business = jsonArray.getJSONObject(i);
-                    double rating = business.getDouble("rating");
-                    String mobileUrl = business.getString("mobile_url");
-                    String phoneNumber = business.getString("phone");
-                    Log.v(TAG, rating + " " + mobileUrl + " " + phoneNumber);
+                int length = jsonArray.length();
+                for (int i = 0; i < length; i++) {
+                    JSONObject tempData = jsonArray.getJSONObject(i);
+                    // this doesn't work for some reason....
+//                    YelpData yelpBusiness = new YelpData(tempData};
+//                    Log.v(TAG, key);
+                    if (!mapOfNearbyBusinesses.containsKey(searchTerm)) {
+                        Set<JSONObject> set = new HashSet<>();
+                        mapOfNearbyBusinesses.put(searchTerm, set);
+                    }
+                    mapOfNearbyBusinesses.get(searchTerm).add(tempData);
                 }
 
 
@@ -255,13 +267,20 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
                 Log.v(TAG, "udpate location");
                 LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
             }
+
+            // loads the different api calls
+            getLoaderManager().restartLoader(BOOKS_ID, null, PhoneCapability.this);
+            getLoaderManager().restartLoader(MUSIC_ID, null, PhoneCapability.this);
+            getLoaderManager().restartLoader(MOVIES_ID, null, PhoneCapability.this);
+
+
         }
     }
 
     // whenever the location of the phone changes, this method is called
     @Override
     public void onLocationChanged(Location location) {
-        Log.v(TAG, "location changed!! WAHOO " + location.toString());
+        Log.v(TAG, "location changed!! " + location.toString());
         mLastLocation = location;
         handleNewLocation();
     }
@@ -269,6 +288,9 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
     // updates yelp api calls
     private void handleNewLocation() {
         Log.v(TAG, "handling new location " + mLastLocation);
+
+        // empty old locations and get the new results
+        mapOfNearbyBusinesses = new HashMap<>();
 
         if (mLastLocation != null) {
             latitude = (float) mLastLocation.getLatitude();

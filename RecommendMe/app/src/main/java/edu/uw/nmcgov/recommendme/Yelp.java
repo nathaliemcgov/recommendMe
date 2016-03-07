@@ -83,7 +83,11 @@ public class Yelp extends AsyncTaskLoader<String> {
         Response response = request.send();
         String s = response.toString();
         Log.v(TAG, s);
-        return response.getBody();
+        return searchTerm + " " + response.getBody();
 
+    }
+
+    public String getSearchTerm() {
+        return searchTerm;
     }
 }
