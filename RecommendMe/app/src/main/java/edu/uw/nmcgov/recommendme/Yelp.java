@@ -72,9 +72,10 @@ public class Yelp extends AsyncTaskLoader<String> {
         // uses OAuth to query yelp
         OAuthRequest request = new OAuthRequest(Verb.GET, "http://api.yelp.com/v2/search");
         request.addQuerystringParameter("term", searchTerm);
-        request.addQuerystringParameter("limit", "2");
         request.addQuerystringParameter("ll", lat + "," + lng);
+        request.addQuerystringParameter("limit", "2");
         //request.addQuerystringParameter("bounds", );
+
 
         Log.v(TAG, request.toString());
 

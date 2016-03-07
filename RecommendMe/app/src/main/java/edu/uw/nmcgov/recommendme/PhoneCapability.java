@@ -14,8 +14,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 
@@ -114,9 +116,21 @@ public class PhoneCapability extends FragmentActivity implements LoaderManager.L
             Log.v(TAG, data);
 
             try {
+
                 JSONObject jsonObject = new JSONObject(data);
                 JSONObject results = jsonObject.getJSONArray("businesses").getJSONObject(0);
-                Log.v(TAG, results.toString());
+                // Log.v(TAG, results.toString());
+
+
+//                TextView textView = (TextView) findViewById(R.id.temp);
+//                textView.setText(jsonObject.getJSONArray("businesses").getJSONObject(1).toString());
+
+                JSONArray jsonArray = jsonObject.getJSONArray("businesses");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    Log.v(TAG, jsonArray.getJSONObject(i).toString());
+                }
+
+
             } catch (Exception ex) {
                 Log.v(TAG, ex.getMessage());
             }
