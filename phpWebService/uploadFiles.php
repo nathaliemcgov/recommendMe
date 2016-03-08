@@ -1,5 +1,13 @@
 <?php
 
+$file = "movies.csv";
+$fileContents = file_get_contents($file);
+
+foreach ($fileContents as $value) {
+    echo $value;
+}
+
+
 
 $trie = new KTrie();
 
