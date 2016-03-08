@@ -2,22 +2,29 @@
 
 $file = "movies.csv";
 $fileContents = file($file);
-
-
-
-
-$trie = new KTrie();
-$i = 0;
-foreach ($fileContents as $value) {
-    $i++;
-    if($i < 3000) {
-        $trie->addWord($value);
-    }
+$trie = null;
+if(isset($_SESSION["trie"]) {
+    $trie = $_SESSION["trie"];
+} else {
+    buildTrie();
 }
+
+session_start();
+
 
 
 $trie->getWordsFromPrefix('Pulp');
 
+function buildTrie() {
+    $trie = new KTrie();
+    $i = 0;
+    foreach ($fileContents as $value) {
+        $i++;
+        if($i < 3000) {
+            $trie->addWord($value);
+        }
+    }
+}
 
 class KTrie
 {
