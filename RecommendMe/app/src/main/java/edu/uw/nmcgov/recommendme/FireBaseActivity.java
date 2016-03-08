@@ -57,15 +57,12 @@ public class FireBaseActivity extends AppCompatActivity  {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Map<String, String> tyler = new HashMap<String, String>();
+                tyler.put("name", "josh");
+                if (i[0] == 1)
+                    firebase.createUser(tyler);
 
-                Log.v("test", firebase.queryTitle("1a").toString());
-//                Map<String, String> tyler = new HashMap<String, String>();
-//                tyler.put("name", "josh");
-//                if (i[0] == 1)
-//                    firebase.createUser(tyler);
-//                i[0]++;
-//
-//                firebase.setLike(i[0] + "a", "josh");
+                firebase.setLike(i[0] + "a", "josh");
 
             }
         });
