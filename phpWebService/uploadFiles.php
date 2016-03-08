@@ -1,11 +1,11 @@
-<?php 
+<?php
 
 
 $trie = new KTrie();
 
 $trie->addWord("cat");
 $trie->addWord("coins");
-print $trie;
+$trie->getWordsFromPrefix('coi');
 
 
 class KTrie
@@ -14,24 +14,24 @@ class KTrie
     {
         $this->root = new KTrieNode('');
     }
-    
+
     function addWord($word)
     {
         $wordArray = str_split($word);
         $this->root->addSuffix($wordArray);
     }
-    
+
     function hasWord($word)
     {
         $wordArray = str_split($word);
         return $this->root->hasSuffix($wordArray);
     }
-    
+
     function printStructure()
     {
         $this->root->printStructure(0);
     }
-    
+
     function printWords()
     {
         $this->root->printWords('');
@@ -40,29 +40,30 @@ class KTrie
     function getWordsFromPrefix($prefix) {
         //navigate to node
         $node = $this->root;
-        for($i = 1; $i <= strlen($prefix); $i++) {
-            if($node->hasSuffix(substr($prefix, 0, $i))) {
-                $node = $node->getChild($prefix[$i]);
-            }
+        $lengthOfWord = strlen($prefix);
+        for($i = 1; $i <= $lengthOfWord; $i++) {
+            if($this->root->hasSuffix(str_split(substr($prefix, 0, $i)))) {
+                $node = $node->getChild($prefix[$i - 1]);
+             }
         }
 
-        $node->printWords($prefix);
+        $node->printWords(substr($prefix, 0, $lengthOfWord - 1));
     }
 
 
 }
- 
+
 class KTrieNode
 {
     function __construct($s){ $this->value = $s; }
-    
+
     function addSuffix($suffixArray)
     {
         if(!empty($suffixArray))
         {
             $firstChar = $suffixArray[0];
             $remnant = array_slice($suffixArray, 1);
-            
+
             $childNode = $this->getChild($firstChar);
             if($childNode === FALSE)
             {
@@ -75,30 +76,31 @@ class KTrieNode
             $this->finishesWord = TRUE;
         }
     }
-    
+
+
     function hasSuffix($suffixArray)
     {
         if(!empty($suffixArray))
         {
             $firstChar = $suffixArray[0];
-            
+
             $childNode = $this->getChild($firstChar);
             if($childNode == FALSE)
             {
                 return FALSE;
-            }   
+            }
             else
             {
                 $remnant = array_slice($suffixArray, 1);
                 return $childNode->hasSuffix($remnant);
             }
         }
-        else 
+        else
         {
             return TRUE;
         }
-    }       
-    
+    }
+
     function getChild($childString)
     {
         if(is_array($this->children))
@@ -113,7 +115,7 @@ class KTrieNode
         }
         return FALSE;
     }
-    
+
     function addChild($childString)
     {
         if(is_array($this->children))
@@ -126,13 +128,13 @@ class KTrieNode
                 }
             }
         }
-        
+
         $child = new KTrieNode($childString);
         $this->children[] = $child;
-        
+
         return $child;
     }
-    
+
     function printStructure($level)
     {
         for($i=0; $i<$level; $i++)
@@ -148,14 +150,14 @@ class KTrieNode
             }
         }
     }
-    
+
     function printWords($prefix)
     {
         if($this->finishesWord)
         {
             echo $prefix.$this->value.'<br/>';
         }
-        
+
         if(is_array($this->children))
         {
             foreach($this->children as $child)

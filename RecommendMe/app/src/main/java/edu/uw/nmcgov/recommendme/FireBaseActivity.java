@@ -12,7 +12,9 @@ import com.firebase.client.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -38,7 +40,13 @@ public class FireBaseActivity extends AppCompatActivity  {
         tyler.put("name", "josh");
 
         firebase.testWeb();
-
+        final List<String> movies = new ArrayList<String>();
+        movies.add("gainer house");
+        movies.add("The Departed");
+        movies.add("sup");
+        movies.add("waterwaterwater");
+        movies.add("Vikram");
+        movies.add("Boris");
 
         final int[] i = {0};
         Button button = (Button) findViewById(R.id.button);
@@ -52,7 +60,7 @@ public class FireBaseActivity extends AppCompatActivity  {
                 i[0]++;
                 if (i[0] == 1)
                     firebase.createUser(tyler);
-                firebase.setLike(i[0] + "a", "tyler");
+                firebase.setLike(movies.get(i[0]), "tyler");
             }
         });
 
@@ -64,7 +72,7 @@ public class FireBaseActivity extends AppCompatActivity  {
                 if (i[0] == 1)
                     firebase.createUser(tyler);
 
-                firebase.setLike(i[0] + "a", "josh");
+                firebase.setLike(movies.get(i[0]), "josh");
 
             }
         });
