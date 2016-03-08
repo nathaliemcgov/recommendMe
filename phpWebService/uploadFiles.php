@@ -7,6 +7,9 @@ session_start();
 
 if(isset($_GET["media"])) {
     $media = $_GET["media"];
+    if($media === "destroy") {
+        session_destroy();
+    }
 } else {
     $media = "American Psycho";
 }
