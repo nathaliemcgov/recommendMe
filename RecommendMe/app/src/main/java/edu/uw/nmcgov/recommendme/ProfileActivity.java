@@ -20,7 +20,7 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_page);
 
-
+        //main profile fragment
         ProfileFragment profile = new ProfileFragment();
         getFragmentManager().beginTransaction()
                 .replace(R.id.mainContainer, profile)
@@ -30,11 +30,13 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
 
     @Override
     public void onProfileSelected() {
+        //main profile fragment
         ProfileFragment profile = new ProfileFragment();
         getFragmentManager().beginTransaction()
                 .replace(R.id.mainContainer, profile)
                 .commit();
 
+        //if the bottom fragment is there, delete it
         if(pick) {
             getFragmentManager().beginTransaction().remove(getFragmentManager()
                     .findFragmentById(R.id.edit_container)).commit();
@@ -45,6 +47,7 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
 
     @Override
     public void onPickSelected(String type) {
+        //bottom fragment for the editTexts
         pick = true;
         Bundle bundle = new Bundle();
         bundle.putString("type", type);

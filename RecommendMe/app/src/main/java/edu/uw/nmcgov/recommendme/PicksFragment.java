@@ -17,6 +17,7 @@ public class PicksFragment extends Fragment {
 
     private static final String TAG = "saved";
 
+    //so we can communicate with the profile activity
     public interface OnProfileSelectedListener extends AccountsFragment.OnProfileSelectedListener {
         void onProfileSelected();
         void onPickSelected(String type);
@@ -34,6 +35,7 @@ public class PicksFragment extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.picks_fragment, container, false);
 
+        //back button
         Button button = (Button)rootView.findViewById(R.id.picks_back);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +46,7 @@ public class PicksFragment extends Fragment {
             }
         });
 
+        //books category
         Button books = (Button)rootView.findViewById(R.id.book_button);
         books.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +56,7 @@ public class PicksFragment extends Fragment {
             }
         });
 
+        //movies category
         Button movies = (Button)rootView.findViewById(R.id.movies_button);
         movies.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +66,7 @@ public class PicksFragment extends Fragment {
             }
         });
 
+        //music category
         Button music = (Button)rootView.findViewById(R.id.music_button);
         music.setOnClickListener(new View.OnClickListener() {
             @Override

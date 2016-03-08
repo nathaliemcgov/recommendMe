@@ -30,6 +30,8 @@ public class EditFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         final View rootView = inflater.inflate(R.layout.edit_fragment, container, false);
+
+        //get the type (movie/music/book)
         Bundle bundle = this.getArguments();
         if(bundle == null){
             Log.v(TAG, "NO");
@@ -37,6 +39,7 @@ public class EditFragment extends Fragment {
             type = bundle.getString("type");
         }
 
+        //different buttons for each editText
         ArrayList<Button> buttons = new ArrayList<>();
         buttons.add((Button)rootView.findViewById(R.id.change_1));
         buttons.add((Button)rootView.findViewById(R.id.change_2));
