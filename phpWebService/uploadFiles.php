@@ -7,6 +7,7 @@ if(isset($_SESSION["trie"])) {
     $trie = $_SESSION["trie"];
 } else {
     buildTrie();
+    $_SESSION["trie"] = $trie;
 }
 
 session_start();
