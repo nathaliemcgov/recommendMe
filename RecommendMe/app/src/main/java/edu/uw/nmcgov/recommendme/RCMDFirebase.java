@@ -1,5 +1,6 @@
 package edu.uw.nmcgov.recommendme;
 
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -11,6 +12,10 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -141,7 +146,7 @@ public class RCMDFirebase {
                     UserObject object = singleObject.getValue(UserObject.class);
                     //If user hasn't liked anything yet, create the liked map
                     Map<String, Boolean> userLikes = object.getLiked();
-                    if(userLikes == null)
+                    if (userLikes == null)
                         userLikes = new HashMap<String, Boolean>();//Update everything in the map to have a relationship to the new object
                     Query userQuery = myFirebaseMoviesRef.orderByChild("name").equalTo(liked);
                     final Map<String, Boolean> finalUserLikes = userLikes;
@@ -152,7 +157,7 @@ public class RCMDFirebase {
 
                             //Create the media object in firebase
                             //If movie doesn't exist
-                            if(dataSnapshot.getValue() == null) {
+                            if (dataSnapshot.getValue() == null) {
                                 Firebase newPostRef = myFirebaseMoviesRef.push();
                                 newPostRef.child("name").setValue(liked);
                                 newPostRef.child("totalUserLikes").setValue(1);
@@ -165,8 +170,8 @@ public class RCMDFirebase {
                                 }
                             }
 
-                            for(String key : finalUserLikes.keySet()) {
-                                if(!liked.equals(key))
+                            for (String key : finalUserLikes.keySet()) {
+                                if (!liked.equals(key))
                                     createConnection(liked, key);
 
                                 //It looks like what I'm going to have to do here is
@@ -198,5 +203,38 @@ public class RCMDFirebase {
             }
         });
 
+    }
+
+    public void testWeb() {
+        Log.v("test", "yahhh");
+        String str="https://students.washington.edu/tylerj11/recommendMe/phpWebService/webServiceTest.php";
+        try {
+            new testWebServiceextends().execute(new URL(str));
+        } catch(Exception e){
+            Log.v("test", e.toString());
+        }
+    }
+
+    private class testWebServiceextends extends AsyncTask<URL, Integer, String> {
+
+        protected String doInBackground(URL... urls) {
+            try {
+                for (URL url : urls) {
+                    URLConnection urlc = url.openConnection();
+                    BufferedReader bfr = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
+                    String line;
+                    while ((line = bfr.readLine()) != null) {
+                        Log.v("TESTWEB", line);
+                    }
+                }
+            } catch (Exception e) {
+                Log.v("error", e.toString());
+            }
+            return "done";
+
+        }
+        protected void onPostExecute(String result) {
+            Log.v("test", result);
+        }
     }
 }

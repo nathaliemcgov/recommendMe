@@ -37,6 +37,8 @@ public class FireBaseActivity extends AppCompatActivity  {
         tyler.put("name", "tyler");
         tyler.put("name", "josh");
 
+        firebase.testWeb();
+
 
         final int[] i = {0};
         Button button = (Button) findViewById(R.id.button);
