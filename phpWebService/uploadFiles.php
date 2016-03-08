@@ -3,7 +3,7 @@
 $file = "movies.csv";
 $fileContents = file($file);
 $trie = null;
-if(isset($_SESSION["trie"]) {
+if(isset($_SESSION["trie"])) {
     $trie = $_SESSION["trie"];
 } else {
     buildTrie();
