@@ -3,17 +3,17 @@
 $file = "movies.csv";
 $fileContents = file($file);
 
-foreach ($fileContents as $value) {
-    echo $value;
-}
 
 
 
 $trie = new KTrie();
 
-$trie->addWord("cat");
-$trie->addWord("coins");
-$trie->getWordsFromPrefix('coi');
+foreach ($fileContents as $value) {
+    $trie->addWord($value);
+}
+
+
+$trie->getWordsFromPrefix('Pulp');
 
 
 class KTrie
