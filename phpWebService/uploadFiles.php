@@ -10,7 +10,7 @@ $trie = new KTrie();
 $i = 0;
 foreach ($fileContents as $value) {
     $i++;
-    print ($i + "< br >");
+    print ($i."< br >");
     $trie->addWord($value);
 }
 
