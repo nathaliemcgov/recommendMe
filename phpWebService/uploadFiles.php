@@ -1,7 +1,7 @@
 <?php
 
 $file = "movies.csv";
-$fileContents = file_get_contents($file);
+$fileContents = file($file);
 
 foreach ($fileContents as $value) {
     echo $value;
