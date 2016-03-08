@@ -2,7 +2,6 @@ package edu.uw.nmcgov.recommendme;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,11 +12,12 @@ public class StartPage extends Activity {
     private Button loginBtn;
     private Button exploreButton;
 
+    private static final String TAG = "start";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_page);
-
         // Click listener for login button
         exploreButton = (Button) findViewById(R.id.exploreButton);
         exploreButton.setOnClickListener(new View.OnClickListener() {

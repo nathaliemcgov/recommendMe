@@ -60,4 +60,9 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/tile_shape"
         android:layout_below="@+id/loginBtn"/>
+
+    <Button
+        android:id="@+id/profile_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </RelativeLayout>
