@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class MediaObject {
     private String name;
-    private Map<String, Integer> related;
+    private Map<String, Object> related;
     private int totalUserLikes;
 
     public MediaObject() {
@@ -20,7 +20,7 @@ public class MediaObject {
         return name;
     }
 
-    public Map<String, Integer> getRelated() {
+    public Map<String, Object> getRelated() {
         return related;
     }
 
@@ -30,7 +30,7 @@ public class MediaObject {
         String map = null;
         if(related != null)
             map = related.toString();
-        return name + " " + totalUserLikes + " " + map;
+        return name + " " + map;
     }
 
 }

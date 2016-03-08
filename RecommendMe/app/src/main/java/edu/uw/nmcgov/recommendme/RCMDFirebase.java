@@ -10,7 +10,9 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -76,19 +78,21 @@ public class RCMDFirebase {
         } else { //Create or add a relationship for movieOne and movieTwo if movieOne exists
             int i = 0;
             for (DataSnapshot singleObject : dataSnapshot.getChildren()) { // this should really only loop once
+                Firebase postRef = singleObject.getRef();
                 i++;
                 MediaObject object = singleObject.getValue(MediaObject.class);
                 Log.v("jkljas", object.toString());
-                Map<String, Integer> map = object.getRelated();
+                Map<String, Object> map = object.getRelated();
                 if(map == null)
-                    map = new HashMap<String, Integer>();
-                if (map.get(movieTwo) != null)
-                    map.put(movieTwo, map.get(movieTwo) + 1);
-                else
+                    map = new HashMap<String, Object>();
+                if (map.get(movieTwo) != null) {
+                    map.put(movieTwo, map.get(Integer.parseInt(movieTwo) + 1));
+                    postRef.child("related").updateChildren(map);
+                } else {
                     map.put(movieTwo, 1);
+                    postRef.child("related").updateChildren(map);
+                }
                 Log.v("TAG", map.toString() + " " + movieOne + " " + movieTwo + " " + i);
-                Firebase postRef = singleObject.getRef();
-                postRef.child("related").setValue(map);
                 //postRef.child("totalUserLikes").setValue(object.getTotalUserLikes() + 1);
             }
         }
@@ -99,6 +103,33 @@ public class RCMDFirebase {
         Firebase userRef = myFirebaseUserRef.push();
         userRef.setValue(map);
     }
+
+    public List<String> queryTitle(String title) {
+        Query userQuery = myFirebaseMoviesRef.orderByChild("name").equalTo(title);
+        final List<String> list = new ArrayList<String>();
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot != null) {
+                    for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
+                        MediaObject object = singleObject.getValue(MediaObject.class);
+                        Map<String, Object> map = object.getRelated();
+                        for (String key : map.keySet()) {
+                            list.add(key);
+                            Log.v("klasj", key);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+        return list;
+    }
+
 
 
     public void setLike(final String liked, String user) {
