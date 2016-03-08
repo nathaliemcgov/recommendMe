@@ -6,7 +6,7 @@ $trie = null;
 if(isset($_SESSION["trie"])) {
     $trie = $_SESSION["trie"];
 } else {
-    buildTrie();
+    buildTrie($trie, $fileContents);
     $_SESSION["trie"] = $trie;
 }
 
@@ -16,7 +16,7 @@ session_start();
 
 $trie->getWordsFromPrefix('Pulp');
 
-function buildTrie() {
+function buildTrie($trie, $fileContents) {
     $trie = new KTrie();
     $i = 0;
     foreach ($fileContents as $value) {
