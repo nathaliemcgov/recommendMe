@@ -19,6 +19,7 @@ if(isset($_SESSION["trie"])) {
     $_SESSION["trie"] = $trie;
 }
 
+print $media;
 $trie->getWordsFromPrefix($media);
 
 
