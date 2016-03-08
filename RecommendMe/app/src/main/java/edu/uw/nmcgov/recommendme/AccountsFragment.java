@@ -18,7 +18,7 @@ public class AccountsFragment extends Fragment {
 
     public interface OnProfileSelectedListener {
         void onProfileSelected();
-        void onPickSelected();
+        void onPickSelected(String type);
     }
 
     public AccountsFragment(){

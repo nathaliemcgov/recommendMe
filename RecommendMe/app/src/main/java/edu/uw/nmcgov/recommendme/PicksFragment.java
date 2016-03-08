@@ -19,7 +19,7 @@ public class PicksFragment extends Fragment {
 
     public interface OnProfileSelectedListener extends AccountsFragment.OnProfileSelectedListener {
         void onProfileSelected();
-        void onPickSelected();
+        void onPickSelected(String type);
     }
 
     public PicksFragment(){
@@ -49,7 +49,7 @@ public class PicksFragment extends Fragment {
             @Override
             public void onClick(View V) {
                 Log.v(TAG, "book");
-                ((AccountsFragment.OnProfileSelectedListener)getActivity()).onPickSelected();
+                ((AccountsFragment.OnProfileSelectedListener)getActivity()).onPickSelected("book");
             }
         });
 
@@ -58,7 +58,7 @@ public class PicksFragment extends Fragment {
             @Override
             public void onClick(View V) {
                 Log.v(TAG, "movies");
-                ((AccountsFragment.OnProfileSelectedListener)getActivity()).onPickSelected();
+                ((AccountsFragment.OnProfileSelectedListener)getActivity()).onPickSelected("movie");
             }
         });
 
@@ -67,7 +67,7 @@ public class PicksFragment extends Fragment {
             @Override
             public void onClick(View V) {
                 Log.v(TAG, "music");
-                ((AccountsFragment.OnProfileSelectedListener)getActivity()).onPickSelected();
+                ((AccountsFragment.OnProfileSelectedListener)getActivity()).onPickSelected("music");
             }
         });
 
