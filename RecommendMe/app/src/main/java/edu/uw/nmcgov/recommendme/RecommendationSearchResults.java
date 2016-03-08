@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
+
 public class RecommendationSearchResults extends AppCompatActivity
         implements RecommendationTileGrid.OnMediaSelectionListener {
     private final String TAG = "RecommendationSearchRes";
@@ -20,6 +22,8 @@ public class RecommendationSearchResults extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommendation_search_results);
+
+        Firebase.setAndroidContext(this);
 
         // TextView for header of screen
         titleSearchedFor = (TextView) findViewById(R.id.titleSearchedFor);

@@ -24,6 +24,8 @@ public class SearchForRecommendations extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_for_recommendations);
 
+        Log.v(TAG, "reached search page");
+
         // Sets keyboard to always hidden on create
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 

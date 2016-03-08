@@ -15,6 +15,7 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -25,7 +26,7 @@ public class RecommendationTileGrid extends Fragment {
     private final String TAG = "RecommendationTileGrid";
 
     private GridView tileGrid;
-    private ArrayList<String> recommendationList;
+    private List<String> recommendationList;
     private ArrayAdapter<String> adapter;
 
     private OnMediaSelectionListener callback;
@@ -58,12 +59,12 @@ public class RecommendationTileGrid extends Fragment {
 
         tileGrid = (GridView) rootView.findViewById(R.id.recommendationList);
 
-        recommendationList = new ArrayList<String>();
-        recommendationList.add("The Departed");
-        recommendationList.add("The Illiad");
+//        recommendationList = new ArrayList<String>();
+//        recommendationList.add("The Departed");
+//        recommendationList.add("The Illiad");
 
-//        RCMDFirebase firebase = new RCMDFirebase();
-//        recommendationList = firebase.
+        RCMDFirebase firebase = new RCMDFirebase();
+        recommendationList = firebase.queryTitle("1a");
 
         adapter = new ArrayAdapter<String>(getActivity(), R.layout.recommendation_element, recommendationList);
         tileGrid.setAdapter(adapter);

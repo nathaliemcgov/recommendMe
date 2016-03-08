@@ -39,35 +39,35 @@ public class FireBaseActivity extends AppCompatActivity  {
 
 
         final int[] i = {0};
-        Button button = (Button) findViewById(R.id.button);
-        Button button2 = (Button) findViewById(R.id.button2);
+//        Button button = (Button) findViewById(R.id.button);
+//        Button button2 = (Button) findViewById(R.id.button2);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String, String> tyler = new HashMap<String, String>();
-                tyler.put("name", "tyler");
-                i[0]++;
-                if (i[0] == 1)
-                    firebase.createUser(tyler);
-                firebase.setLike(i[0] + "a", "tyler");
-            }
-        });
-
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Log.v("test", firebase.queryTitle("1a").toString());
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
 //                Map<String, String> tyler = new HashMap<String, String>();
-//                tyler.put("name", "josh");
+//                tyler.put("name", "tyler");
+//                i[0]++;
 //                if (i[0] == 1)
 //                    firebase.createUser(tyler);
-//                i[0]++;
+//                firebase.setLike(i[0] + "a", "tyler");
+//            }
+//        });
 //
-//                firebase.setLike(i[0] + "a", "josh");
-
-            }
-        });
+//        button2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Log.v("test", firebase.queryTitle("1a").toString());
+////                Map<String, String> tyler = new HashMap<String, String>();
+////                tyler.put("name", "josh");
+////                if (i[0] == 1)
+////                    firebase.createUser(tyler);
+////                i[0]++;
+////
+////                firebase.setLike(i[0] + "a", "josh");
+//
+//            }
+//        });
     }
 }
