@@ -3,14 +3,16 @@
 $file = "movies.csv";
 $fileContents = file($file);
 $trie = null;
+session_start();
 if(isset($_SESSION["trie"])) {
+    print "in if";
     $trie = $_SESSION["trie"];
 } else {
+        print "in else";
     buildTrie($trie, $fileContents);
     $_SESSION["trie"] = $trie;
 }
 
-session_start();
 
 
 
