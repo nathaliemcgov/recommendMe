@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * Created by austinweale on 3/4/16.
@@ -53,6 +54,8 @@ public class PicksFragment extends Fragment {
             public void onClick(View V) {
                 Log.v(TAG, "book");
                 ((AccountsFragment.OnProfileSelectedListener)getActivity()).onPickSelected("book");
+                TextView edit = (TextView)getActivity().findViewById(R.id.edit_picks_type);
+                edit.setText("edit book picks");
             }
         });
 
@@ -63,6 +66,8 @@ public class PicksFragment extends Fragment {
             public void onClick(View V) {
                 Log.v(TAG, "movies");
                 ((AccountsFragment.OnProfileSelectedListener)getActivity()).onPickSelected("movie");
+                TextView edit = (TextView)getActivity().findViewById(R.id.edit_picks_type);
+                edit.setText("edit movie picks");
             }
         });
 
@@ -73,6 +78,8 @@ public class PicksFragment extends Fragment {
             public void onClick(View V) {
                 Log.v(TAG, "music");
                 ((AccountsFragment.OnProfileSelectedListener)getActivity()).onPickSelected("music");
+                TextView edit = (TextView)getActivity().findViewById(R.id.edit_picks_type);
+                edit.setText("edit music picks");
             }
         });
 

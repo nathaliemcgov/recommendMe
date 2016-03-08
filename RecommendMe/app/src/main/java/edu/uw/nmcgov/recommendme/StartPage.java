@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class StartPage extends AppCompatActivity {
@@ -23,12 +24,13 @@ public class StartPage extends AppCompatActivity {
         setContentView(R.layout.activity_start_page);
         index = 0;
 
-        types = new String[3];
-        types[0] = "movie";
-        types[1] = "music";
-        types[2] = "book";
+        types = new String[5];
+        types[0] = "email";
+        types[1] = "password";
+        types[2] = "movie";
+        types[3] = "music";
+        types[4] = "book";
 
-        addFragment(types[0]);
         TextView text = (TextView)findViewById(R.id.type_box);
         text.setText(types[index]);
         index++;
@@ -38,6 +40,18 @@ public class StartPage extends AppCompatActivity {
             @Override
             public void onClick(View V) {
                 if(index < types.length) {
+                    if(index >= 2){
+                        addFragment(types[index]);
+                        EditText editText = (EditText)findViewById(R.id.email_pass);
+                        editText.setVisibility(View.INVISIBLE);
+                        editText.setHeight(0);
+                        TextView text = (TextView)findViewById(R.id.confirm);
+                        text.setVisibility(View.INVISIBLE);
+                        text.setHeight(0);
+                        EditText confirm = (EditText)findViewById(R.id.email_pass_confirm);
+                        confirm.setVisibility(View.INVISIBLE);
+                        confirm.setHeight(0);
+                    }
                     Log.v(TAG, "changed " + types[index]);
                     TextView text = (TextView) findViewById(R.id.type_box);
                     text.setText(types[index]);
@@ -57,6 +71,8 @@ public class StartPage extends AppCompatActivity {
     }
 
     public void addFragment(String type){
+
+
         Bundle bundle = new Bundle();
         bundle.putString("type", type);
         Fragment edit = new EditFragment();
@@ -64,5 +80,6 @@ public class StartPage extends AppCompatActivity {
         getFragmentManager().beginTransaction()
                 .replace(R.id.add_box, edit)
                 .commit();
+
     }
 }

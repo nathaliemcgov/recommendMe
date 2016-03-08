@@ -48,6 +48,11 @@
             android:layout_toRightOf="@+id/movies_button"
             android:text="Music"/>
     </RelativeLayout>
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="choose type to edit"
+        android:textSize="30dp"
+        android:id="@+id/edit_picks_type"/>
 
 </LinearLayout>
