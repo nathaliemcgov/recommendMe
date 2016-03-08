@@ -10,8 +10,9 @@ $trie = new KTrie();
 $i = 0;
 foreach ($fileContents as $value) {
     $i++;
-    print ($i."< br >");
-    $trie->addWord($value);
+    if($i < 3000) {
+        $trie->addWord($value);
+    }
 }
 
 
