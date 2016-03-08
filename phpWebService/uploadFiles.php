@@ -8,8 +8,8 @@ if(isset($_SESSION["trie"])) {
     print "in if";
     $trie = $_SESSION["trie"];
 } else {
-        print "in else";
-    buildTrie($trie, $fileContents);
+    print "in else";
+    $trie = buildTrie($trie, $fileContents);
     $_SESSION["trie"] = $trie;
 }
 
@@ -27,6 +27,7 @@ function buildTrie($trie, $fileContents) {
             $trie->addWord($value);
         }
     }
+    return $trie;
 }
 
 class KTrie
