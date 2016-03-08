@@ -13,6 +13,7 @@
     android:id="@+id/recommendationGrid">
 
     <LinearLayout
+        android:id="@+id/rcmdsForYouHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -23,6 +24,14 @@
             android:textColor="#000000"
             android:textSize="30dp"
             android:textAlignment="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/gridContainer2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/rcmdsForYouHeader">
     </LinearLayout>
 
 </LinearLayout>

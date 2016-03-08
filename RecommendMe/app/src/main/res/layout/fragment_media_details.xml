@@ -9,6 +9,7 @@
         android:id="@+id/detailHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
         android:gravity="center">
         <TextView
             android:id="@+id/selectedMediaTitle"
@@ -27,29 +28,33 @@
         android:layout_centerInParent="true">
         <ImageButton
             android:id="@+id/thumbsUpBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_thumbs_up" />
 
-        <ImageButton
-            android:id="@+id/thumbsDownBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_thumbs_down"
-            android:layout_toRightOf="@+id/thumbsUpBtn" />
+        <!--<ImageButton-->
+            <!--android:id="@+id/thumbsDownBtn"-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:adjustViewBounds="true"-->
+            <!--android:scaleType="fitCenter"-->
+            <!--android:src="@drawable/ic_thumbs_down"-->
+            <!--android:layout_toRightOf="@+id/thumbsUpBtn" />-->
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/saveBtnContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/thumbBtnContainer">
-        <Button
-            android:id="@+id/saveBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Save Recommendation"
-            />
-    </RelativeLayout>
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/saveBtnContainer"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/thumbBtnContainer">-->
+        <!--<Button-->
+            <!--android:id="@+id/saveBtn"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Save Recommendation"-->
+            <!--/>-->
+    <!--</RelativeLayout>-->
 
 </RelativeLayout>

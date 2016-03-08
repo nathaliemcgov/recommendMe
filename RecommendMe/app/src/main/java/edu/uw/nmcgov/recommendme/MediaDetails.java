@@ -42,31 +42,31 @@ public class MediaDetails extends Fragment {
         // Setting on click listener to make button appear selected
         // Later will need to store like/dislike in firebase
         thumbsUpBtn = (ImageButton) rootView.findViewById(R.id.thumbsUpBtn);
-        thumbsDownBtn = (ImageButton) rootView.findViewById(R.id.thumbsDownBtn);
+//        thumbsDownBtn = (ImageButton) rootView.findViewById(R.id.thumbsDownBtn);
 
         thumbsUpBtn.setOnTouchListener(new View.OnTouchListener() {
-            int touchCount = 0;
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 Log.v(TAG, thumbsUpBtn.isPressed() + "");
 
-                thumbsUpBtn.setPressed(true);
-                thumbsDownBtn.setPressed(false);
-                return true;
-            }
-        });
-
-        thumbsDownBtn.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                thumbsDownBtn.setPressed(true);
+                if (!thumbsUpBtn.isPressed()) {
+                    thumbsUpBtn.setPressed(true);
+//                    thumbsDownBtn.setPressed(false);
+                    return true;
+                }
                 thumbsUpBtn.setPressed(false);
                 return true;
             }
         });
 
-
+//        thumbsDownBtn.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                thumbsDownBtn.setPressed(true);
+//                thumbsUpBtn.setPressed(false);
+//                return true;
+//            }
+//        });
         return rootView;
     }
 

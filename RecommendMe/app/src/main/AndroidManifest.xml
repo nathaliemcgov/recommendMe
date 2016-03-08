@@ -16,7 +16,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".RecommendationsForYou" />
-        <activity android:name=".RecommendationsForYou" />
         <activity android:name=".SearchForRecommendations" />
         <activity android:name=".RecommendationSearchResults"></activity>
     </application>
