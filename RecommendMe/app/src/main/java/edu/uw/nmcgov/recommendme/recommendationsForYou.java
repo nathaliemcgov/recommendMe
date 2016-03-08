@@ -1,11 +1,15 @@
 package edu.uw.nmcgov.recommendme;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,6 +41,43 @@ public class RecommendationsForYou extends AppCompatActivity
         RecommendationTileGrid tileGridFragment = new RecommendationTileGrid();
         ft.add(R.id.gridContainer2, tileGridFragment, "Grid");
         ft.commit();
+    }
+
+    // Creates the options menu in the action bar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_menu, menu);
+        return true;
+    }
+
+    // Gets action user chooses from menu
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Show profile screen
+            case R.id.profile:
+                showProfile();
+                return true;
+            // Show search screen
+            case R.id.searchRecommendations:
+                showSearchForRecommendations();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    // Show profile screen
+    private void showProfile() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+    }
+
+    // Show search screen
+    private void showSearchForRecommendations() {
+        Intent intent = new Intent(this, SearchForRecommendations.class);
+        startActivity(intent);
     }
 
     // When a tile is selected, move to fragment that gives details about the tile selected

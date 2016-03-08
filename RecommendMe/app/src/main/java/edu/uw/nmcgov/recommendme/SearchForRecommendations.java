@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -24,8 +27,6 @@ public class SearchForRecommendations extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_for_recommendations);
 
-        Log.v(TAG, "reached search page");
-
         // Sets keyboard to always hidden on create
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -44,6 +45,43 @@ public class SearchForRecommendations extends AppCompatActivity {
                 searchTitleEntered();
             }
         });
+    }
+
+    // Creates the options menu in the action bar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_menu, menu);
+
+        // Hides search option from menu because user is currently on search screen
+        MenuItem searchMenuOption = menu.findItem(R.id.searchRecommendations);
+        searchMenuOption.setVisible(false);
+        return true;
+    }
+
+    // Gets action user chooses from menu
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Show profile screen
+            case R.id.profile:
+                showProfile();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    // Show profile screen
+    private void showProfile() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+    }
+
+    // Show search screen
+    private void showSearchForRecommendations() {
+        Intent intent = new Intent(this, SearchForRecommendations.class);
+        startActivity(intent);
     }
 
     // Called when search button is clicked in order to search for title entered

@@ -32,6 +32,7 @@
             android:layout_height="100dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
+            android:background="@drawable/thumbs_up_button"
             android:src="@drawable/ic_thumbs_up" />
 
         <!--<ImageButton-->
@@ -41,6 +42,7 @@
             <!--android:adjustViewBounds="true"-->
             <!--android:scaleType="fitCenter"-->
             <!--android:src="@drawable/ic_thumbs_down"-->
+            <!--android:state_selected="false"-->
             <!--android:layout_toRightOf="@+id/thumbsUpBtn" />-->
     </RelativeLayout>
 

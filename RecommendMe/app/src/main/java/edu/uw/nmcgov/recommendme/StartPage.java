@@ -23,7 +23,6 @@ public class StartPage extends Activity {
         exploreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("tag", "EXPLORE");
                 searchForRecommendations();
             }
         });

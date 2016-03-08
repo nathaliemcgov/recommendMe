@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="background">#f5b93d</color>
     <color name="textColor">#000000</color>
+    <color name="thumbsUpNotSelected">#bdbdbd</color>
+    <color name="thumbsUpSelected">#939393</color>
 </resources>

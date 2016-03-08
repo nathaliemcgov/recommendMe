@@ -12,7 +12,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,7 @@ public class RecommendationTileGrid extends Fragment {
 
     private final String TAG = "RecommendationTileGrid";
 
+    private TextView titleSearchedFor;
     private GridView tileGrid;
     private List<String> recommendationList;
     private ArrayAdapter<String> adapter;
@@ -57,6 +62,9 @@ public class RecommendationTileGrid extends Fragment {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_recommendation_tile_grid, container, false);
 
+        TextView textView = (TextView) ((RecommendationSearchResults) getActivity()).findViewById(R.id.titleSearchedFor);
+        String title = textView.getText().toString();
+
         tileGrid = (GridView) rootView.findViewById(R.id.recommendationList);
 
         recommendationList = new ArrayList<String>();
@@ -64,7 +72,7 @@ public class RecommendationTileGrid extends Fragment {
         adapter = new ArrayAdapter<String>(getActivity(), R.layout.recommendation_element, recommendationList);
 
         RCMDFirebase firebase = new RCMDFirebase();
-        firebase.queryTitle("1a", adapter);
+        firebase.queryTitle(title, adapter);
 
         tileGrid.setAdapter(adapter);
 

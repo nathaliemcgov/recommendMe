@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProfileActivity">
+        <activity android:name=".StartPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,7 +19,8 @@
         </activity>
         <activity android:name=".RecommendationsForYou" />
         <activity android:name=".SearchForRecommendations" />
-        <activity android:name=".RecommendationSearchResults"></activity>
+        <activity android:name=".RecommendationSearchResults" />
+        <activity android:name=".ProfileActivity" />
     </application>
 
 </manifest>

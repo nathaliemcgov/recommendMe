@@ -44,19 +44,18 @@ public class MediaDetails extends Fragment {
         thumbsUpBtn = (ImageButton) rootView.findViewById(R.id.thumbsUpBtn);
 //        thumbsDownBtn = (ImageButton) rootView.findViewById(R.id.thumbsDownBtn);
 
-        thumbsUpBtn.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Log.v(TAG, thumbsUpBtn.isPressed() + "");
+        thumbsUpBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View button) {
+                //Set the button's appearance
+                button.setSelected(!button.isSelected());
 
-                if (!thumbsUpBtn.isPressed()) {
-                    thumbsUpBtn.setPressed(true);
-//                    thumbsDownBtn.setPressed(false);
-                    return true;
-                }
-                thumbsUpBtn.setPressed(false);
-                return true;
+//                if (button.isSelected()) {    // If the user 'likes' the title
+//                    // Send to db the user's email + title of liked media
+//                } else {      // If the user 'unlikes' the title
+//                    // Send to db the user's email + title of unliked media
+//                }
             }
+
         });
 
 //        thumbsDownBtn.setOnTouchListener(new View.OnTouchListener() {
