@@ -2,6 +2,7 @@ package edu.uw.nmcgov.recommendme;
 
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
 import com.firebase.client.DataSnapshot;
@@ -104,9 +105,8 @@ public class RCMDFirebase {
         userRef.setValue(map);
     }
 
-    public List<String> queryTitle(String title) {
+    public void queryTitle(String title, final ArrayAdapter<String> array) {
         Query userQuery = myFirebaseMoviesRef.orderByChild("name").equalTo(title);
-        final List<String> list = new ArrayList<String>();
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -115,7 +115,7 @@ public class RCMDFirebase {
                         MediaObject object = singleObject.getValue(MediaObject.class);
                         Map<String, Object> map = object.getRelated();
                         for (String key : map.keySet()) {
-                            list.add(key);
+                            array.add(key);
                             Log.v("klasj", key);
                         }
                     }
@@ -127,7 +127,6 @@ public class RCMDFirebase {
 
             }
         });
-        return list;
     }
 
 
