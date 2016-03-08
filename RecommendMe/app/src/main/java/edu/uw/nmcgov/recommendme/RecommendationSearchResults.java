@@ -23,6 +23,7 @@ public class RecommendationSearchResults extends AppCompatActivity
     private TextView titleSearchedFor;
     private ImageButton thumbsUpBtn;
     private ImageButton thumbsDownBtn;
+    private RCMDFirebase firebase;
 
     RecommendationTileGrid tileGridFragment;
 
@@ -32,11 +33,12 @@ public class RecommendationSearchResults extends AppCompatActivity
         setContentView(R.layout.activity_recommendation_search_results);
 
         Firebase.setAndroidContext(this);
+        firebase = new RCMDFirebase();
 
         // TextView for header of screen
         titleSearchedFor = (TextView) findViewById(R.id.titleSearchedFor);
         Bundle bundle = getIntent().getExtras();
-        String titleSearched = bundle.getString("title");
+        final String titleSearched = bundle.getString("title");
 
         // Adds title searched for to header
         titleSearchedFor.setText(titleSearched);
@@ -53,6 +55,7 @@ public class RecommendationSearchResults extends AppCompatActivity
 
 //                if (button.isSelected()) {    // If the user 'likes' the title
 //                    // Send to db the user's email + title of liked media
+//                    firebase.setLike(titleSearched, "email@email.com");
 //                } else {      // If the user 'unlikes' the title
 //                    // Send to db the user's email + title of unliked media
 //                }

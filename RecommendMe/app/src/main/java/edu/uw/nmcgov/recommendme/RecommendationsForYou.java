@@ -25,10 +25,6 @@ public class RecommendationsForYou extends AppCompatActivity
     private ArrayList<String> recommendationList;
     ArrayAdapter<String> adapter;
 
-    static final String[] recommendations = new String[] {
-            "The Departed", "The Illiad"
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
