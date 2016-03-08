@@ -62,6 +62,9 @@ public class RecommendationTileGrid extends Fragment {
         recommendationList.add("The Departed");
         recommendationList.add("The Illiad");
 
+//        RCMDFirebase firebase = new RCMDFirebase();
+//        recommendationList = firebase.
+
         adapter = new ArrayAdapter<String>(getActivity(), R.layout.recommendation_element, recommendationList);
         tileGrid.setAdapter(adapter);
 
