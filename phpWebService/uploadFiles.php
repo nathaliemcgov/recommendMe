@@ -30,9 +30,9 @@ function buildTrie($trie, $fileContents) {
     $i = 0;
     foreach ($fileContents as $value) {
         $i++;
-        //if($i < 3000) {
-        $trie->addWord($value);
-        //}
+        if($i < 4000) {
+            $trie->addWord($value);
+        }
     }
     return $trie;
 }
