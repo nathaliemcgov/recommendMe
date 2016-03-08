@@ -4,20 +4,23 @@ $file = "movies.csv";
 $fileContents = file($file);
 $trie = null;
 session_start();
+
+if(isset($_GET["media"])) {
+    $media = $_GET["media"];
+} else {
+    $media = "American Psycho";
+}
+
 if(isset($_SESSION["trie"])) {
-    print "in if";
     $trie = $_SESSION["trie"];
 } else {
-    print "in else";
     $trie = buildTrie($trie, $fileContents);
     $_SESSION["trie"] = $trie;
 }
 
+$trie->getWordsFromPrefix($media);
 
 
-
-$trie->getWordsFromPrefix('Pulp');
-$trie->getWordsFromPrefix('Ameri');
 
 function buildTrie($trie, $fileContents) {
     $trie = new KTrie();
