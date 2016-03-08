@@ -17,6 +17,7 @@ if(isset($_SESSION["trie"])) {
 
 
 $trie->getWordsFromPrefix('Pulp');
+$trie->getWordsFromPrefix('Ameri');
 
 function buildTrie($trie, $fileContents) {
     $trie = new KTrie();
