@@ -16,6 +16,7 @@ public class AccountsFragment extends Fragment {
 
     private static final String TAG = "linked";
 
+    //so we can communicate with the profile activity
     public interface OnProfileSelectedListener {
         void onProfileSelected();
         void onPickSelected(String type);
@@ -33,6 +34,7 @@ public class AccountsFragment extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.account_fragment, container, false);
 
+        //back button
         Button button = (Button)rootView.findViewById(R.id.linked_back);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
