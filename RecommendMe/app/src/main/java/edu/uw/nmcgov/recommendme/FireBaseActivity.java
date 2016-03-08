@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,7 +40,7 @@ public class FireBaseActivity extends AppCompatActivity  {
         tyler.put("name", "tyler");
         tyler.put("name", "josh");
 
-        firebase.testWeb();
+        new AutoComplete().testWeb("Pulp");
         final List<String> movies = new ArrayList<String>();
         movies.add("gainer house");
         movies.add("The Departed");
@@ -51,6 +52,21 @@ public class FireBaseActivity extends AppCompatActivity  {
         final int[] i = {0};
         Button button = (Button) findViewById(R.id.button);
         Button button2 = (Button) findViewById(R.id.button2);
+
+        final EditText edit1 = (EditText) findViewById(R.id.editText);
+        EditText edit2 = (EditText) findViewById(R.id.editText2);
+
+
+        edit1.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_UP) {
+                    Log.v("tag", ((EditText)edit1).getText().toString());
+                }
+                return true;
+            }
+
+        });
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

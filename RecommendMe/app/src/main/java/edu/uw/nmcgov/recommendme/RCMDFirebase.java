@@ -205,36 +205,4 @@ public class RCMDFirebase {
 
     }
 
-    public void testWeb() {
-        Log.v("test", "yahhh");
-        String str="https://students.washington.edu/tylerj11/recommendMe/phpWebService/webServiceTest.php";
-        try {
-            new testWebServiceextends().execute(new URL(str));
-        } catch(Exception e){
-            Log.v("test", e.toString());
-        }
-    }
-
-    private class testWebServiceextends extends AsyncTask<URL, Integer, String> {
-
-        protected String doInBackground(URL... urls) {
-            try {
-                for (URL url : urls) {
-                    URLConnection urlc = url.openConnection();
-                    BufferedReader bfr = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
-                    String line;
-                    while ((line = bfr.readLine()) != null) {
-                        Log.v("TESTWEB", line);
-                    }
-                }
-            } catch (Exception e) {
-                Log.v("error", e.toString());
-            }
-            return "done";
-
-        }
-        protected void onPostExecute(String result) {
-            Log.v("test", result);
-        }
-    }
 }
