@@ -59,14 +59,13 @@ public class RecommendationTileGrid extends Fragment {
 
         tileGrid = (GridView) rootView.findViewById(R.id.recommendationList);
 
-//        recommendationList = new ArrayList<String>();
-//        recommendationList.add("The Departed");
-//        recommendationList.add("The Illiad");
-
-        RCMDFirebase firebase = new RCMDFirebase();
-        recommendationList = firebase.queryTitle("1a");
+        recommendationList = new ArrayList<String>();
 
         adapter = new ArrayAdapter<String>(getActivity(), R.layout.recommendation_element, recommendationList);
+
+        RCMDFirebase firebase = new RCMDFirebase();
+        firebase.queryTitle("1a", adapter);
+
         tileGrid.setAdapter(adapter);
 
         // Listens for click on specific media recommendation
