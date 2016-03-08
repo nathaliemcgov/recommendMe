@@ -6,6 +6,7 @@ $trie = null;
 session_start();
 
 if(isset($_GET["media"])) {
+    print $_GET["media"];
     $media = $_GET["media"];
 } else {
     $media = "American Psycho";
