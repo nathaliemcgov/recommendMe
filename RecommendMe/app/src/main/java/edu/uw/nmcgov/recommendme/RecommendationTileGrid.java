@@ -92,6 +92,6 @@ public class RecommendationTileGrid extends Fragment {
         RCMDFirebase firebase = new RCMDFirebase();
         tileGrid.setAdapter(customAdapter);
 
-        firebase.recommendationsForUser(title, recommendationList, customAdapter);
+        firebase.queryTitle(title, recommendationList, customAdapter);
     }
 }

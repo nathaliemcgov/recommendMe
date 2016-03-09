@@ -1,13 +1,14 @@
 package edu.uw.nmcgov.recommendme;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by iguest on 3/3/16.
  */
 public class UserObject {
     private String name;
-    private Map<String, Boolean> liked;
+    private Map<String, Object> liked;
 
     public UserObject() {
 
@@ -17,7 +18,7 @@ public class UserObject {
         return name;
     }
 
-    public Map<String, Boolean> getLiked() {
+    public Map<String, Object> getLiked() {
             return liked;
         }
 }
