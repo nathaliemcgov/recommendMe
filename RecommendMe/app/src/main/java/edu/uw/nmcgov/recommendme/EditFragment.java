@@ -1,5 +1,6 @@
 package edu.uw.nmcgov.recommendme;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -20,10 +21,10 @@ public class EditFragment extends Fragment {
     private static final String TAG = "linked";
 
     private String type;
-
+    Activity activity;
 
     public EditFragment(){
-
+        activity = this.getActivity();
     }
 
     public void onAttach(Context context){
@@ -42,36 +43,32 @@ public class EditFragment extends Fragment {
         }
 
         //different buttons for each editText
-        ArrayList<ButtonLink> buttons = new ArrayList<>();
-        buttons.add(new ButtonLink((Button)(getActivity().findViewById(R.id.change_1)),
-                        (EditText)(getActivity().findViewById(R.id.entry_1))));
-        buttons.add(new ButtonLink((Button)(getActivity().findViewById(R.id.change_2)),
-                (EditText)(getActivity().findViewById(R.id.entry_2))));
-        buttons.add(new ButtonLink((Button)(getActivity().findViewById(R.id.change_3)),
-                (EditText)(getActivity().findViewById(R.id.entry_3))));
+        Button button1 = (Button)(rootView.findViewById(R.id.change_1));
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View V) {
+                Log.v(TAG, "changed " + type + ((EditText) rootView.findViewById(R.id.entry_3)).getText().toString());
+            }
+        });
 
-        for(ButtonLink button: buttons) {
-            button.button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View V) {
-                    Log.v(TAG, "changed " + type);
-                }
-            });
-        }
+        Button button2 = (Button)(rootView.findViewById(R.id.change_2));
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View V) {
+                Log.v(TAG, "changed " + type + ((EditText) rootView.findViewById(R.id.entry_3)).getText().toString());
+            }
+        });
+
+        Button button3 = (Button)(rootView.findViewById(R.id.change_3));
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View V) {
+                Log.v(TAG, "changed " + type + ((EditText) rootView.findViewById(R.id.entry_3)).getText().toString());
+            }
+        });
 
         return rootView;
 
-    }
-
-    private class ButtonLink {
-
-        private Button button;
-        private EditText edit;
-
-        public ButtonLink(Button button, EditText edit){
-            this.button = button;
-            this.edit = edit;
-        }
     }
 
 }
