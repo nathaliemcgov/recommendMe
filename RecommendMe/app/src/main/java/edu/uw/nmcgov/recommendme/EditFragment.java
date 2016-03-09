@@ -51,7 +51,7 @@ public class EditFragment extends Fragment {
                 (EditText)(getActivity().findViewById(R.id.entry_3))));
 
         for(ButtonLink button: buttons) {
-            button.button.setOnClickListener(new View.OnClickListener() {
+            button.click.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View V) {
                     Log.v(TAG, "changed " + type);
@@ -65,11 +65,11 @@ public class EditFragment extends Fragment {
 
     private class ButtonLink {
 
-        private Button button;
+        private Button click;
         private EditText edit;
 
         public ButtonLink(Button button, EditText edit){
-            this.button = button;
+            this.click = button;
             this.edit = edit;
         }
     }
