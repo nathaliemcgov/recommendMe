@@ -42,7 +42,7 @@ public class MediaDetails extends Fragment {
         // Sets header to selected media title
         selectedTitle = (TextView) rootView.findViewById(R.id.selectedMediaTitle);
         Bundle bundle = this.getArguments();
-        String selectedMediaTitle = bundle.getString("mediaTitle");
+        final String selectedMediaTitle = bundle.getString("mediaTitle");
         selectedTitle.setText(selectedMediaTitle);
 
         // Setting on click listener to make button appear selected
@@ -50,19 +50,19 @@ public class MediaDetails extends Fragment {
         thumbsUpBtn = (ImageButton) rootView.findViewById(R.id.thumbsUpBtn);
 //        thumbsDownBtn = (ImageButton) rootView.findViewById(R.id.thumbsDownBtn);
 
-//        thumbsUpBtn.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View button) {
-//                //Set the button's appearance
-//                button.setSelected(!button.isSelected());
-//                Log.v("tag", titleSearched);
-//                if (button.isSelected()) {    // If the user 'likes' the title
-////                    // Send to db the user's email + title of liked media
-//                    firebase.setLike(titleSearched, "email@email.com");
-////                } else {      // If the user 'unlikes' the title
-////                    // Send to db the user's email + title of unliked media
-//                }
-//            }
-//        });
+        thumbsUpBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View button) {
+                //Set the button's appearance
+                button.setSelected(!button.isSelected());
+                Log.v("tag", selectedMediaTitle);
+                if (button.isSelected()) {    // If the user 'likes' the title
+//                    // Send to db the user's email + title of liked media
+                    firebase.setLike(selectedMediaTitle, "email@email.com");
+//                } else {      // If the user 'unlikes' the title
+//                    // Send to db the user's email + title of unliked media
+                }
+            }
+        });
 
 //        thumbsDownBtn.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
