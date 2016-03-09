@@ -20,7 +20,7 @@ public class AMoneyPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_austin_login_page);
+        setContentView(R.layout.activity_start_page);
         index = 0;
 
         types = new String[5];
