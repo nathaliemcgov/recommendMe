@@ -12,6 +12,8 @@ import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,10 +116,18 @@ public class RCMDFirebase {
                     for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
                         MediaObject object = singleObject.getValue(MediaObject.class);
                         Map<String, Object> map = object.getRelated();
+                        List<RelatedObject> list = new ArrayList<RelatedObject>();
+
                         for (String key : map.keySet()) {
-                            array.add(key);
-                            Log.v("klasj", key);
+                            list.add(new RelatedObject(key, Integer.parseInt(map.get(key).toString()), object.getTotalUserLikes()));
                         }
+                        Collections.sort(list);
+                        Log.v("sorted", list.toString());
+
+                        for (RelatedObject related : list) {
+                            array.add(related.name);
+                        }
+
                     }
                 }
             }
@@ -127,6 +137,37 @@ public class RCMDFirebase {
 
             }
         });
+    }
+
+    private class RelatedObject implements Comparable<RelatedObject> {
+
+        private String name;
+        private int likes;
+        private int totalLikes;
+
+        public RelatedObject(String name, int likes, int totalLikes) {
+            this.name = name;
+            this.likes = likes;
+            this.totalLikes = totalLikes;
+        }
+
+        @Override
+        public int compareTo(RelatedObject another) {
+            Log.v("tag", "here");
+            double thisPercentage = this.likes * 1.0 / totalLikes;
+            double otherPercentage = another.likes * 1.0 / another.totalLikes;
+            if(thisPercentage > otherPercentage) {
+                return -1;
+            } else if( thisPercentage < otherPercentage) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+
+        public String toString() {
+            return name;
+        }
     }
 
 
