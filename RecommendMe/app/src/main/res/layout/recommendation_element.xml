@@ -1,10 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/recommendationElement"
-    android:layout_width="fill_parent"
-    android:layout_height="50dp"
-    android:textAlignment="center"
-    android:layout_margin="15dp"
-    android:textColor="@color/textColor"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:clickable="true"
     android:background="@drawable/tile_shape">
-</TextView>
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/recommendationElement"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:textAlignment="center"
+        android:layout_margin="15dp"
+        android:textColor="@color/textColor"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp">
+        <ImageButton
+            android:id="@+id/thumbsUpBtn"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@drawable/thumbs_up_button"
+            android:src="@drawable/ic_thumbs_up" />
+    </LinearLayout>
+</LinearLayout>

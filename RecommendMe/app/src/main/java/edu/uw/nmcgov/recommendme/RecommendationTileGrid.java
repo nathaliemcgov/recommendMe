@@ -33,6 +33,7 @@ public class RecommendationTileGrid extends Fragment {
     private GridView tileGrid;
     private List<String> recommendationList;
     private ArrayAdapter<String> adapter;
+    private String title;
 
     private OnMediaSelectionListener callback;
 
@@ -63,18 +64,13 @@ public class RecommendationTileGrid extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_recommendation_tile_grid, container, false);
 
         TextView textView = (TextView) ((RecommendationSearchResults) getActivity()).findViewById(R.id.titleSearchedFor);
-        String title = textView.getText().toString();
+        title = textView.getText().toString();
 
+        // Container for tiles
         tileGrid = (GridView) rootView.findViewById(R.id.recommendationList);
 
         recommendationList = new ArrayList<String>();
-
-        adapter = new ArrayAdapter<String>(getActivity(), R.layout.recommendation_element, recommendationList);
-
-        RCMDFirebase firebase = new RCMDFirebase();
-        firebase.queryTitle(title, adapter);
-
-        tileGrid.setAdapter(adapter);
+        populateTiles();
 
         // Listens for click on specific media recommendation
         tileGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -88,5 +84,14 @@ public class RecommendationTileGrid extends Fragment {
             }
         });
         return rootView;
+    }
+
+    private void populateTiles() {
+        CustomTileAdapter customAdapter = new CustomTileAdapter(this.getContext(), recommendationList);
+
+        RCMDFirebase firebase = new RCMDFirebase();
+        tileGrid.setAdapter(customAdapter);
+
+        firebase.queryTitle(title, recommendationList, customAdapter);
     }
 }

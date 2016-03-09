@@ -109,7 +109,7 @@ public class RCMDFirebase {
         userRef.setValue(map);
     }
 
-    public void queryTitle(String title, final ArrayAdapter<String> array) {
+    public void queryTitle(String title, final List<String> titleArray, final CustomTileAdapter adapter) {
         Query userQuery = myFirebaseMoviesRef.orderByChild("name").equalTo(title);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -124,12 +124,17 @@ public class RCMDFirebase {
                             relatedObjects.add(new RelatedObject(key, Integer.parseInt(map.get(key).toString()), object.getTotalUserLikes()));
                         }
 
+                        Log.v("tag", relatedObjects.toString());
+
                         for (RelatedObject related : relatedObjects) {
-                            array.add(related.name);
+                            Log.v("tag", related.toString());
+                            titleArray.add(related.name);
                         }
+
 
                     }
                 }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -138,8 +143,6 @@ public class RCMDFirebase {
             }
         });
     }
-
-
 
 
     public void setLike(final String liked, String user) {
