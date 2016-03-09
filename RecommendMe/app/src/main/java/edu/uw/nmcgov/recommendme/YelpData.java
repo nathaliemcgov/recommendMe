@@ -44,6 +44,12 @@ public class YelpData {
     }
 
     public String toString() {
-        return "Rating " + rating + ", Phone: " + phoneNumber;
+        if (phoneNumber == null) {
+            phoneNumber = "N/A";
+        }
+        if (rating == 0) {
+            return "Rating: N/A, Phone: " + phoneNumber;
+        }
+        return "Rating: " + rating + ", Phone: " + phoneNumber;
     }
 }

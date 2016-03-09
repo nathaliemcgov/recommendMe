@@ -87,9 +87,7 @@ public class PhoneCapability extends FragmentActivity
         bookstoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.v(TAG, "bookstore button clicked");
-                // getLoaderManager().initLoader(1, null, PhoneCapability.this).forceLoad();
-
+               Log.v(TAG, "bookstore button clicked");
                 getNearbyBusinesses("books");
             }
         });
@@ -118,6 +116,13 @@ public class PhoneCapability extends FragmentActivity
     // pass in either 'books', 'music', or 'movies', to search for
     // nearby businesses that relate to these terms
     public void getNearbyBusinesses(String businessType) {
+        if (mLastLocation == null) {
+            Log.v(TAG, "there's no location, so get one");
+            onConnected(null);
+            loadAPIResults();
+        }
+
+        Log.v(TAG, "displaying results into the UI");
         try {
 //            Set<JSONObject> set = mapOfNearbyBusinesses.get(businessType);
 //            for (JSONObject keyToBusiness : set) {
@@ -139,6 +144,8 @@ public class PhoneCapability extends FragmentActivity
 
             TextView businessOneInfo = (TextView) findViewById(R.id.businessInfoOne);
             businessOneInfo.setText(businessData.toString());
+
+
 
             JSONObject keyToBusinessTwo = list.get(1);
             YelpData businessDataTwo = new YelpData(keyToBusinessTwo);
@@ -184,7 +191,7 @@ public class PhoneCapability extends FragmentActivity
         if (dataHacked == null) {
             Log.v(TAG, "give me a search term");
         } else {
-            Log.v(TAG, dataHacked);
+            Log.v(TAG, "storing the businesses to the map");
 
             // separates the search term from the json data
             String searchTerm = dataHacked.substring(0, dataHacked.indexOf(' '));
@@ -282,7 +289,6 @@ public class PhoneCapability extends FragmentActivity
 
 
     //**********ACCESSING LOCATION STUFF***********//
-
     // requests permission to get the last location. If connected and there is a last location, handleNewLocation() is called
     @Override
     public void onConnected(Bundle bundle) {
@@ -308,12 +314,16 @@ public class PhoneCapability extends FragmentActivity
                 Log.v(TAG, "udpate location");
                 LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
             }
-
-            // loads the different api calls
-            getLoaderManager().restartLoader(BOOKS_ID, null, PhoneCapability.this);
-            getLoaderManager().restartLoader(MUSIC_ID, null, PhoneCapability.this);
-            getLoaderManager().restartLoader(MOVIES_ID, null, PhoneCapability.this);
         }
+    }
+
+    // load in yelp api results
+    public void loadAPIResults() {
+        Log.v(TAG, "loading api results");
+        // loads the different api calls
+        getLoaderManager().restartLoader(BOOKS_ID, null, PhoneCapability.this);
+        getLoaderManager().restartLoader(MUSIC_ID, null, PhoneCapability.this);
+        getLoaderManager().restartLoader(MOVIES_ID, null, PhoneCapability.this);
     }
 
     // whenever the location of the phone changes, this method is called
@@ -322,6 +332,7 @@ public class PhoneCapability extends FragmentActivity
         Log.v(TAG, "location changed!! " + location.toString());
         mLastLocation = location;
         handleNewLocation();
+
     }
 
     // updates yelp api calls
@@ -334,6 +345,7 @@ public class PhoneCapability extends FragmentActivity
         if (mLastLocation != null) {
             latitude = (float) mLastLocation.getLatitude();
             longitude = (float) mLastLocation.getLongitude();
+            loadAPIResults();
 
             Log.v(TAG, "location = " + latitude + " " + longitude);
         }

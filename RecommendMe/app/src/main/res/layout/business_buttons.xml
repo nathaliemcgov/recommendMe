@@ -2,23 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/businessNameOne"/>
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/businessInfoOne"/>
+        android:text="Find bookstores!!"
+        android:id="@+id/findBooks"/>
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/businessNameTwo"/>
+        android:text="Find music!!"
+        android:id="@+id/findMusic"/>
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/businessInfoTwo"/>
+        android:text="Find movie theaters!!"
+        android:id="@+id/findMovies"/>
+
 </LinearLayout>
