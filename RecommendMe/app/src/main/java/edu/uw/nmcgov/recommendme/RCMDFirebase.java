@@ -17,6 +17,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by iguest on 3/3/16.
@@ -112,19 +114,17 @@ public class RCMDFirebase {
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot != null) {
+                if (dataSnapshot != null) {
                     for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
                         MediaObject object = singleObject.getValue(MediaObject.class);
                         Map<String, Object> map = object.getRelated();
-                        List<RelatedObject> list = new ArrayList<RelatedObject>();
+                        Set<RelatedObject> relatedObjects = new TreeSet<RelatedObject>();
 
                         for (String key : map.keySet()) {
-                            list.add(new RelatedObject(key, Integer.parseInt(map.get(key).toString()), object.getTotalUserLikes()));
+                            relatedObjects.add(new RelatedObject(key, Integer.parseInt(map.get(key).toString()), object.getTotalUserLikes()));
                         }
-                        Collections.sort(list);
-                        Log.v("sorted", list.toString());
 
-                        for (RelatedObject related : list) {
+                        for (RelatedObject related : relatedObjects) {
                             array.add(related.name);
                         }
 
@@ -139,36 +139,6 @@ public class RCMDFirebase {
         });
     }
 
-    private class RelatedObject implements Comparable<RelatedObject> {
-
-        private String name;
-        private int likes;
-        private int totalLikes;
-
-        public RelatedObject(String name, int likes, int totalLikes) {
-            this.name = name;
-            this.likes = likes;
-            this.totalLikes = totalLikes;
-        }
-
-        @Override
-        public int compareTo(RelatedObject another) {
-            Log.v("tag", "here");
-            double thisPercentage = this.likes * 1.0 / totalLikes;
-            double otherPercentage = another.likes * 1.0 / another.totalLikes;
-            if(thisPercentage > otherPercentage) {
-                return -1;
-            } else if( thisPercentage < otherPercentage) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-
-        public String toString() {
-            return name;
-        }
-    }
 
 
 
@@ -241,5 +211,61 @@ public class RCMDFirebase {
             }
         });
 
+    }
+
+
+    public void recommendationsForUser(String user, final ArrayAdapter<RelatedObject> array, final List<RelatedObject> list) {
+        final Map<String, RelatedObject> overAllMap = new HashMap<String, RelatedObject>();
+        Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
+                        UserObject object = singleObject.getValue(UserObject.class);
+
+                        for(String liked: object.getLiked().keySet()) {
+                            Query singleMediaQuery = myFirebaseMoviesRef.orderByChild("name").equalTo(liked);
+                            singleMediaQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot != null) {
+                                        for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
+                                            MediaObject object = singleObject.getValue(MediaObject.class);
+                                            Map<String, Object> map = object.getRelated();
+                                            int totalLikes = object.getTotalUserLikes();
+                                            Set<RelatedObject> relatedObjects = new TreeSet<RelatedObject>();
+                                            for(String key : map.keySet()) {
+                                                if(map.containsKey(key)) {
+                                                    overAllMap.get(key).ratio += Integer.parseInt(map.get(key).toString()) / totalLikes;
+                                                } else {
+                                                    RelatedObject related = new RelatedObject(key, Integer.parseInt(map.get(key).toString()), totalLikes);
+                                                    overAllMap.put(key, related);
+                                                    list.add(related);
+                                                }
+                                            }
+                                            Collections.sort(list);
+                                            array.notifyDataSetChanged();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(FirebaseError firebaseError) {
+
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 }
