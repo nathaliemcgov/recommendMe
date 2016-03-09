@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class StartPage extends Activity {
 
@@ -13,6 +15,8 @@ public class StartPage extends Activity {
     private Button exploreButton;
 
     private static final String TAG = "start";
+    private String[] types;
+    private int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
