@@ -9,11 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class StartPage extends Activity {
+public class LoginPage extends Activity {
 
     private Button loginBtn;
     private Button exploreButton;
-
     private static final String TAG = "start";
     private String[] types;
     private int index;
