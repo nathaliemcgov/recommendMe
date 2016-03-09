@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,8 +35,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -62,7 +65,7 @@ public class PhoneCapability extends FragmentActivity
     private float longitude;
 
     // used to store nearby businesses
-    private Map<String, Set<JSONObject>> mapOfNearbyBusinesses;
+    private Map<String, List<JSONObject>> mapOfNearbyBusinesses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +79,7 @@ public class PhoneCapability extends FragmentActivity
                     .addApi(LocationServices.API)
                     .build();
         }
-        mapOfNearbyBusinesses = new HashMap<String, Set<JSONObject>>();
+        mapOfNearbyBusinesses = new HashMap<String, List<JSONObject>>();
 
 
         // listening for the bookstore button click. Starts API call to yelp for bookstores
@@ -116,18 +119,42 @@ public class PhoneCapability extends FragmentActivity
     // nearby businesses that relate to these terms
     public void getNearbyBusinesses(String businessType) {
         try {
-            Set<JSONObject> set = mapOfNearbyBusinesses.get(businessType);
-            for (JSONObject keyToBusiness : set) {
-                YelpData temp = new YelpData(keyToBusiness);
-                Log.v(TAG, temp.toString());
+//            Set<JSONObject> set = mapOfNearbyBusinesses.get(businessType);
+//            for (JSONObject keyToBusiness : set) {
 
-                TextView tester = (TextView) findViewById(R.id.business1);
-//                tester.setClickable(true);
-//                tester.setMovementMethod(LinkMovementMethod.getInstance());
-//                String text = "<a href='" + temp.getMobileUrl() + "'>" + temp.getName() + "</a>";
-//                tester.setText(Html.fromHtml(text));
-                tester.setText(temp.getMobileUrl());
-            }
+
+            //********** HARD CODED BUSINESS DISPLAY**************//
+            List<JSONObject> list = mapOfNearbyBusinesses.get(businessType);
+
+            JSONObject keyToBusinessOne = list.get(0);
+            YelpData businessData = new YelpData(keyToBusinessOne);
+            Log.v(TAG, businessData.toString());
+
+            TextView businessOneName = (TextView) findViewById(R.id.businessNameOne);
+            businessOneName.setClickable(true);
+            businessOneName.setMovementMethod(LinkMovementMethod.getInstance());
+            String text = "<a href='" + businessData.getMobileUrl() + "'>" + businessData.getName() + "</a>";
+            businessOneName.setText(Html.fromHtml(text));
+            //businessOneName.setText(businessData.getName());
+
+            TextView businessOneInfo = (TextView) findViewById(R.id.businessInfoOne);
+            businessOneInfo.setText(businessData.toString());
+
+            JSONObject keyToBusinessTwo = list.get(1);
+            YelpData businessDataTwo = new YelpData(keyToBusinessTwo);
+            Log.v(TAG, businessDataTwo.toString());
+
+            TextView businessTwoName = (TextView) findViewById(R.id.businessNameTwo);
+            businessTwoName.setClickable(true);
+            businessTwoName.setMovementMethod(LinkMovementMethod.getInstance());
+            String textTwo = "<a href='" + businessDataTwo.getMobileUrl() + "'>" + businessDataTwo.getName() + "</a>";
+            businessTwoName.setText(Html.fromHtml(textTwo));
+            //businessOneName.setText(businessData.getName());
+
+            TextView businessTwoInfo = (TextView) findViewById(R.id.businessInfoTwo);
+            businessTwoInfo.setText(businessDataTwo.toString());
+
+//            }
         } catch (Exception ex) {
             Log.v(TAG, ex.getMessage());
         }
@@ -178,8 +205,9 @@ public class PhoneCapability extends FragmentActivity
 //                    YelpData yelpBusiness = new YelpData(tempData};
 //                    Log.v(TAG, key);
                     if (!mapOfNearbyBusinesses.containsKey(searchTerm)) {
-                        Set<JSONObject> set = new HashSet<>();
-                        mapOfNearbyBusinesses.put(searchTerm, set);
+//                        Set<JSONObject> set = new HashSet<>();
+                        List<JSONObject> businesses = new ArrayList<JSONObject>();
+                        mapOfNearbyBusinesses.put(searchTerm, businesses);
                     }
                     mapOfNearbyBusinesses.get(searchTerm).add(tempData);
                 }
@@ -218,8 +246,12 @@ public class PhoneCapability extends FragmentActivity
     // currently if they press a button in the ui, then they will go to netflix for a show that doesn't exist
     public void goToNetflix(View v) {
         Log.v(TAG, "sending netflix intent");
-        String netFlixId = "43598743"; // <== isn't a real movie id
-        String watchUrl = "http://www.netflix.com/watch/"+netFlixId;
+
+
+        EditText movieEntered = (EditText) findViewById(R.id.movieSearchText);
+        String movieTitle = movieEntered.getText().toString();
+
+        String watchUrl = "http://www.netflix.com/watch/" + movieTitle;
 
         try {
             // this is if you have the movie ID
@@ -231,8 +263,6 @@ public class PhoneCapability extends FragmentActivity
             // I think this will work if the user types in a movie
             //String movieTitle = "Scandal";
 
-            EditText movieEntered = (EditText) findViewById(R.id.movieSearchText);
-            String movieTitle = movieEntered.getText().toString();
 
             Intent intent = new Intent(Intent.ACTION_SEARCH);
             intent.setClassName("com.netflix.mediaclient", "com.netflix.mediaclient.ui.search.SearchActivity");
@@ -245,10 +275,13 @@ public class PhoneCapability extends FragmentActivity
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(watchUrl));
             startActivity(intent);
-            //Toast.makeText(this, "Please install the NetFlix App!", Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(this, "Please install the Netflix App!", Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
+    //**********ACCESSING LOCATION STUFF***********//
 
     // requests permission to get the last location. If connected and there is a last location, handleNewLocation() is called
     @Override
@@ -280,8 +313,6 @@ public class PhoneCapability extends FragmentActivity
             getLoaderManager().restartLoader(BOOKS_ID, null, PhoneCapability.this);
             getLoaderManager().restartLoader(MUSIC_ID, null, PhoneCapability.this);
             getLoaderManager().restartLoader(MOVIES_ID, null, PhoneCapability.this);
-
-
         }
     }
 
@@ -309,6 +340,8 @@ public class PhoneCapability extends FragmentActivity
 
     }
 
+
+    //************LOCATION STUFF, PERMISSIONS AND CONNECTIONS************//
     // if the permission is granted, then try getting the last location
     // else the permission is dendied.
     @Override
@@ -355,6 +388,8 @@ public class PhoneCapability extends FragmentActivity
         }
     }
 
+
+    //***********GOOGLE CLIENT STUFF FOR LOCATION********//
     // connects the google client when the app starts
     protected void onStart() {
         mGoogleApiClient.connect();

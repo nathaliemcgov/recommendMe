@@ -44,6 +44,6 @@ public class YelpData {
     }
 
     public String toString() {
-        return name + ", rating " + rating + ", mobile URL " + mobileUrl + ", phone number " + phoneNumber;
+        return "Rating " + rating + ", Phone: " + phoneNumber;
     }
 }

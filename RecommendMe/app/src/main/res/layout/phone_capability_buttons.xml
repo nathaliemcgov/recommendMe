@@ -42,14 +42,31 @@
         android:text="Find movie theaters!!"
         android:id="@+id/findMovies"/>
 
+    <!--<include layout="@layout/business_results"-->
+        <!--android:id="@+id/businessOne"/>-->
+    <!-- -->
+    <!--<include layout="@layout/business_results"-->
+        <!--android:id="@+id/businessTwo"/>-->
+    <!--layouts to display the businesses-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:autoLink="web"
-        android:id="@+id/business1"/>
+        android:id="@+id/businessNameOne"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/business2"/>
+        android:id="@+id/businessInfoOne"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/businessNameTwo"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/businessInfoTwo"/>
+
 
 </LinearLayout>
