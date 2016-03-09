@@ -121,6 +121,7 @@ public class RCMDFirebase {
                         Set<RelatedObject> relatedObjects = new TreeSet<RelatedObject>();
 
                         for (String key : map.keySet()) {
+                            Log.v("tag", key);
                             relatedObjects.add(new RelatedObject(key, Integer.parseInt(map.get(key).toString()), object.getTotalUserLikes()));
                         }
 
@@ -217,7 +218,8 @@ public class RCMDFirebase {
     }
 
 
-    public void recommendationsForUser(String user, final ArrayAdapter<RelatedObject> array, final List<RelatedObject> list) {
+    public void recommendationsForUser(String user, final List<RelatedObject> list,
+                                       final CustomTileAdapter adapter) {
         final Map<String, RelatedObject> overAllMap = new HashMap<String, RelatedObject>();
         Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -227,8 +229,9 @@ public class RCMDFirebase {
                 if (dataSnapshot != null) {
                     for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
                         UserObject object = singleObject.getValue(UserObject.class);
+                        final Map<String, Boolean> userLikes = object.getLiked();
 
-                        for(String liked: object.getLiked().keySet()) {
+                        for(String liked: userLikes.keySet()) {
                             Query singleMediaQuery = myFirebaseMoviesRef.orderByChild("name").equalTo(liked);
                             singleMediaQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -241,16 +244,18 @@ public class RCMDFirebase {
                                             int totalLikes = object.getTotalUserLikes();
                                             Set<RelatedObject> relatedObjects = new TreeSet<RelatedObject>();
                                             for(String key : map.keySet()) {
-                                                if(map.containsKey(key)) {
-                                                    overAllMap.get(key).ratio += Integer.parseInt(map.get(key).toString()) / totalLikes;
-                                                } else {
-                                                    RelatedObject related = new RelatedObject(key, Integer.parseInt(map.get(key).toString()), totalLikes);
-                                                    overAllMap.put(key, related);
-                                                    list.add(related);
+                                                if(!userLikes.containsKey(key)) {
+                                                    if (overAllMap.containsKey(key)) {
+                                                        overAllMap.get(key).ratio += Integer.parseInt(map.get(key).toString()) / totalLikes;
+                                                    } else {
+                                                        RelatedObject related = new RelatedObject(key, Integer.parseInt(map.get(key).toString()), totalLikes);
+                                                        overAllMap.put(key, related);
+                                                        list.add(related);
+                                                    }
                                                 }
                                             }
                                             Collections.sort(list);
-                                            array.notifyDataSetChanged();
+                                            adapter.notifyDataSetChanged();
                                         }
                                     }
                                 }

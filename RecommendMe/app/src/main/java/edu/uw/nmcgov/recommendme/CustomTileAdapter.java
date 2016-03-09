@@ -14,9 +14,9 @@ import java.util.List;
 /**
  * Created by iguest on 3/8/16.
  */
-public class CustomTileAdapter extends ArrayAdapter<String> {
+public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
 
-    public CustomTileAdapter(Context context, List<String> titles) {
+    public CustomTileAdapter(Context context, List<RelatedObject> titles) {
         super(context, 0, titles);
     }
 
@@ -24,7 +24,7 @@ public class CustomTileAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // Gets the title of the recommendation
-        String title = getItem(position);
+        RelatedObject title = getItem(position);
 
         // Checking if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
@@ -34,7 +34,7 @@ public class CustomTileAdapter extends ArrayAdapter<String> {
 
         TextView mediaTitle = (TextView) convertView.findViewById(R.id.recommendationElement);
 
-        mediaTitle.setText(title);
+        mediaTitle.setText(title.name);
         Log.v("tag", position + "");
         return convertView;
     }

@@ -80,7 +80,7 @@ public class FireBaseActivity extends AppCompatActivity  {
                 noName[0] = false;
                 i[0]++;
 
-                firebase.setLike(i[0] - 3 + "a", "josh");
+                firebase.setLike(i[0] - 3 + "a", "Vickram");
             }
         });
     }
