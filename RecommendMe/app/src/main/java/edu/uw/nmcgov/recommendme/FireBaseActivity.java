@@ -3,6 +3,8 @@ package edu.uw.nmcgov.recommendme;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -37,35 +39,42 @@ public class FireBaseActivity extends AppCompatActivity  {
 
         Map<String, String> tyler = new HashMap<String, String>();
 
-        tyler.put("name", "tyler");
-        tyler.put("name", "josh");
-
-        new AutoComplete().testWeb("Pulp");
+//        tyler.put("name", "tyler");
+//        tyler.put("name", "josh");
+//
+//        new AutoComplete().testWeb("Pulp");
         final List<String> movies = new ArrayList<String>();
-        movies.add("gainer house");
-        movies.add("The Departed");
-        movies.add("sup");
-        movies.add("waterwaterwater");
-        movies.add("Vikram");
-        movies.add("Boris");
+//        movies.add("gainer house");
+//        movies.add("The Departed");
+//        movies.add("sup");
+//        movies.add("waterwaterwater");
+//        movies.add("Vikram");
+//        movies.add("Boris");
 
         final int[] i = {0};
         Button button = (Button) findViewById(R.id.button);
         Button button2 = (Button) findViewById(R.id.button2);
 
-        final EditText edit1 = (EditText) findViewById(R.id.editText);
+        EditText edit1 = (EditText) findViewById(R.id.editText);
         EditText edit2 = (EditText) findViewById(R.id.editText2);
+        final AutoComplete auto = new AutoComplete();
 
 
-        edit1.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_UP) {
-                    Log.v("tag", ((EditText)edit1).getText().toString());
-                }
-                return true;
+        edit1.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+
+                // you can call or do what you want with your EditText here
+                auto.testWeb(s.toString());
+                Log.v("TAG", s.toString());
+
             }
 
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
         });
 
         button.setOnClickListener(new View.OnClickListener() {
