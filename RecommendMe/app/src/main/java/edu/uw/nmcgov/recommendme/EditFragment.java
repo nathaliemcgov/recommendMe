@@ -42,13 +42,16 @@ public class EditFragment extends Fragment {
         }
 
         //different buttons for each editText
-        ArrayList<Button> buttons = new ArrayList<>();
-        buttons.add((Button)rootView.findViewById(R.id.change_1));
-        buttons.add((Button)rootView.findViewById(R.id.change_2));
-        buttons.add((Button) rootView.findViewById(R.id.change_3));
+        ArrayList<ButtonLink> buttons = new ArrayList<>();
+        buttons.add(new ButtonLink((Button)(getActivity().findViewById(R.id.change_1)),
+                        (EditText)(getActivity().findViewById(R.id.entry_1))));
+        buttons.add(new ButtonLink((Button)(getActivity().findViewById(R.id.change_2)),
+                (EditText)(getActivity().findViewById(R.id.entry_2))));
+        buttons.add(new ButtonLink((Button)(getActivity().findViewById(R.id.change_3)),
+                (EditText)(getActivity().findViewById(R.id.entry_3))));
 
-        for(Button button: buttons) {
-            button.setOnClickListener(new View.OnClickListener() {
+        for(ButtonLink button: buttons) {
+            button.button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View V) {
                     Log.v(TAG, "changed " + type);
@@ -58,6 +61,17 @@ public class EditFragment extends Fragment {
 
         return rootView;
 
+    }
+
+    private class ButtonLink {
+
+        private Button button;
+        private EditText edit;
+
+        public ButtonLink(Button button, EditText edit){
+            this.button = button;
+            this.edit = edit;
+        }
     }
 
 }
