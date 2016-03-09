@@ -8,15 +8,20 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.app.SearchManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +33,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -160,12 +166,12 @@ public class PhoneCapability extends FragmentActivity
 
             TextView businessTwoInfo = (TextView) findViewById(R.id.businessInfoTwo);
             businessTwoInfo.setText(businessDataTwo.toString());
-
 //            }
         } catch (Exception ex) {
             Log.v(TAG, ex.getMessage());
         }
     }
+
 
 
     // once the loader is complete, it will call the Yelp class to query for either a
@@ -223,6 +229,47 @@ public class PhoneCapability extends FragmentActivity
             } catch (Exception ex) {
                 Log.v(TAG, ex.getMessage());
             }
+        }
+    }
+
+
+    // set an alert to ask them to enable their gps
+    public void turnOnLocation() {
+
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean network_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch(Exception ex) {}
+
+        try {
+            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch(Exception ex) {}
+
+        if(!gps_enabled && !network_enabled) {
+            // notify user
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setMessage(R.string.enable_gps_message);
+            dialog.setPositiveButton(R.string.enable, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // sends them to enable their location.
+                    // they have to press "back" on their phone to get back to their location
+                    Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(myIntent);
+
+                    // get gps
+                }
+            });
+            dialog.setNegativeButton(R.string.enable_denied, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+                }
+            });
+            dialog.show();
         }
     }
 
@@ -286,12 +333,11 @@ public class PhoneCapability extends FragmentActivity
         }
     }
 
-
-
     //**********ACCESSING LOCATION STUFF***********//
     // requests permission to get the last location. If connected and there is a last location, handleNewLocation() is called
     @Override
     public void onConnected(Bundle bundle) {
+
         Log.v(TAG, "location services connected");
         // Create the LocationRequest object
         LocationRequest mLocationRequest = new LocationRequest();
@@ -319,11 +365,16 @@ public class PhoneCapability extends FragmentActivity
 
     // load in yelp api results
     public void loadAPIResults() {
-        Log.v(TAG, "loading api results");
+        Log.v(TAG, "loading api results " + latitude + " " + longitude);
         // loads the different api calls
-        getLoaderManager().restartLoader(BOOKS_ID, null, PhoneCapability.this);
-        getLoaderManager().restartLoader(MUSIC_ID, null, PhoneCapability.this);
-        getLoaderManager().restartLoader(MOVIES_ID, null, PhoneCapability.this);
+        turnOnLocation();
+
+        if (mLastLocation != null) {
+
+            getLoaderManager().restartLoader(BOOKS_ID, null, PhoneCapability.this);
+            getLoaderManager().restartLoader(MUSIC_ID, null, PhoneCapability.this);
+            getLoaderManager().restartLoader(MOVIES_ID, null, PhoneCapability.this);
+        }
     }
 
     // whenever the location of the phone changes, this method is called
@@ -332,7 +383,6 @@ public class PhoneCapability extends FragmentActivity
         Log.v(TAG, "location changed!! " + location.toString());
         mLastLocation = location;
         handleNewLocation();
-
     }
 
     // updates yelp api calls
@@ -345,6 +395,7 @@ public class PhoneCapability extends FragmentActivity
         if (mLastLocation != null) {
             latitude = (float) mLastLocation.getLatitude();
             longitude = (float) mLastLocation.getLongitude();
+
             loadAPIResults();
 
             Log.v(TAG, "location = " + latitude + " " + longitude);

@@ -2,8 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,6 +17,7 @@
             android:text="Click me for Music!!"
             android:onClick="goToMusic"/>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,7 +34,32 @@
             android:onClick="goToNetflix"/>
     </LinearLayout>
 
-    <include layout="@layout/business_buttons"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Find bookstores!!"
+            android:id="@+id/findBooks"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Find music!!"
+            android:id="@+id/findMusic"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Find movie theaters!!"
+            android:id="@+id/findMovies"/>
+    </LinearLayout>
+
 
     <include layout="@layout/business_results"/>
+
+
+
 </LinearLayout>

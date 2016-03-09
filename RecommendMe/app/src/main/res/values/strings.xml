@@ -3,4 +3,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="music_hint">Enter an artist:</string>
     <string name="movie_hint">Enter a movie:</string>
+    <string name="enable_gps_message">Please enable your location so that we can find businesses near you!</string>
+    <string name="enable">Yes</string>
+    <string name="enable_denied">No</string>
 </resources>
