@@ -52,13 +52,13 @@ public class RecommendationSearchResults extends AppCompatActivity
             public void onClick(View button) {
                 //Set the button's appearance
                 button.setSelected(!button.isSelected());
-
-//                if (button.isSelected()) {    // If the user 'likes' the title
+                Log.v("tag", titleSearched);
+                if (button.isSelected()) {    // If the user 'likes' the title
 //                    // Send to db the user's email + title of liked media
-//                    firebase.setLike(titleSearched, "email@email.com");
+                    firebase.setLike(titleSearched, "email@email.com");
 //                } else {      // If the user 'unlikes' the title
 //                    // Send to db the user's email + title of unliked media
-//                }
+                }
             }
         });
 
