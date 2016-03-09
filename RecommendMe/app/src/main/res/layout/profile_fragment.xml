@@ -2,43 +2,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:gravity="center_horizontal">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Profile"
-        android:textSize="40dp"
+        android:textSize="50dp"
         android:gravity="center"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp"
+        android:textColor="@color/textColor"
         />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set Picture"
-        android:gravity="left"
-        android:id="@+id/pic"
-        />
-
-    <Button
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:text="Linked Accounts"
-        android:gravity="left"
         android:id="@+id/linked"
+        android:textSize="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/tile_shape"
         />
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Saved"
-        android:gravity="left"
+        android:text="Saved Recommendations"
         android:id="@+id/saved"
+        android:textSize="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/tile_shape"
         />
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:text="Desert Island Picks"
-        android:gravity="left"
         android:id="@+id/picked"
+        android:textSize="20dp"
+        android:background="@drawable/tile_shape"
         />
 </LinearLayout>
