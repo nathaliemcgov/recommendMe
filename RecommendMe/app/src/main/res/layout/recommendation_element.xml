@@ -28,6 +28,7 @@
             android:layout_height="40dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
+            android:focusable="false"
             android:background="@drawable/thumbs_up_button"
             android:src="@drawable/ic_thumbs_up" />
     </LinearLayout>

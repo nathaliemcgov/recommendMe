@@ -5,8 +5,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +21,22 @@ import java.util.List;
  */
 public class CustomTileAdapter extends ArrayAdapter<String> {
 
+    private RecommendationTileGrid.BtnClickListener mClickListener = null;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private List<String> recommendationList;
+
     public CustomTileAdapter(Context context, List<String> titles) {
         super(context, 0, titles);
+    }
+
+    public CustomTileAdapter(Context context, List<String> titles, RecommendationTileGrid.BtnClickListener listener) {
+        super(context, 0, titles);
+
+        mContext = context;
+        mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        recommendationList = titles;
+        mClickListener = listener;
     }
 
     @Override
@@ -36,6 +55,8 @@ public class CustomTileAdapter extends ArrayAdapter<String> {
 
         mediaTitle.setText(title);
         Log.v("tag", position + "");
+
+
         return convertView;
     }
 }

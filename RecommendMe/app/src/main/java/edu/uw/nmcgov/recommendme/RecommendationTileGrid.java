@@ -37,6 +37,10 @@ public class RecommendationTileGrid extends Fragment {
 
     private OnMediaSelectionListener callback;
 
+    public interface BtnClickListener {
+        public abstract void onBtnClick(int position);
+    }
+
     public RecommendationTileGrid() {
         // Required empty public constructor
     }
