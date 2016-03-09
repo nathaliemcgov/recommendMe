@@ -34,30 +34,11 @@
             android:onClick="goToNetflix"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Find bookstores!!"
-            android:id="@+id/findBooks"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Find music!!"
-            android:id="@+id/findMusic"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Find movie theaters!!"
-            android:id="@+id/findMovies"/>
-    </LinearLayout>
+    <!--<include layout="@layout/music_netflix"/>-->
 
 
+    <include layout="@layout/business_buttons"/>
     <include layout="@layout/business_results"/>
 
 

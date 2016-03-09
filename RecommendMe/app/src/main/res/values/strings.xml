@@ -6,4 +6,7 @@
     <string name="enable_gps_message">Please enable your location so that we can find businesses near you!</string>
     <string name="enable">Yes</string>
     <string name="enable_denied">No</string>
+    <string name="find_books">Find book stores near you!</string>
+    <string name="find_music">Find music stores near you!</string>
+    <string name="find_movies">Find movie theaters near you!</string>
 </resources>
