@@ -4,19 +4,19 @@
     android:layout_height="wrap_content">
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:text="@string/find_books"
         android:id="@+id/findBooks"/>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:text="@string/find_music"
         android:id="@+id/findMusic"/>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:text="@string/find_movies"
         android:id="@+id/findMovies"/>

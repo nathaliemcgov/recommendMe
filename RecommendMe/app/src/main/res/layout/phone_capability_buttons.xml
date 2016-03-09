@@ -2,45 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/musicSearchText"
-            android:hint="@string/music_hint"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Click me for Music!!"
-            android:onClick="goToMusic"/>
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/movieSearchText"
-            android:hint="@string/movie_hint"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Click me for Netflix!!"
-            android:onClick="goToNetflix"/>
-    </LinearLayout>
-
-
-    <!--<include layout="@layout/music_netflix"/>-->
-
-
+    <include layout="@layout/music_netflix"/>
     <include layout="@layout/business_buttons"/>
     <include layout="@layout/business_results"/>
-
-
-
 </LinearLayout>
