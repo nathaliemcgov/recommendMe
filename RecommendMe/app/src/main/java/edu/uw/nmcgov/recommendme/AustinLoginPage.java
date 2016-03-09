@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class LoginPage extends AppCompatActivity {
+public class AustinLoginPage extends AppCompatActivity {
 
     private static final String TAG = "start";
     private String[] types;
@@ -21,7 +21,7 @@ public class LoginPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_page);
+        setContentView(R.layout.activity_austin_login_page);
         index = 0;
 
         types = new String[5];
