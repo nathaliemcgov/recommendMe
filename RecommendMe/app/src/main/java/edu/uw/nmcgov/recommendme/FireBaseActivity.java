@@ -37,37 +37,51 @@ public class FireBaseActivity extends AppCompatActivity  {
         tyler.put("name", "tyler");
         tyler.put("name", "josh");
 
+        final boolean[] noName = {true};
+
 
         final int[] i = {0};
-//        Button button = (Button) findViewById(R.id.button);
-//        Button button2 = (Button) findViewById(R.id.button2);
+        Button button = (Button) findViewById(R.id.exploreButton);
+        Button button2 = (Button) findViewById(R.id.loginBtn);
+        Button button3 = (Button) findViewById(R.id.createProfBtn);
 
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Map<String, String> tyler = new HashMap<String, String>();
-//                tyler.put("name", "tyler");
-//                i[0]++;
-//                if (i[0] == 1)
-//                    firebase.createUser(tyler);
-//                firebase.setLike(i[0] + "a", "tyler");
-//            }
-//        });
-//
-//        button2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Log.v("test", firebase.queryTitle("1a").toString());
-////                Map<String, String> tyler = new HashMap<String, String>();
-////                tyler.put("name", "josh");
-////                if (i[0] == 1)
-////                    firebase.createUser(tyler);
-////                i[0]++;
-////
-////                firebase.setLike(i[0] + "a", "josh");
-//
-//            }
-//        });
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> tyler = new HashMap<String, String>();
+                tyler.put("name", "tyler");
+                i[0]++;
+                if (i[0] == 1)
+                    firebase.createUser(tyler);
+                firebase.setLike(i[0] + "a", "tyler");
+            }
+        });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> tyler = new HashMap<String, String>();
+                tyler.put("name", "josh");
+                if (i[0] == 1)
+                    firebase.createUser(tyler);
+                i[0]++;
+
+                firebase.setLike(i[0] + "a", "josh");
+            }
+        });
+
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> tyler = new HashMap<String, String>();
+                tyler.put("name", "Vickram");
+                if(noName[0])
+                    firebase.createUser(tyler);
+                noName[0] = false;
+                i[0]++;
+
+                firebase.setLike(i[0] - 3 + "a", "josh");
+            }
+        });
     }
 }

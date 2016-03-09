@@ -91,7 +91,7 @@ public class RCMDFirebase {
                 if(map == null)
                     map = new HashMap<String, Object>();
                 if (map.get(movieTwo) != null) {
-                    map.put(movieTwo, map.get(Integer.parseInt(movieTwo) + 1));
+                    map.put(movieTwo, Integer.parseInt(map.get(movieTwo).toString()) + 1);
                     postRef.child("related").updateChildren(map);
                 } else {
                     map.put(movieTwo, 1);
