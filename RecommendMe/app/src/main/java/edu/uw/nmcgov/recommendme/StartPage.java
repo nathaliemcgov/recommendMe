@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class AustinLoginPage extends Activity {
+public class StartPage extends Activity {
 
     private Button loginBtn;
     private Button exploreButton;
