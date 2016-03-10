@@ -40,7 +40,7 @@ public class RecommendationSearchResults extends AppCompatActivity
         titleSearchedFor = (TextView) findViewById(R.id.titleSearchedFor);
         Bundle bundle = getIntent().getExtras();
         final String titleSearched = bundle.getString("title");
-        if (bundle.getString("user").length() > 0) {
+        if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
             user = bundle.getString("user");
             Log.v(TAG, "USERRRR " + user);
         }
@@ -84,7 +84,7 @@ public class RecommendationSearchResults extends AppCompatActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_menu, menu);
 
-        if (user.length() == 0) {
+        if (user == null || user.length() == 0) {
             MenuItem searchMenuOption = menu.findItem(R.id.recommendationsForYou);
             searchMenuOption.setVisible(false);
         }
@@ -110,7 +110,7 @@ public class RecommendationSearchResults extends AppCompatActivity
     // Show search screen
     private void showSearchForRecommendations() {
         Intent intent = new Intent(this, SearchForRecommendations.class);
-        if (user.length() > 0) {
+        if (user != null && user.length() > 0) {
             intent.putExtra("user", user);
         }
         startActivity(intent);
@@ -118,7 +118,7 @@ public class RecommendationSearchResults extends AppCompatActivity
 
     private void showRecommendationsForYou() {
         Intent intent = new Intent(this, RecommendationsForYou.class);
-        if (user.length() > 0) {
+        if (user != null && user.length() > 0) {
             intent.putExtra("user", user);
         }
         startActivity(intent);
