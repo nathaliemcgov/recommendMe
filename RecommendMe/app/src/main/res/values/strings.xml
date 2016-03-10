@@ -1,10 +1,5 @@
 <resources>
     <string name="app_name">RecommendMe</string>
-<<<<<<< HEAD
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-=======
     <string name="title_activity_main">MainActivity</string>
     <string name="music_hint">Enter an artist:</string>
     <string name="movie_hint">Enter a movie:</string>
@@ -14,5 +9,4 @@
     <string name="find_books">Find book stores near you!</string>
     <string name="find_music">Find music stores near you!</string>
     <string name="find_movies">Find movie theaters near you!</string>
->>>>>>> origin/phoneCapability
 </resources>
