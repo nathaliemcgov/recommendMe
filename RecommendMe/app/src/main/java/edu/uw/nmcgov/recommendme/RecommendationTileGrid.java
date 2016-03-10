@@ -91,7 +91,6 @@ public class RecommendationTileGrid extends Fragment {
         } else if (getActivity() instanceof RecommendationSearchResults) { // If the user reached screen by searching media title
             TextView textView = (TextView) ((RecommendationSearchResults) getActivity()).findViewById(R.id.titleSearchedFor);
             title = textView.getText().toString();
-
             populateTilesForSearch();
         }
 

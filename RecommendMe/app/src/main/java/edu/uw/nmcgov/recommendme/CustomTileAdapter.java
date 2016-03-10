@@ -81,6 +81,8 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.setSelected(!v.isSelected());
+                Log.v("clicked", "clicked that shit" + user);
                 firebase.setLike(object.name, user);
             }
         });
