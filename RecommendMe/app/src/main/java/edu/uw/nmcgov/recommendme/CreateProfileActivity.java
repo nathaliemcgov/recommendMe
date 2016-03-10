@@ -9,8 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.firebase.client.Firebase;
+
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class CreateProfileActivity extends Activity implements EditFragment.sendList {
     private static final String TAG = "start";
@@ -19,12 +24,16 @@ public class CreateProfileActivity extends Activity implements EditFragment.send
     private String userEmail;
     private TextView emailText;
     private EditFragment current;
+    private RCMDFirebase firebase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profile);
         index = 0;
+
+        Firebase.setAndroidContext(this);
+        firebase = new RCMDFirebase();
 
         types = new String[4];
         types[0] = "email";
@@ -45,13 +54,18 @@ public class CreateProfileActivity extends Activity implements EditFragment.send
                     EditText email = (EditText) findViewById(R.id.email_pass);
                     userEmail = email.getText().toString(); // User's email address
                     Log.v("email", userEmail);
+                    Map<String, String> map = new HashMap<String, String>();
+                    map.put("name", userEmail);
+                    firebase.createUser(map);
                 }
                 if(index < types.length) {
                     if(index >= 1){
                         if(current != null){
-                            List<EditText> list = ((EditFragment)current).send();
-                            for(EditText edit: list) {
-                                Log.v(TAG, edit.getText().toString());
+                            List<String> list = ((EditFragment)current).send();
+                            Log.v("LIST222", list.toString());
+                            firebase.setManyLikes(list, userEmail);
+                            for(String input : list) {
+                                Log.v(TAG, input);
                             }
                         }
 

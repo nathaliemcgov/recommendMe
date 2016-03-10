@@ -109,6 +109,7 @@ public class RCMDFirebase {
     //Creates a user given the map
     //if map is "name" -> "tyler", "email" -> "tylerj11@uw.edu", firebase reflects this
     public void createUser(Map<String, String> map) {
+        Log.v("USER", "created user!");
         Firebase userRef = myFirebaseUserRef.push();
         userRef.setValue(map);
     }
@@ -155,6 +156,7 @@ public class RCMDFirebase {
     //String user must be the username for now
     //Adds likes to a user. Will also update connections to other objects
     public void setManyLikes(List<String> toLike, String user) {
+        Log.v("SETMANY", "SET SET");
         setManyLikes(toLike, user, 0);
     }
 
@@ -226,14 +228,12 @@ public class RCMDFirebase {
                             });
                         else
                             postRef.child("liked").setValue(userLikes, new Firebase.CompletionListener() {
-
                                 @Override
                                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                                     setManyLikes(toLike, user, pos + 1);
                                 }
                             });
                     }
-
                 }
 
                 @Override

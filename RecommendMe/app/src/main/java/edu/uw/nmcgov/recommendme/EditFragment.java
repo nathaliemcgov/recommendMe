@@ -52,9 +52,9 @@ public class EditFragment extends Fragment {
 
         //get the type (movie/music/book)
         Bundle bundle = this.getArguments();
-        if(bundle == null){
+        if (bundle == null) {
             Log.v(TAG, "NO");
-        }else{
+        } else {
             type = bundle.getString("type");
         }
 
@@ -90,8 +90,16 @@ public class EditFragment extends Fragment {
         return rootView;
 
     }
-    public List send(){
-        return texts;
+    public List send() {
+        List<String> list = new LinkedList<String>();
+
+        for (EditText editText : texts) {
+            String text = editText.getText().toString();
+            if (text.length() > 0) {
+                list.add(text);
+            }
+        }
+        return list;
     }
 
     public void hideButtons(){
