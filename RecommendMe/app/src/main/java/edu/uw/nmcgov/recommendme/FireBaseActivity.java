@@ -36,9 +36,9 @@ public class FireBaseActivity extends AppCompatActivity  {
 
         Map<String, String> tyler = new HashMap<String, String>();
 
-        int i = 1;
+        int i = 4;
 
-        if(i == 2) {
+        if(i == 0) {
 
             tyler.put("name", "tyler");
             firebase.createUser(tyler);
@@ -80,8 +80,6 @@ public class FireBaseActivity extends AppCompatActivity  {
             tylerLikes = new ArrayList<String>();
 
         } if(i == 3) {
-
-            firebase.setLike("elliot smith", "tyler");
 
             tylerLikes.add("toy story");
             tylerLikes.add("frozen");

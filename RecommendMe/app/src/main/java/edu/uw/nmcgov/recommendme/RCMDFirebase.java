@@ -17,6 +17,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -96,11 +97,12 @@ public class RCMDFirebase {
                     Log.v("modest mouse bug", map.toString() + ' ' + object.getName() + movieOne + movieTwo);
                     map.put(movieTwo, Integer.parseInt(map.get(movieTwo).toString()) + 1);
                     Log.v("modest", map.toString() + movieOne + movieTwo);
-                    postRef.child("related").setValue(map);
+                    postRef.child("related").updateChildren(map);
                 } else {
                     Log.v("modest mouse bugCHECK", map.toString() + ' ' + object.getName() + movieOne + movieTwo);
-                    map.put(movieTwo, 1);
-                    postRef.child("related").updateChildren(map);
+                    Map<String, Object> newMap = new HashMap<String, Object>();
+                    newMap.put(movieTwo, 1);
+                    postRef.child("related").updateChildren(newMap);
                 }
                 //postRef.child("totalUserLikes").setValue(object.getTotalUserLikes() + 1);
             }
