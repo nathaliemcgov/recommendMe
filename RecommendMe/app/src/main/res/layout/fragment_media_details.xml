@@ -45,6 +45,14 @@
             <!--android:state_selected="false"-->
             <!--android:layout_toRightOf="@+id/thumbsUpBtn" />-->
     </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/fragContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detailHeader"
+        android:layout_centerInParent="true">
+
+        </RelativeLayout>
 
     <!--<RelativeLayout-->
         <!--android:id="@+id/saveBtnContainer"-->

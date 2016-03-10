@@ -1,7 +1,10 @@
 package edu.uw.nmcgov.recommendme;
 
 
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,6 +66,16 @@ public class MediaDetails extends Fragment {
                 }
             }
         });
+
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+
+        PhoneCapability fragTwo = new PhoneCapability();
+        ft.add(R.id.fragContainer, fragTwo);
+        ft.commit();
+
+//        getActivity().getSupportFragmentManager().beginTransaction()
+//                .add(R.id.fragContainer, fragTwo).commit();
 
 //        thumbsDownBtn.setOnTouchListener(new View.OnTouchListener() {
 //            @Override

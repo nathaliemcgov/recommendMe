@@ -46,6 +46,8 @@ public class StartPage extends Activity {
                 createProfileActivity();
             }
         });
+
+
     }
 
     // Starts activity so user can search title

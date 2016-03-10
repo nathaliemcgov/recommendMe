@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".FireBaseActivity"
+            android:name=".StartPage"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -29,7 +29,6 @@
         <activity android:name=".SearchForRecommendations" />
         <activity android:name=".RecommendationSearchResults" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".PhoneCapability" />
         <activity android:name=".CreateProfileActivity" />
     </application>
 
