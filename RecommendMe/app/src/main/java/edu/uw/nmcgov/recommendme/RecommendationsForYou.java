@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,17 +25,27 @@ public class RecommendationsForYou extends AppCompatActivity
     private GridView tileGrid;
     private ArrayList<String> recommendationList;
     ArrayAdapter<String> adapter;
+    private String user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommendations_for_you);
 
+        Bundle bundle = getIntent().getExtras();
+        user = bundle.getString("user");   // User's email
+        Log.v("tag", user + " RcmdsForYou");
+
         // Fragment to display tile grid
         FragmentManager fm = getSupportFragmentManager();
 
         FragmentTransaction ft = fm.beginTransaction();
         RecommendationTileGrid tileGridFragment = new RecommendationTileGrid();
+
+        Bundle userBundle = new Bundle();
+        userBundle.putString("user", user);             // User's email
+        tileGridFragment.setArguments(userBundle);
+
         ft.add(R.id.gridContainer2, tileGridFragment, "Grid");
         ft.commit();
     }
@@ -83,7 +94,7 @@ public class RecommendationsForYou extends AppCompatActivity
         MediaDetails details = new MediaDetails();
 
         Bundle bundle = new Bundle();
-        bundle.putString("mediaTitle", mediaTile);
+        bundle.putString("mediaTitle", mediaTile);  // Media title
 
         details.setArguments(bundle);
 

@@ -16,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class RecommendationTileGrid extends Fragment {
     private List<RelatedObject> recommendationList;
     private ArrayAdapter<String> adapter;
     private String title;
+    private RCMDFirebase firebase;
 
     private OnMediaSelectionListener callback;
 
@@ -67,14 +70,22 @@ public class RecommendationTileGrid extends Fragment {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_recommendation_tile_grid, container, false);
 
-        TextView textView = (TextView) ((RecommendationSearchResults) getActivity()).findViewById(R.id.titleSearchedFor);
-        title = textView.getText().toString();
+        Firebase.setAndroidContext(container.getContext());
+        firebase = new RCMDFirebase();
 
         // Container for tiles
         tileGrid = (GridView) rootView.findViewById(R.id.recommendationList);
-
         recommendationList = new ArrayList<RelatedObject>();
-        populateTiles();
+
+        Log.v("tag", "ACTIVITY " + getActivity());
+        if (getActivity() instanceof RecommendationsForYou) { // If the user reached screen by creating an account or logging in
+            populateTilesForUser();
+        } else if (getActivity() instanceof RecommendationSearchResults) { // If the user reached screen by searching media title
+            TextView textView = (TextView) ((RecommendationSearchResults) getActivity()).findViewById(R.id.titleSearchedFor);
+            title = textView.getText().toString();
+
+            populateTilesForSearch();
+        }
 
         // Listens for click on specific media recommendation
         tileGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -90,12 +101,26 @@ public class RecommendationTileGrid extends Fragment {
         return rootView;
     }
 
-    private void populateTiles() {
+    // If the user reached screen by searching media title
+    private void populateTilesForSearch() {
         CustomTileAdapter customAdapter = new CustomTileAdapter(this.getContext(), recommendationList);
 
         RCMDFirebase firebase = new RCMDFirebase();
         tileGrid.setAdapter(customAdapter);
 
         firebase.queryTitle(title, recommendationList, customAdapter);
+    }
+
+    // If the user reached screen by creating an account or logging in
+    private void populateTilesForUser() {
+        Bundle bundle = this.getArguments();
+        String user = bundle.getString("user");
+        Log.v(TAG, user);
+
+        CustomTileAdapter customAdapter = new CustomTileAdapter(this.getContext(), recommendationList);
+
+        tileGrid.setAdapter(customAdapter);
+
+        firebase.recommendationsForUser(user, recommendationList, customAdapter);
     }
 }
