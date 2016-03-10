@@ -14,7 +14,7 @@ public class RelatedObject implements Comparable<RelatedObject> {
         this.name = name;
         this.likes = likes;
         this.totalLikes = totalLikes;
-        this.ratio = likes / totalLikes;
+        this.ratio = likes * 1.0 / totalLikes;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class RelatedObject implements Comparable<RelatedObject> {
         } else if( ratio < another.ratio) {
             return 1;
         } else {
-            return 0;
+            return name.compareTo(another.name);
         }
     }
 

@@ -31,7 +31,7 @@ public class RecommendationTileGrid extends Fragment {
 
     private TextView titleSearchedFor;
     private GridView tileGrid;
-    private List<String> recommendationList;
+    private List<RelatedObject> recommendationList;
     private ArrayAdapter<String> adapter;
     private String title;
 
@@ -73,7 +73,7 @@ public class RecommendationTileGrid extends Fragment {
         // Container for tiles
         tileGrid = (GridView) rootView.findViewById(R.id.recommendationList);
 
-        recommendationList = new ArrayList<String>();
+        recommendationList = new ArrayList<RelatedObject>();
         populateTiles();
 
         // Listens for click on specific media recommendation
