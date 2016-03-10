@@ -32,7 +32,10 @@ public class RCMDFirebase {
 
     }
 
-    public boolean createConnection(String one, String two) {
+
+    //Creates a connection in firebase between the two objects
+    //Calls the pushToFirebase method
+    private boolean createConnection(String one, String two) {
         final String mediaOne = one.trim().toLowerCase();
         final String mediaTwo = two.trim().toLowerCase();
 
@@ -103,12 +106,15 @@ public class RCMDFirebase {
         }
     }
 
-
+    //Creates a user given the map
+    //if map is "name" -> "tyler", "email" -> "tylerj11@uw.edu", firebase reflects this
     public void createUser(Map<String, String> map) {
         Firebase userRef = myFirebaseUserRef.push();
         userRef.setValue(map);
     }
 
+    //Given a title, list, and adapter that MUST be connected to that list, will
+    //query and sort related titles based on relevance
     public void queryTitle(String title, final List<RelatedObject> titleArray, final CustomTileAdapter adapter) {
         Query userQuery = myFirebaseMoviesRef.orderByChild("name").equalTo(title.trim().toLowerCase());
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -145,10 +151,14 @@ public class RCMDFirebase {
         });
     }
 
+    //Used if you want to set more than one like at once
+    //String user must be the username for now
+    //Adds likes to a user. Will also update connections to other objects
     public void setManyLikes(List<String> toLike, String user) {
         setManyLikes(toLike, user, 0);
     }
 
+    //Used by the public set many likes method. Recursive :)
     private void setManyLikes(final List<String> toLike, final String user, final int pos) {
         if(pos < toLike.size()) {
             final String liked = toLike.get(pos).toLowerCase();
@@ -234,7 +244,7 @@ public class RCMDFirebase {
         }
     }
 
-
+    //Sets a single like given a username
     public void setLike(String likedUnformatted, String user) {
         Log.v("tag", "tagtagtag");
         //Get user
@@ -309,7 +319,8 @@ public class RCMDFirebase {
 
     }
 
-
+    //Given a user (name), list, and adapter that MUST be connected to that list, will
+    //fill up the list/adapter with sorted recomendations for that user.
     public void recommendationsForUser(String user, final List<RelatedObject> list,
                                        final CustomTileAdapter adapter) {
         final Map<String, RelatedObject> overAllMap = new HashMap<String, RelatedObject>();
