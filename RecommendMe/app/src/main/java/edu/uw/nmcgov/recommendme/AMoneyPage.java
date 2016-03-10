@@ -28,12 +28,11 @@ public class AMoneyPage extends AppCompatActivity implements EditFragment.sendLi
         setContentView(R.layout.activity_austin_start_page);
         index = 0;
 
-        types = new String[5];
+        types = new String[4];
         types[0] = "email";
-        types[1] = "password";
-        types[2] = "movie";
-        types[3] = "music";
-        types[4] = "book";
+        types[1] = "movie";
+        types[2] = "music";
+        types[3] = "book";
 
         TextView text = (TextView)findViewById(R.id.type_box);
         text.setText(types[index]);
@@ -44,7 +43,7 @@ public class AMoneyPage extends AppCompatActivity implements EditFragment.sendLi
             @Override
             public void onClick(View V) {
                 if(index < types.length) {
-                    if(index >= 2){
+                    if(index >= 1){
                         if(current != null){
                             List<EditText> list = ((EditFragment)current).send();
                             for(EditText edit: list) {

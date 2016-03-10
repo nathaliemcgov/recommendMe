@@ -41,26 +41,18 @@ public class ExistingLogin extends AppCompatActivity {
             @Override
             public void onClick(View V) {
                 Log.v(TAG, "back");
-                if(count < 1) {
-                    EditText edit = (EditText)findViewById(R.id.existing_email_entry);
-                    if(edit.getText().length() == 0){
-                        toasted("email");
-                    }else {
-                        map.put("email", edit.getText().toString());
-                        changeVisibility(R.id.existing_password, View.VISIBLE, ActionBar.LayoutParams.WRAP_CONTENT);
-                        changeVisibility(R.id.existing_email, View.GONE, 0);
-                        count++;
-                    }
-                }else{
-                    EditText edit = (EditText)findViewById(R.id.existing_password_entry);
-                    if(edit.getText().length() == 0){
-                        toasted("password");
-                    }else {
-                        map.put("password", edit.getText().toString());
-                        Log.v(TAG, map.toString());
-                        sendToNext();
-                    }
+
+                EditText edit = (EditText)findViewById(R.id.existing_email_entry);
+                if(edit.getText().length() == 0){
+                    toasted("email");
+                }else {
+                    map.put("email", edit.getText().toString());
+                    sendToNext();
+                    /*changeVisibility(R.id.existing_password, View.VISIBLE, ActionBar.LayoutParams.WRAP_CONTENT);
+                    changeVisibility(R.id.existing_email, View.GONE, 0);*/
+
                 }
+
             }
         });
 
