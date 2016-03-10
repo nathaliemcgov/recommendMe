@@ -4,7 +4,19 @@
     android:layout_height="match_parent">
 
     <!-- text and buttons to go to music or netflix-->
-    <include layout="@layout/music_netflix"/>
+    <!--<include layout="@layout/music_netflix"/>-->
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/musicSearchText"
+        android:hint="@string/music_hint"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click me for Music!!"
+        android:id="@+id/musicButton"
+        />
     <!-- click any of the three (music, books, movies) to ask yelp for nearby business-->
     <include layout="@layout/business_buttons"/>
     <!-- textviews listing the businesses nearby-->
