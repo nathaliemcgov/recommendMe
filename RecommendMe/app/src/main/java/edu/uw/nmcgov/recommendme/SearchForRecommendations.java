@@ -68,18 +68,16 @@ public class SearchForRecommendations extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Show profile screen
-            case R.id.profile:
-                showProfile();
+            case R.id.recommendationsForYou:
+                showRecommendationsForYou();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    // Show profile screen
-    private void showProfile() {
-        Intent intent = new Intent(this, ProfileActivity.class);
+    private void showRecommendationsForYou() {
+        Intent intent = new Intent(this, RecommendationsForYou.class);
         startActivity(intent);
     }
 
