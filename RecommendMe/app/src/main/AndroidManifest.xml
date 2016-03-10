@@ -32,6 +32,8 @@
         <activity android:name=".PhoneCapability" />
         <activity android:name=".FireBaseActivity" />
         <activity android:name=".CreateProfileActivity" />
+        <activity android:name=".ExistingLogin" />
+        <activity android:name=".MediaDetails" />
     </application>
 
 </manifest>

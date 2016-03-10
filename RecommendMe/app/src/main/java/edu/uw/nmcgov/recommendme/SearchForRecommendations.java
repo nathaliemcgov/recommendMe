@@ -21,6 +21,7 @@ public class SearchForRecommendations extends AppCompatActivity {
 
     private EditText searchMediaText;
     private Button searchTitleBtn;
+    private String user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,10 @@ public class SearchForRecommendations extends AppCompatActivity {
                 searchTitleEntered();
             }
         });
+
+        if (getIntent().getExtras() != null) {
+            user = getIntent().getExtras().getString("user");
+        }
     }
 
     // Creates the options menu in the action bar
@@ -78,12 +83,6 @@ public class SearchForRecommendations extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // Show search screen
-    private void showSearchForRecommendations() {
-        Intent intent = new Intent(this, SearchForRecommendations.class);
-        startActivity(intent);
-    }
-
     // Called when search button is clicked in order to search for title entered
     private void searchTitleEntered() {
         String titleSearched = searchMediaText.getText().toString();
@@ -94,6 +93,7 @@ public class SearchForRecommendations extends AppCompatActivity {
             // Adds title searched for as an extra for next activity
             Intent intent = new Intent(this, RecommendationSearchResults.class);
             intent.putExtra("title", titleSearched);
+            intent.putExtra("user", user);
             startActivity(intent);
         } else {
             // Shows toast to remind user to enter title in search field before pressing search

@@ -34,7 +34,7 @@ public class StartPage extends Activity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                recommendationsForYou();
+                existingLogin();
             }
         });
 
@@ -54,15 +54,15 @@ public class StartPage extends Activity {
         startActivity(intent);
     }
 
-    // Starts explore recommendations activity
-    private void recommendationsForYou() {
-        Intent intent = new Intent(this, RecommendationsForYou.class);
-        startActivity(intent);
-    }
-
     // Starts create profile activity
     private void createProfileActivity() {
         Intent intent = new Intent(this, CreateProfileActivity.class);
+        startActivity(intent);
+    }
+
+    // Starts login activity
+    private void existingLogin() {
+        Intent intent = new Intent(this, ExistingLogin.class);
         startActivity(intent);
     }
 }

@@ -44,7 +44,6 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
         }
     }
 
-
     @Override
     public void onPickSelected(String type) {
         //bottom fragment for the editTexts

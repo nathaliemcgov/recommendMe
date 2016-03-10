@@ -37,6 +37,7 @@ public class RecommendationTileGrid extends Fragment {
     private ArrayAdapter<String> adapter;
     private String title;
     private RCMDFirebase firebase;
+    private String user;
 
     private OnMediaSelectionListener callback;
 
@@ -73,6 +74,13 @@ public class RecommendationTileGrid extends Fragment {
         Firebase.setAndroidContext(container.getContext());
         firebase = new RCMDFirebase();
 
+        user = "";
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            user = bundle.getString("user");
+        }
+
         // Container for tiles
         tileGrid = (GridView) rootView.findViewById(R.id.recommendationList);
         recommendationList = new ArrayList<RelatedObject>();
@@ -103,9 +111,9 @@ public class RecommendationTileGrid extends Fragment {
 
     // If the user reached screen by searching media title
     private void populateTilesForSearch() {
-        CustomTileAdapter customAdapter = new CustomTileAdapter(this.getContext(), recommendationList);
+        Log.v("USERRR", user);
+        CustomTileAdapter customAdapter = new CustomTileAdapter(this.getContext(), recommendationList, user);
 
-        RCMDFirebase firebase = new RCMDFirebase();
         tileGrid.setAdapter(customAdapter);
 
         firebase.queryTitle(title, recommendationList, customAdapter);
@@ -113,11 +121,8 @@ public class RecommendationTileGrid extends Fragment {
 
     // If the user reached screen by creating an account or logging in
     private void populateTilesForUser() {
-        Bundle bundle = this.getArguments();
-        String user = bundle.getString("user");
-        Log.v(TAG, user);
-
-        CustomTileAdapter customAdapter = new CustomTileAdapter(this.getContext(), recommendationList);
+        Log.v("USERRR", user);
+        CustomTileAdapter customAdapter = new CustomTileAdapter(this.getContext(), recommendationList, user);
 
         tileGrid.setAdapter(customAdapter);
 

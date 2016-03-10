@@ -43,7 +43,7 @@ public class RecommendationsForYou extends AppCompatActivity
         RecommendationTileGrid tileGridFragment = new RecommendationTileGrid();
 
         Bundle userBundle = new Bundle();
-        userBundle.putString("user", user);             // User's email
+        userBundle.putString("user", user);        // User's email
         tileGridFragment.setArguments(userBundle);
 
         ft.add(R.id.gridContainer2, tileGridFragment, "Grid");
@@ -84,6 +84,7 @@ public class RecommendationsForYou extends AppCompatActivity
     // Show search screen
     private void showSearchForRecommendations() {
         Intent intent = new Intent(this, SearchForRecommendations.class);
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 
@@ -93,15 +94,8 @@ public class RecommendationsForYou extends AppCompatActivity
         // Fragment that contains details about the selected tile
         MediaDetails details = new MediaDetails();
 
-        Bundle bundle = new Bundle();
-        bundle.putString("mediaTitle", mediaTile);  // Media title
-
-        details.setArguments(bundle);
-
-        // Display title detail fragment
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.recommendationGrid, details)
-                .addToBackStack(null)
-                .commit();
+        Intent intent = new Intent(this, MediaDetails.class);
+        intent.putExtra("title", mediaTile);
+        startActivity(intent);
     }
 }

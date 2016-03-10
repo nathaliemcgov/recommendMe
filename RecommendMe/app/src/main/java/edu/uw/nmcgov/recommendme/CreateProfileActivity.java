@@ -25,10 +25,9 @@ public class CreateProfileActivity extends Activity {
 
         types = new String[5];
         types[0] = "email";
-        types[1] = "password";
-        types[2] = "movie";
-        types[3] = "music";
-        types[4] = "book";
+        types[1] = "movie";
+        types[2] = "music";
+        types[3] = "book";
 
         // Entering user's email address
         emailText = (TextView)findViewById(R.id.type_box);
@@ -45,7 +44,7 @@ public class CreateProfileActivity extends Activity {
                     Log.v("email", userEmail);
                 }
                 if(index < types.length) {
-                    if(index >= 2){
+                    if(index >= 1){
                         addFragment(types[index]);
                         EditText editText = (EditText)findViewById(R.id.email_pass);
                         editText.setVisibility(View.INVISIBLE);
