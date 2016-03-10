@@ -30,13 +30,6 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         super(context, 0, titles);
     }
 
-//    public CustomTileAdapter(Context context, List<String> titles, RecommendationTileGrid.BtnClickListener listener) {
-//        super(context, 0, titles);
-//
-//        mContext = context;
-//        mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        recommendationList = titles;
-//        mClickListener = listener;
 //    }
 
     @Override

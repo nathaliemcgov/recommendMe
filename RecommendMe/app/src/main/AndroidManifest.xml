@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".StartPage"
+            android:name=".FireBaseActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -30,7 +30,6 @@
         <activity android:name=".RecommendationSearchResults" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".PhoneCapability" />
-        <activity android:name=".FireBaseActivity" />
         <activity android:name=".CreateProfileActivity" />
     </application>
 

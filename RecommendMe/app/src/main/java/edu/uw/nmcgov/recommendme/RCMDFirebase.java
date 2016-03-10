@@ -89,7 +89,6 @@ public class RCMDFirebase {
                 Firebase postRef = singleObject.getRef();
                 i++;
                 MediaObject object = singleObject.getValue(MediaObject.class);
-                Log.v("jkljas", object.toString());
                 Map<String, Object> map = object.getRelated();
                 if(map == null)
                     map = new HashMap<String, Object>();
@@ -100,7 +99,6 @@ public class RCMDFirebase {
                     map.put(movieTwo, 1);
                     postRef.child("related").updateChildren(map);
                 }
-                Log.v("TAG", map.toString() + " " + movieOne + " " + movieTwo + " " + i);
                 //postRef.child("totalUserLikes").setValue(object.getTotalUserLikes() + 1);
             }
         }
@@ -127,14 +125,10 @@ public class RCMDFirebase {
                         Set<RelatedObject> relatedObjects = new TreeSet<RelatedObject>();
 
                         for (String key : map.keySet()) {
-                            Log.v("tag", key);
                             relatedObjects.add(new RelatedObject(key, Integer.parseInt(map.get(key).toString()), object.getTotalUserLikes()));
                         }
 
-                        Log.v("tag", relatedObjects.toString());
-
                         for (RelatedObject related : relatedObjects) {
-                            Log.v("tag", related.toString());
                             titleArray.add(related);
                         }
 
@@ -161,6 +155,7 @@ public class RCMDFirebase {
     //Used by the public set many likes method. Recursive :)
     private void setManyLikes(final List<String> toLike, final String user, final int pos) {
         if(pos < toLike.size()) {
+            Log.v("tag", toLike.get(pos) + ' ' + user);
             final String liked = toLike.get(pos).toLowerCase();
             Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
             userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -183,10 +178,12 @@ public class RCMDFirebase {
                                     //Create the media object in firebase
                                     //If movie doesn't exist
                                     if (dataSnapshot.getValue() == null) {
+                                        Log.v("DOUBLETOYSTORYERRORIF", user + " " + liked);
                                         Firebase newPostRef = myFirebaseMoviesRef.push();
                                         newPostRef.child("name").setValue(liked);
                                         newPostRef.child("totalUserLikes").setValue(1);
                                     } else { //If movie does exist
+                                        Log.v("DOUBLETOYSTORYERRORELSE", user + " " + liked);
                                         for (DataSnapshot singleObject : dataSnapshot.getChildren()) { // this should really only loop once
                                             MediaObject object = singleObject.getValue(MediaObject.class);
                                             int totalUserLikes = object.getTotalUserLikes();
@@ -198,12 +195,6 @@ public class RCMDFirebase {
                                     for (String key : finalUserLikes.keySet()) {
                                         if (!liked.equals(key))
                                             createConnection(liked, key);
-
-                                        //It looks like what I'm going to have to do here is
-                                        //get a big list of all the connections, then set up the map connections
-                                        //so that I don't have to create a lot of little connections.
-                                        //
-
                                     }
                                 }
 
@@ -246,7 +237,6 @@ public class RCMDFirebase {
 
     //Sets a single like given a username
     public void setLike(String likedUnformatted, String user) {
-        Log.v("tag", "tagtagtag");
         //Get user
         final String liked = likedUnformatted.toLowerCase();
         Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
