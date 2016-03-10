@@ -55,6 +55,9 @@ public class RecommendationsForYou extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_menu, menu);
+
+        MenuItem searchMenuOption = menu.findItem(R.id.recommendationsForYou);
+        searchMenuOption.setVisible(false);
         return true;
     }
 
@@ -62,10 +65,6 @@ public class RecommendationsForYou extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Show profile screen
-            case R.id.profile:
-                showProfile();
-                return true;
             // Show search screen
             case R.id.searchRecommendations:
                 showSearchForRecommendations();
@@ -75,16 +74,9 @@ public class RecommendationsForYou extends AppCompatActivity
         }
     }
 
-    // Show profile screen
-    private void showProfile() {
-        Intent intent = new Intent(this, ProfileActivity.class);
-        startActivity(intent);
-    }
-
     // Show search screen
     private void showSearchForRecommendations() {
         Intent intent = new Intent(this, SearchForRecommendations.class);
-        intent.putExtra("user", user);
         startActivity(intent);
     }
 
