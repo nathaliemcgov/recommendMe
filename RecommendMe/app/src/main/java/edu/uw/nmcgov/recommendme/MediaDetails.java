@@ -74,13 +74,6 @@ public class MediaDetails extends AppCompatActivity {
             }
         });
 
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-
-        PhoneCapability fragTwo = new PhoneCapability();
-        ft.add(R.id.fragContainer, fragTwo);
-        ft.commit();
-
 //        getActivity().getSupportFragmentManager().beginTransaction()
 //                .add(R.id.fragContainer, fragTwo).commit();
 

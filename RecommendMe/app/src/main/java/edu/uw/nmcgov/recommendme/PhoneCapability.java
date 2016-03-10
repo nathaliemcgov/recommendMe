@@ -77,7 +77,7 @@ public class PhoneCapability extends Fragment
         super.onCreate(savedInstanceState);
         getActivity().setContentView(R.layout.phone_capability_buttons);
 
-        View rootView = inflater.inflate(R.layout.fragment_media_details, container, false);
+        View rootView = inflater.inflate(R.layout.activity_media_details, container, false);
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
