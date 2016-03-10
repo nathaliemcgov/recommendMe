@@ -93,9 +93,12 @@ public class RCMDFirebase {
                 if(map == null)
                     map = new HashMap<String, Object>();
                 if (map.get(movieTwo) != null) {
+                    Log.v("modest mouse bug", map.toString() + ' ' + object.getName() + movieOne + movieTwo);
                     map.put(movieTwo, Integer.parseInt(map.get(movieTwo).toString()) + 1);
-                    postRef.child("related").updateChildren(map);
+                    Log.v("modest", map.toString() + movieOne + movieTwo);
+                    postRef.child("related").setValue(map);
                 } else {
+                    Log.v("modest mouse bugCHECK", map.toString() + ' ' + object.getName() + movieOne + movieTwo);
                     map.put(movieTwo, 1);
                     postRef.child("related").updateChildren(map);
                 }
