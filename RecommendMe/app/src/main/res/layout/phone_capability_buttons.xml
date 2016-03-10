@@ -3,7 +3,10 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- text and buttons to go to music or netflix-->
     <include layout="@layout/music_netflix"/>
+    <!-- click any of the three (music, books, movies) to ask yelp for nearby business-->
     <include layout="@layout/business_buttons"/>
+    <!-- textviews listing the businesses nearby-->
     <include layout="@layout/business_results"/>
 </LinearLayout>
