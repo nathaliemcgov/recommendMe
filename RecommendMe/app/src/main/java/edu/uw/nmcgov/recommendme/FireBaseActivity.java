@@ -12,7 +12,9 @@ import com.firebase.client.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -45,27 +47,37 @@ public class FireBaseActivity extends AppCompatActivity  {
         tyler.put("name", "allison");
         firebase.createUser(tyler);
 
-        firebase.setLike("pitch perfect", "allison");
-        firebase.setLike("taylor swift", "allison");
-        firebase.setLike("frozen", "allison");
-        firebase.setLike("toy story", "allison");
+        List<String> tylerLikes = new ArrayList<String>();
 
-        firebase.setLike("elliot smith", "chris");
-        firebase.setLike("american beauty", "chris");
-        firebase.setLike("orange clockwork", "chris");
-        firebase.setLike("slaughterhouse 5", "chris");
+        tylerLikes.add("toy story");
+        tylerLikes.add("death cab for cutie");
+        tylerLikes.add("slaughterhouse 5");
+        tylerLikes.add("modest mouse");
 
-        firebase.setLike("speedy ortiz", "austin");
-        firebase.setLike("orange clockwork", "austin");
-        firebase.setLike("toy story", "austin");
-        firebase.setLike("modest mouse", "austin");
+        firebase.setManyLikes(tylerLikes, "tyler");
 
-        firebase.setLike("radiohead", "nathalie");
 
-        firebase.setLike("toy story", "tyler");
-        firebase.setLike("death cab for cutie", "tyler");
-        firebase.setLike("slaughterhouse 5", "tyler");
-        firebase.setLike("modest mouse", "tyler");
+//        firebase.setLike("pitch perfect", "allison");
+//        firebase.setLike("taylor swift", "allison");
+//        firebase.setLike("frozen", "allison");
+//        firebase.setLike("toy story", "allison");
+//
+//        firebase.setLike("elliot smith", "chris");
+//        firebase.setLike("american beauty", "chris");
+//        firebase.setLike("orange clockwork", "chris");
+//        firebase.setLike("slaughterhouse 5", "chris");
+//
+//        firebase.setLike("speedy ortiz", "austin");
+//        firebase.setLike("orange clockwork", "austin");
+//        firebase.setLike("toy story", "austin");
+//        firebase.setLike("modest mouse", "austin");
+//
+//        firebase.setLike("radiohead", "nathalie");
+//
+//        firebase.setLike("toy story", "tyler");
+//        firebase.setLike("death cab for cutie", "tyler");
+//        firebase.setLike("slaughterhouse 5", "tyler");
+//        firebase.setLike("modest mouse", "tyler");
 
         
 

@@ -145,6 +145,95 @@ public class RCMDFirebase {
         });
     }
 
+    public void setManyLikes(List<String> toLike, String user) {
+        setManyLikes(toLike, user, 0);
+    }
+
+    private void setManyLikes(final List<String> toLike, final String user, final int pos) {
+        if(pos < toLike.size()) {
+            final String liked = toLike.get(pos).toLowerCase();
+            Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
+            userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot singleObject : dataSnapshot.getChildren()) { //Theoretically one loop
+                        UserObject object = singleObject.getValue(UserObject.class);
+                        //If user hasn't liked anything yet, create the liked map
+                        Map<String, Object> userLikes = object.getLiked();
+                        if (userLikes == null) {
+                            userLikes = new HashMap<String, Object>();
+                        } else { //Update everything in the map to have a relationship to the new object
+                            Query userQuery = myFirebaseMoviesRef.orderByChild("name").equalTo(liked);
+                            final Map<String, Object> finalUserLikes = userLikes;
+                            userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                    //Create the media object in firebase
+                                    //If movie doesn't exist
+                                    if (dataSnapshot.getValue() == null) {
+                                        Firebase newPostRef = myFirebaseMoviesRef.push();
+                                        newPostRef.child("name").setValue(liked);
+                                        newPostRef.child("totalUserLikes").setValue(1);
+                                    } else { //If movie does exist
+                                        for (DataSnapshot singleObject : dataSnapshot.getChildren()) { // this should really only loop once
+                                            MediaObject object = singleObject.getValue(MediaObject.class);
+                                            int totalUserLikes = object.getTotalUserLikes();
+                                            Firebase ref = singleObject.getRef();
+                                            ref.child("totalUserLikes").setValue(1 + totalUserLikes);
+                                        }
+                                    }
+
+                                    for (String key : finalUserLikes.keySet()) {
+                                        if (!liked.equals(key))
+                                            createConnection(liked, key);
+
+                                        //It looks like what I'm going to have to do here is
+                                        //get a big list of all the connections, then set up the map connections
+                                        //so that I don't have to create a lot of little connections.
+                                        //
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(FirebaseError firebaseError) {
+
+                                }
+                            });
+                        }
+
+                        userLikes.put(liked, true);
+                        Firebase postRef = singleObject.getRef();
+                        if (userLikes.size() == 1)
+                            postRef.child("liked").updateChildren(userLikes, new Firebase.CompletionListener() {
+
+                                @Override
+                                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                    setManyLikes(toLike, user, pos + 1);
+                                }
+                            });
+                        else
+                            postRef.child("liked").setValue(userLikes, new Firebase.CompletionListener() {
+
+                                @Override
+                                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                    setManyLikes(toLike, user, pos + 1);
+                                }
+                            });
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+        }
+    }
+
 
     public void setLike(String likedUnformatted, String user) {
         Log.v("tag", "tagtagtag");
