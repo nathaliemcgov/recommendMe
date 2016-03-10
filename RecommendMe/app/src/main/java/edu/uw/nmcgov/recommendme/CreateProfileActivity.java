@@ -1,19 +1,16 @@
 package edu.uw.nmcgov.recommendme;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-/**
- * Created by iguest on 3/8/16.
- */
-public class AMoneyPage extends AppCompatActivity {
+public class CreateProfileActivity extends Activity {
     private static final String TAG = "start";
     private String[] types;
     private int index;
@@ -21,7 +18,7 @@ public class AMoneyPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_austin_start_page);
+        setContentView(R.layout.activity_create_profile);
         index = 0;
 
         types = new String[5];

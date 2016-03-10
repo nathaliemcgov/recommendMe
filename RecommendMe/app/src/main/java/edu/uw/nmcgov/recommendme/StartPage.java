@@ -13,9 +13,8 @@ public class StartPage extends Activity {
 
     private Button loginBtn;
     private Button exploreButton;
+    private Button createProfBtn;
     private static final String TAG = "start";
-    private String[] types;
-    private int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +37,15 @@ public class StartPage extends Activity {
                 recommendationsForYou();
             }
         });
+
+        // Click listener for create profile button
+        createProfBtn = (Button) findViewById(R.id.createProfBtn);
+        createProfBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createProfileActivity();
+            }
+        });
     }
 
     // Starts activity so user can search title
@@ -49,6 +57,12 @@ public class StartPage extends Activity {
     // Starts explore recommendations activity
     private void recommendationsForYou() {
         Intent intent = new Intent(this, RecommendationsForYou.class);
+        startActivity(intent);
+    }
+
+    // Starts create profile activity
+    private void createProfileActivity() {
+        Intent intent = new Intent(this, CreateProfileActivity.class);
         startActivity(intent);
     }
 }

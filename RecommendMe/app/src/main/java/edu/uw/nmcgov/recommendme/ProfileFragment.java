@@ -83,22 +83,6 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-
-        View cameraButton = rootView.findViewById(R.id.pic);
-        cameraButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Log.v(TAG, "Camera button pressed");
-
-                //implicit intent
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    startActivityForResult(intent, REQUEST_PICTURE);
-                }
-            }
-        });
-
-
-
         return rootView;
 
     }
