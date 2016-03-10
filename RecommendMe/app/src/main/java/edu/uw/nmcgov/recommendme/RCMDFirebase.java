@@ -113,6 +113,7 @@ public class RCMDFirebase {
     //if map is "name" -> "tyler", "email" -> "tylerj11@uw.edu", firebase reflects this
     public void createUser(Map<String, String> map) {
         Log.v("USER", "created user!");
+        map.put("name", map.get("name").trim());
         Firebase userRef = myFirebaseUserRef.push();
         userRef.setValue(map);
     }
@@ -120,6 +121,7 @@ public class RCMDFirebase {
     //Given a title, list, and adapter that MUST be connected to that list, will
     //query and sort related titles based on relevance
     public void queryTitle(String title, final List<RelatedObject> titleArray, final CustomTileAdapter adapter) {
+        title = title.trim();
         Query userQuery = myFirebaseMoviesRef.orderByChild("name").equalTo(title.trim().toLowerCase());
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -318,6 +320,7 @@ public class RCMDFirebase {
     //fill up the list/adapter with sorted recomendations for that user.
     public void recommendationsForUser(String user, final List<RelatedObject> list,
                                        final CustomTileAdapter adapter) {
+        user.toLowerCase();
         final Map<String, RelatedObject> overAllMap = new HashMap<String, RelatedObject>();
         Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
