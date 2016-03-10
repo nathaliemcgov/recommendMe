@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+
 /**
  * Created by austinweale on 3/9/16.
  */
@@ -22,13 +24,14 @@ public class ExistingLogin extends AppCompatActivity {
 
     private static final String TAG = "existing";
     private int count;
+    private HashMap<String, String> map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.existing_login_activity);
         count = 0;
-
+        map = new HashMap<String, String>();
 
         changeVisibility(R.id.existing_password, View.GONE, 0);
 
@@ -43,6 +46,7 @@ public class ExistingLogin extends AppCompatActivity {
                     if(edit.getText().length() == 0){
                         toasted("email");
                     }else {
+                        map.put("email", edit.getText().toString());
                         changeVisibility(R.id.existing_password, View.VISIBLE, ActionBar.LayoutParams.WRAP_CONTENT);
                         changeVisibility(R.id.existing_email, View.GONE, 0);
                         count++;
@@ -52,6 +56,8 @@ public class ExistingLogin extends AppCompatActivity {
                     if(edit.getText().length() == 0){
                         toasted("password");
                     }else {
+                        map.put("password", edit.getText().toString());
+                        Log.v(TAG, map.toString());
                         sendToNext();
                     }
                 }

@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by austinweale on 3/5/16.
@@ -22,9 +24,16 @@ public class EditFragment extends Fragment {
 
     private String type;
     Activity activity;
+    private List<EditText> texts;
+    private ArrayList<Button> change_buttons;
+
+    public interface sendList {
+        public void update(List<String> list);
+    }
 
     public EditFragment(){
         activity = this.getActivity();
+        change_buttons = new ArrayList<Button>();
     }
 
     public void onAttach(Context context){
@@ -33,6 +42,13 @@ public class EditFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         final View rootView = inflater.inflate(R.layout.edit_fragment, container, false);
+
+        texts = new LinkedList<EditText>();
+
+        texts.add((EditText)rootView.findViewById(R.id.entry_1));
+        texts.add((EditText)rootView.findViewById(R.id.entry_2));
+        texts.add((EditText)rootView.findViewById(R.id.entry_3));
+
 
         //get the type (movie/music/book)
         Bundle bundle = this.getArguments();
@@ -66,9 +82,26 @@ public class EditFragment extends Fragment {
                 Log.v(TAG, "changed " + type + ((EditText) rootView.findViewById(R.id.entry_3)).getText().toString());
             }
         });
+        change_buttons.add(button1);
+        change_buttons.add(button2);
+        change_buttons.add(button3);
+        hideButtons();
 
         return rootView;
 
     }
+    public List send(){
+        return texts;
+    }
+
+    public void hideButtons(){
+        Log.v(TAG, "change " + change_buttons.toString());
+        for(int i = 0; i < change_buttons.size(); i++){
+
+            change_buttons.get(i).setVisibility(View.GONE);
+            change_buttons.get(i).setHeight(0);
+        }
+    }
+
 
 }

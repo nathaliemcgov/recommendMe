@@ -10,13 +10,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by iguest on 3/8/16.
  */
-public class AMoneyPage extends AppCompatActivity {
+public class AMoneyPage extends AppCompatActivity implements EditFragment.sendList {
     private static final String TAG = "start";
     private String[] types;
     private int index;
+    private EditFragment current;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,17 +45,27 @@ public class AMoneyPage extends AppCompatActivity {
             public void onClick(View V) {
                 if(index < types.length) {
                     if(index >= 2){
-                        addFragment(types[index]);
+                        if(current != null){
+                            List<EditText> list = ((EditFragment)current).send();
+                            for(EditText edit: list) {
+                                Log.v(TAG, edit.getText().toString());
+                            }
+                        }
+
+                        current = addFragment(types[index]);
+                        ((EditFragment)current).hideButtons();
+
                         EditText editText = (EditText)findViewById(R.id.email_pass);
                         editText.setVisibility(View.INVISIBLE);
                         editText.setHeight(0);
-                        TextView text = (TextView)findViewById(R.id.confirm);
+                        /*TextView text = (TextView)findViewById(R.id.confirm);
                         text.setVisibility(View.INVISIBLE);
                         text.setHeight(0);
                         EditText confirm = (EditText)findViewById(R.id.email_pass_confirm);
                         confirm.setVisibility(View.INVISIBLE);
-                        confirm.setHeight(0);
+                        confirm.setHeight(0);*/
                     }
+
                     Log.v(TAG, "changed " + types[index]);
                     TextView text = (TextView) findViewById(R.id.type_box);
                     text.setText(types[index]);
@@ -62,7 +76,6 @@ public class AMoneyPage extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     public void sendToNext(){
@@ -70,8 +83,7 @@ public class AMoneyPage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void addFragment(String type){
-
+    public EditFragment addFragment(String type){
 
         Bundle bundle = new Bundle();
         bundle.putString("type", type);
@@ -80,7 +92,13 @@ public class AMoneyPage extends AppCompatActivity {
         getFragmentManager().beginTransaction()
                 .replace(R.id.add_box, edit)
                 .commit();
+        return (EditFragment)edit;
 
+    }
+
+    @Override
+    public void update(List<String> list) {
+        Log.v(TAG, list.toString());
     }
 }
 
