@@ -25,6 +25,7 @@ public class RecommendationSearchResults extends AppCompatActivity
     private ImageButton thumbsDownBtn;
     private RCMDFirebase firebase;
 
+
     RecommendationTileGrid tileGridFragment;
 
     @Override
@@ -39,6 +40,7 @@ public class RecommendationSearchResults extends AppCompatActivity
         titleSearchedFor = (TextView) findViewById(R.id.titleSearchedFor);
         Bundle bundle = getIntent().getExtras();
         final String titleSearched = bundle.getString("title");
+        final String user = bundle.getString("user");
 
         // Adds title searched for to header
         titleSearchedFor.setText(titleSearched);
@@ -55,7 +57,9 @@ public class RecommendationSearchResults extends AppCompatActivity
                 Log.v("tag", titleSearched);
                 if (button.isSelected()) {    // If the user 'likes' the title
 //                    // Send to db the user's email + title of liked media
-                    firebase.setLike(titleSearched, "tyler");
+                    if (user != null) {
+                        firebase.setLike(titleSearched, user);
+                    }
 //                } else {      // If the user 'unlikes' the title
 //                    // Send to db the user's email + title of unliked media
                 }
@@ -114,15 +118,8 @@ public class RecommendationSearchResults extends AppCompatActivity
         // Fragment that contains details about the selected tile
         MediaDetails details = new MediaDetails();
 
-        Bundle bundle = new Bundle();
-        bundle.putString("mediaTitle", mediaTile);
-
-        details.setArguments(bundle);
-
-        // Display title detail fragment
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.recommendationSearchResults, details)
-                .addToBackStack(null)
-                .commit();
+        Intent intent = new Intent(this, MediaDetails.class);
+        intent.putExtra("title", mediaTile);
+        startActivity(intent);
     }
 }

@@ -30,6 +30,8 @@
         <activity android:name=".RecommendationSearchResults" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".CreateProfileActivity" />
+        <activity android:name=".ExistingLogin" />
+        <activity android:name=".MediaDetails" />
     </application>
 
 </manifest>
