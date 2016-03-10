@@ -60,4 +60,5 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/tile_shape"
         android:layout_below="@+id/loginBtn"/>
+
 </RelativeLayout>

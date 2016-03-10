@@ -74,8 +74,12 @@ public class MediaDetails extends AppCompatActivity {
             }
         });
 
-//        getActivity().getSupportFragmentManager().beginTransaction()
-//                .add(R.id.fragContainer, fragTwo).commit();
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        PhoneCapability pc = new PhoneCapability();
+        ft.add(R.id.fragContainer, pc);
+        ft.commit();
 
 //        thumbsDownBtn.setOnTouchListener(new View.OnTouchListener() {
 //            @Override

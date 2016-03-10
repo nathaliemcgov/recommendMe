@@ -8,6 +8,8 @@ import com.google.android.gms.location.LocationServices;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -57,7 +59,6 @@ public class PhoneCapability extends Fragment
 
     private static final String TAG = "MAIN";
 
-
     // constants for the location services
     private static final int MY_PERMISSIONS_REQUEST = 1;
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
@@ -98,7 +99,7 @@ public class PhoneCapability extends Fragment
         });
 
         // button for sending out the netflix intent
-        Button netflixButtonIntent = (Button) getActivity().findViewById(R.id.goToMusic);
+        Button netflixButtonIntent = (Button) getActivity().findViewById(R.id.goToNetflix);
         netflixButtonIntent.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -111,8 +112,7 @@ public class PhoneCapability extends Fragment
         bookstoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               Log.v(TAG, "bookstore button clicked");
-
+                Log.v(TAG, "bookstore button clicked");
                 new AsyncTask<Void, Void, String>() {
                     @Override
                     protected String doInBackground(Void... params) {
@@ -122,7 +122,7 @@ public class PhoneCapability extends Fragment
 
                     @Override
                     protected void onPostExecute(String result) {
-                        onLoadFinished("books " + result);
+                        onLoadFinished(result);
 
                         getNearbyBusinesses("books");
                     }
@@ -136,8 +136,6 @@ public class PhoneCapability extends Fragment
         musicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Log.v(TAG, "music store button clicked");
                 new AsyncTask<Void, Void, String>() {
                     @Override
                     protected String doInBackground(Void... params) {
@@ -147,7 +145,7 @@ public class PhoneCapability extends Fragment
 
                     @Override
                     protected void onPostExecute(String result) {
-                        onLoadFinished("music " + result);
+                        onLoadFinished(result);
 
                         getNearbyBusinesses("music");
                     }
@@ -161,7 +159,6 @@ public class PhoneCapability extends Fragment
             @Override
             public void onClick(View view) {
                 Log.v(TAG, "movie theater button clicked");
-
                 new AsyncTask<Void, Void, String>() {
                     @Override
                     protected String doInBackground(Void... params) {
@@ -172,7 +169,6 @@ public class PhoneCapability extends Fragment
                     @Override
                     protected void onPostExecute(String result) {
                         onLoadFinished(result);
-
                         getNearbyBusinesses("movies");
                     }
                 }.execute();
@@ -183,26 +179,30 @@ public class PhoneCapability extends Fragment
 
     // get the yelp results
     private String getYelpResults(String searchTerm) {
-        YelpAPIAuth api_keys = new YelpAPIAuth();
-        // these are kept secret
-        String consumerKey = api_keys.getYelpConsumerKey();
-        String consumerSecret = api_keys.getYelpConsumerSecret();
-        String token = api_keys.getYelpToken();
-        String tokenSecret = api_keys.getYelpTokenSecret();
+        turnOnLocation();
+        if (mLastLocation != null) {
+            YelpAPIAuth api_keys = new YelpAPIAuth();
+            // these are kept secret
+            String consumerKey = api_keys.getYelpConsumerKey();
+            String consumerSecret = api_keys.getYelpConsumerSecret();
+            String token = api_keys.getYelpToken();
+            String tokenSecret = api_keys.getYelpTokenSecret();
 
-        OAuthService service = new ServiceBuilder().provider(YelpApi2.class)
-                .apiKey(consumerKey).apiSecret(consumerSecret).build();
-        Token accessToken = new Token(token, tokenSecret);
+            OAuthService service = new ServiceBuilder().provider(YelpApi2.class)
+                    .apiKey(consumerKey).apiSecret(consumerSecret).build();
+            Token accessToken = new Token(token, tokenSecret);
 
-        // uses OAuth to query yelp
-        OAuthRequest request = new OAuthRequest(Verb.GET, "http://api.yelp.com/v2/search");
-        request.addQuerystringParameter("term", searchTerm);
-        request.addQuerystringParameter("ll", (float) mLastLocation.getLatitude() + "," + (float) mLastLocation.getLongitude());
-        request.addQuerystringParameter("limit", "2");
+            // uses OAuth to query yelp
+            OAuthRequest request = new OAuthRequest(Verb.GET, "http://api.yelp.com/v2/search");
+            request.addQuerystringParameter("term", searchTerm);
+            request.addQuerystringParameter("ll", (float) mLastLocation.getLatitude() + "," + (float) mLastLocation.getLongitude());
+            request.addQuerystringParameter("limit", "2");
 
-        service.signRequest(accessToken, request);
-        Response response = request.send();
-        return searchTerm + " " + response.getBody();
+            service.signRequest(accessToken, request);
+            Response response = request.send();
+            return searchTerm + " " + response.getBody();
+        }
+        return null;
     }
 
     // pass in either 'books', 'music', or 'movies', to search for
@@ -221,6 +221,9 @@ public class PhoneCapability extends Fragment
 
             // business one
             JSONObject keyToBusinessOne = list.get(0);
+
+
+
             YelpData businessData = new YelpData(keyToBusinessOne);
             Log.v(TAG, businessData.toString());
 
@@ -252,7 +255,6 @@ public class PhoneCapability extends Fragment
             Log.v(TAG, ex.getMessage());
         }
     }
-
 
     // once the onCreateLoader is done, onLoadFinished is called to handle the data returned
     public void onLoadFinished(String dataHacked) {
@@ -312,26 +314,8 @@ public class PhoneCapability extends Fragment
 
         if(!gps_enabled && !network_enabled) {
             // notify user
-            AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-            dialog.setMessage(R.string.enable_gps_message);
-            dialog.setPositiveButton(R.string.enable, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                    // sends them to enable their location.
-                    // they have to press "back" on their phone to get back to their location
-                    Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(myIntent);
-
-                    // get gps
-                }
-            });
-            dialog.setNegativeButton(R.string.enable_denied, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                    // TODO Auto-generated method stub
-                }
-            });
-            dialog.show();
+            LocationDialogFragment dialogFragment = new LocationDialogFragment();
+            dialogFragment.show(getFragmentManager(), "");
         }
     }
 
@@ -375,7 +359,6 @@ public class PhoneCapability extends Fragment
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(watchUrl));
             startActivity(intent);
-            Toast.makeText(getActivity(), "Please install the Netflix App!", Toast.LENGTH_SHORT).show();
         }
     }
 
