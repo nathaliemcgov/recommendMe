@@ -78,6 +78,7 @@ public class SearchForRecommendations extends AppCompatActivity {
 
     private void showRecommendationsForYou() {
         Intent intent = new Intent(this, RecommendationsForYou.class);
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 

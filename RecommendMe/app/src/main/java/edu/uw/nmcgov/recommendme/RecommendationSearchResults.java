@@ -24,7 +24,7 @@ public class RecommendationSearchResults extends AppCompatActivity
     private ImageButton thumbsUpBtn;
     private ImageButton thumbsDownBtn;
     private RCMDFirebase firebase;
-
+    private String user;
 
     RecommendationTileGrid tileGridFragment;
 
@@ -40,7 +40,10 @@ public class RecommendationSearchResults extends AppCompatActivity
         titleSearchedFor = (TextView) findViewById(R.id.titleSearchedFor);
         Bundle bundle = getIntent().getExtras();
         final String titleSearched = bundle.getString("title");
-        final String user = bundle.getString("user");
+        if (bundle.getString("user").length() > 0) {
+            user = bundle.getString("user");
+            Log.v(TAG, "USERRRR " + user);
+        }
 
         // Adds title searched for to header
         titleSearchedFor.setText(titleSearched);
@@ -80,6 +83,11 @@ public class RecommendationSearchResults extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_menu, menu);
+
+        if (user.length() == 0) {
+            MenuItem searchMenuOption = menu.findItem(R.id.recommendationsForYou);
+            searchMenuOption.setVisible(false);
+        }
         return true;
     }
 
@@ -102,11 +110,17 @@ public class RecommendationSearchResults extends AppCompatActivity
     // Show search screen
     private void showSearchForRecommendations() {
         Intent intent = new Intent(this, SearchForRecommendations.class);
+        if (user.length() > 0) {
+            intent.putExtra("user", user);
+        }
         startActivity(intent);
     }
 
     private void showRecommendationsForYou() {
         Intent intent = new Intent(this, RecommendationsForYou.class);
+        if (user.length() > 0) {
+            intent.putExtra("user", user);
+        }
         startActivity(intent);
     }
 
