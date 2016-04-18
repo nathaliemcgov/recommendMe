@@ -50,6 +50,8 @@ public class SearchForRecommendations extends AppCompatActivity {
         if (getIntent().getExtras() != null) {
             user = getIntent().getExtras().getString("user");
         }
+
+        if(user == null) user = "";
     }
 
     // Creates the options menu in the action bar
@@ -71,6 +73,9 @@ public class SearchForRecommendations extends AppCompatActivity {
             case R.id.recommendationsForYou:
                 showRecommendationsForYou();
                 return true;
+            case R.id.profile:
+                showProfile();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -78,6 +83,12 @@ public class SearchForRecommendations extends AppCompatActivity {
 
     private void showRecommendationsForYou() {
         Intent intent = new Intent(this, RecommendationsForYou.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+    }
+
+    private void showProfile() {
+        Intent intent = new Intent(this, ProfileActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
     }

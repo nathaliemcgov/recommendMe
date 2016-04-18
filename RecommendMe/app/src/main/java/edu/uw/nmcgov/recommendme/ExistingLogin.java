@@ -47,7 +47,6 @@ public class ExistingLogin extends Activity {
                 username = usernameField.getText().toString().trim();
                 recommendationsForYou();
                 if (count < 1) {
-
                     changeVisibility(R.id.existing_password, View.VISIBLE, ActionBar.LayoutParams.WRAP_CONTENT);
                     usernameField = (EditText) findViewById(R.id.existing_email_entry);
                     username = usernameField.getText().toString();

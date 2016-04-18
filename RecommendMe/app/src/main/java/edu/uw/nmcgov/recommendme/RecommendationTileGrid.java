@@ -74,12 +74,13 @@ public class RecommendationTileGrid extends Fragment {
         Firebase.setAndroidContext(container.getContext());
         firebase = new RCMDFirebase();
 
-        user = "";
-
         Bundle bundle = this.getArguments();
         if (bundle != null) {
+            Log.v("in bundle", bundle.toString());
             user = bundle.getString("user");
         }
+
+        if(user == null) user = "";
 
         // Container for tiles
         tileGrid = (GridView) rootView.findViewById(R.id.recommendationList);
