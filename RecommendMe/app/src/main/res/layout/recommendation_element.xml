@@ -7,6 +7,13 @@
     android:clickable="true"
     android:background="@drawable/tile_shape">
 
+    <Button
+        android:id="@+id/saveMediaTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Save" />
+
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/recommendationElement"
         android:layout_width="fill_parent"

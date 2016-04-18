@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -105,6 +106,7 @@ public class RecommendationTileGrid extends Fragment {
                 ((OnMediaSelectionListener) getActivity()).onMediaSelected(selectedMedia);
             }
         });
+
         return rootView;
     }
 
