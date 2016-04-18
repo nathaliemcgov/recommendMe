@@ -55,6 +55,7 @@ public class ProfileFragment extends Fragment {
         Button saved = (Button) rootView.findViewById(R.id.saved);
         Button picked = (Button) rootView.findViewById(R.id.picked);
         Button signUp = (Button) rootView.findViewById(R.id.signUp);
+        Button logout = (Button) rootView.findViewById(R.id.logout);
 
         if(!user.equals("")) {
             Log.v(TAG, user +"test");
@@ -98,11 +99,20 @@ public class ProfileFragment extends Fragment {
 
                 }
             });
+
+            logout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View V) {
+                    Intent intent = new Intent(getActivity(), StartPage.class);
+                    startActivity(intent);
+                }
+            });
         } else {
 
             linked.setVisibility(View.INVISIBLE);
             saved.setVisibility(View.INVISIBLE);
             picked.setVisibility(View.INVISIBLE);
+            logout.setVisibility(View.INVISIBLE);
 
             login.setOnClickListener(new View.OnClickListener() {
                 @Override
