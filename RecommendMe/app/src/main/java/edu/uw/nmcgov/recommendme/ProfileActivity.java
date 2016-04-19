@@ -1,6 +1,5 @@
 package edu.uw.nmcgov.recommendme;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -63,10 +62,8 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
                 @Override
                 public void onClick(View V) {
                     Log.v(TAG, "saved");
-                    SavedFragment saved = new SavedFragment();
-                    getFragmentManager().beginTransaction()
-                        .replace(R.id.mainContainer, saved)
-                        .commit();
+                    Intent intent = new Intent(V.getContext(), SavedActivity.class);
+                    startActivity(intent);
                 }
             });
 

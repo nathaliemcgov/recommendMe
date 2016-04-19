@@ -1,6 +1,7 @@
 package edu.uw.nmcgov.recommendme;
 
 
+import android.os.Environment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.app.Activity;
@@ -18,6 +19,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 
 /**
@@ -55,6 +60,16 @@ public class MediaDetails extends AppCompatActivity {
 //        final String selectedMediaTitle = bundle.getString("mediaTitle");
         selectedTitle.setText(selectedMediaTitle);
 
+        // On click listener for "Save" button on selected tile
+        Button saveTitleButton = (Button) findViewById(R.id.saveMediaTitleDetails);
+
+        // Write title to phone's external storage
+        saveTitleButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                handleSaveMediaTitle(selectedMediaTitle);
+            }
+        });
+
         // Setting on click listener to make button appear selected
         // Later will need to store like/dislike in firebase
         thumbsUpBtn = (ImageButton) findViewById(R.id.thumbsUpBtn);
@@ -74,12 +89,12 @@ public class MediaDetails extends AppCompatActivity {
             }
         });
 
-
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        PhoneCapability pc = new PhoneCapability();
-        ft.add(R.id.fragContainer, pc);
-        ft.commit();
+        // Switches to Madison's fragment
+//        FragmentManager fm = getSupportFragmentManager();
+//        FragmentTransaction ft = fm.beginTransaction();
+//        PhoneCapability pc = new PhoneCapability();
+//        ft.add(R.id.fragContainer, pc);
+//        ft.commit();
 
 //        thumbsDownBtn.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
@@ -91,4 +106,35 @@ public class MediaDetails extends AppCompatActivity {
 //        });
     }
 
+    // Writes saved media title to phone's external storage
+    public void handleSaveMediaTitle(String title) {
+        if (isExternalStorageWritable()) {
+            try {
+                File file = new File(Environment.getExternalStorageDirectory(), "mediaTitles.txt");
+                String mediaTitle = title + "\n";
+
+                try {
+                    // create a filewriter and set append modus to true
+                    FileWriter fw = new FileWriter(file, true);
+                    fw.append(mediaTitle);
+                    fw.close();
+
+                } catch (IOException e) {
+                    Log.w("ExternalStorage", "Error writing " + file, e);
+                }
+
+                Log.v("tag", "file written: " + mediaTitle);
+            } catch (Exception e) {
+                Log.v("ERROR", e.toString());
+            }
+        }
+    }
+
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -26,6 +26,7 @@ import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -109,23 +110,22 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
     public void handleSaveMediaTitle(RelatedObject object) {
         if (isExternalStorageWritable()) {
             try {
-                File dir;
-
-                dir = Environment.getExternalStorageDirectory(); //private external
-                dir = mContext.getFilesDir(); //internal file storage
-                dir = mContext.getCacheDir(); //internal cache
-                dir = mContext.getExternalCacheDir(); //external cache
-
                 File file = new File(Environment.getExternalStorageDirectory(), "mediaTitles.txt");
-                FileOutputStream outputStream = new FileOutputStream(file);
+                String mediaTitle = object.name + "\n";
 
-                String mediaTitle = object.name;
-                outputStream.write(mediaTitle.getBytes());
-                outputStream.close();
+                try {
+                    // create a filewriter and set append modus to true
+                    FileWriter fw = new FileWriter(file, true);
+                    fw.append(mediaTitle);
+                    fw.close();
+
+                } catch (IOException e) {
+                    Log.w("ExternalStorage", "Error writing " + file, e);
+                }
 
                 Log.v("tag", "file written: " + mediaTitle);
             } catch (Exception e) {
-                Log.v("tag", e.toString());
+                Log.v("ERROR", e.toString());
             }
         }
     }

@@ -33,6 +33,7 @@
         <activity android:name=".CreateProfileActivity" />
         <activity android:name=".ExistingLogin" />
         <activity android:name=".MediaDetails" />
+        <activity android:name=".SavedActivity"></activity>
     </application>
 
 </manifest>

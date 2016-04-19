@@ -26,8 +26,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/detailHeader"
         android:layout_centerInParent="true">
+        <Button
+            android:id="@+id/saveMediaTitleDetails"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:textSize="30dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="30dp"
+            android:text="Save" />
         <ImageButton
             android:id="@+id/thumbsUpBtn"
+            android:layout_toRightOf="@+id/saveMediaTitleDetails"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:adjustViewBounds="true"
