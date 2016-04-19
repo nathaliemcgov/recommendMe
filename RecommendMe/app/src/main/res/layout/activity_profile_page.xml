@@ -75,5 +75,15 @@
             android:background="@drawable/tile_shape"
             />
 
+        <Button
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="Delete Profile"
+            android:id="@+id/deleteProfile"
+            android:textSize="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/tile_shape"
+            />
+
 </LinearLayout>
 

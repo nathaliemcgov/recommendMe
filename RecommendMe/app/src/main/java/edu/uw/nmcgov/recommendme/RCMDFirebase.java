@@ -377,4 +377,26 @@ public class RCMDFirebase {
             }
         });
     }
+
+    public void deleteUser(String user) {
+        Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
+                        UserObject object = singleObject.getValue(UserObject.class);
+                        singleObject.getRef().removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+    }
 }
