@@ -95,11 +95,10 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         // On click listener for "Save" button on each tile
         Button saveTitleButton = (Button) convertView.findViewById(R.id.saveMediaTitle);
 
+        // Write title to phone's external storage
         saveTitleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.v("tag", object.name + " saved");
-                // Write title to phone's external storage
-                handleSaveMediaTitle();
+                handleSaveMediaTitle(object);
             }
         });
 
@@ -107,10 +106,9 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
     }
 
     // Writes saved media title to phone's external storage
-    public void handleSaveMediaTitle() {
+    public void handleSaveMediaTitle(RelatedObject object) {
         if (isExternalStorageWritable()) {
             try {
-                // Where the file will be saved
                 File dir;
 
                 dir = Environment.getExternalStorageDirectory(); //private external
@@ -118,15 +116,16 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                 dir = mContext.getCacheDir(); //internal cache
                 dir = mContext.getExternalCacheDir(); //external cache
 
-                File file = new File(mContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "mediaTitles.txt");
+                File file = new File(Environment.getExternalStorageDirectory(), "mediaTitles.txt");
                 FileOutputStream outputStream = new FileOutputStream(file);
-                String msg = "Writing to file";
-                outputStream.write(msg.getBytes());
 
+                String mediaTitle = object.name;
+                outputStream.write(mediaTitle.getBytes());
                 outputStream.close();
-                Log.v("tag", "file written");
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
+
+                Log.v("tag", "file written: " + mediaTitle);
+            } catch (Exception e) {
+                Log.v("tag", e.toString());
             }
         }
     }

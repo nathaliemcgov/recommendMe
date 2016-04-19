@@ -10,10 +10,9 @@
         android:gravity="center"
         android:text="Saved"/>
 
-    <Button
+    <TextView
+        android:id="@+id/savedContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="back"
-        android:id="@+id/saved_back"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>
