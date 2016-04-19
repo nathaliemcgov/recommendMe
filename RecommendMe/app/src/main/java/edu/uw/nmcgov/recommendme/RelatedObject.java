@@ -31,4 +31,8 @@ public class RelatedObject implements Comparable<RelatedObject> {
     public String toString() {
         return name;
     }
+
+    public double getRatio() {
+        return ratio;
+    }
 }

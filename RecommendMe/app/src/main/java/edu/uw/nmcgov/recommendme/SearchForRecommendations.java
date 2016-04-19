@@ -63,6 +63,10 @@ public class SearchForRecommendations extends AppCompatActivity {
         // Hides search option from menu because user is currently on search screen
         MenuItem searchMenuOption = menu.findItem(R.id.searchRecommendations);
         searchMenuOption.setVisible(false);
+        if (user == null || user.length() == 0) {
+            MenuItem recsForYou = menu.findItem(R.id.recommendationsForYou);
+            recsForYou.setVisible(false);
+        }
         return true;
     }
 
@@ -74,6 +78,7 @@ public class SearchForRecommendations extends AppCompatActivity {
                 showRecommendationsForYou();
                 return true;
             case R.id.profile:
+                Log.v(TAG, "in profile");
                 showProfile();
                 return true;
             default:

@@ -66,11 +66,11 @@ public class ProfileFragment extends Fragment {
             linked.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View V) {
-                    Log.v(TAG, "linked");
-                    AccountsFragment accounts = new AccountsFragment();
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.mainContainer, accounts)
-                            .commit();
+//                    Log.v(TAG, "linked");
+//                    AccountsFragment accounts = new AccountsFragment();
+//                    getFragmentManager().beginTransaction()
+//                            .replace(R.id.mainContainer, accounts)
+//                            .commit();
 
                 }
             });
@@ -78,11 +78,11 @@ public class ProfileFragment extends Fragment {
             saved.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View V) {
-                    Log.v(TAG, "saved");
-                    SavedFragment saved = new SavedFragment();
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.mainContainer, saved)
-                            .commit();
+//                    Log.v(TAG, "saved");
+//                    SavedFragment saved = new SavedFragment();
+//                    getFragmentManager().beginTransaction()
+//                            .replace(R.id.mainContainer, saved)
+//                            .commit();
 
 
                 }
@@ -91,11 +91,11 @@ public class ProfileFragment extends Fragment {
             picked.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View V) {
-                    Log.v(TAG, "picked");
-                    PicksFragment picks = new PicksFragment();
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.mainContainer, picks)
-                            .commit();
+//                    Log.v(TAG, "picked");
+//                    PicksFragment picks = new PicksFragment();
+//                    getFragmentManager().beginTransaction()
+//                            .replace(R.id.mainContainer, picks)
+//                            .commit();
 
                 }
             });
