@@ -59,11 +59,12 @@ public class CreateProfileActivity extends Activity implements EditFragment.send
                     firebase.createUser(map);
                 }
                 if(index < types.length) {
+                    Log.v("index", index + "");
                     if(index >= 1){
                         if(current != null){
                             List<String> list = ((EditFragment)current).send();
                             Log.v("LIST222", list.toString());
-                            firebase.setManyLikes(list, userEmail);
+                            firebase.setManyLikes(list, userEmail, types[index - 1]);
                             for(String input : list) {
                                 Log.v(TAG, input);
                             }
@@ -88,6 +89,12 @@ public class CreateProfileActivity extends Activity implements EditFragment.send
                     text.setText(types[index]);
                     index++;
                 } else {
+                    List<String> list = ((EditFragment)current).send();
+                    Log.v("LIST222", list.toString());
+                    firebase.setManyLikes(list, userEmail, types[index - 1]);
+                    for(String input : list) {
+                        Log.v(TAG, input);
+                    }
                     Log.v(TAG, "Account Created!");
                     sendToRecommendationsForYou();
                 }

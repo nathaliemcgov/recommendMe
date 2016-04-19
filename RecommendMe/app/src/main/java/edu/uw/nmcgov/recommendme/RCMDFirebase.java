@@ -164,13 +164,13 @@ public class RCMDFirebase {
     //Used if you want to set more than one like at once
     //String user must be the username for now
     //Adds likes to a user. Will also update connections to other objects
-    public void setManyLikes(List<String> toLike, String user) {
+    public void setManyLikes(List<String> toLike, String user, String type) {
         Log.v("SETMANY", "SET SET");
-        setManyLikes(toLike, user, 0);
+        setManyLikes(toLike, user, 0, type);
     }
 
     //Used by the public set many likes method. Recursive :)
-    private void setManyLikes(final List<String> toLike, final String user, final int pos) {
+    private void setManyLikes(final List<String> toLike, final String user, final int pos, final String type) {
         if(pos < toLike.size()) {
             Log.v("tag", toLike.get(pos) + ' ' + user);
             final String liked = toLike.get(pos).toLowerCase();
@@ -182,45 +182,45 @@ public class RCMDFirebase {
                         UserObject object = singleObject.getValue(UserObject.class);
                         //If user hasn't liked anything yet, create the liked map
                         Map<String, Object> userLikes = object.getLiked();
-                        if (userLikes == null) {
+                        if (userLikes == null)
                             userLikes = new HashMap<String, Object>();
-                        } else { //Update everything in the map to have a relationship to the new object
-                            Query userQuery = myFirebaseMoviesRef.orderByChild("name").equalTo(liked);
-                            final Map<String, Object> finalUserLikes = userLikes;
-                            userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                        //Update everything in the map to have a relationship to the new object
+                        Query movieQuery = myFirebaseMoviesRef.orderByChild("name").equalTo(liked);
+                        final Map<String, Object> finalUserLikes = userLikes;
+                        movieQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                    //Create the media object in firebase
-                                    //If movie doesn't exist
-                                    if (dataSnapshot.getValue() == null) {
-                                        Log.v("DOUBLETOYSTORYERRORIF", user + " " + liked);
-                                        Firebase newPostRef = myFirebaseMoviesRef.push();
-                                        newPostRef.child("name").setValue(liked);
-                                        newPostRef.child("totalUserLikes").setValue(1);
-                                    } else { //If movie does exist
-                                        Log.v("DOUBLETOYSTORYERRORELSE", user + " " + liked);
-                                        for (DataSnapshot singleObject : dataSnapshot.getChildren()) { // this should really only loop once
-                                            MediaObject object = singleObject.getValue(MediaObject.class);
-                                            int totalUserLikes = object.getTotalUserLikes();
-                                            Firebase ref = singleObject.getRef();
-                                            ref.child("totalUserLikes").setValue(1 + totalUserLikes);
-                                        }
-                                    }
-
-                                    for (String key : finalUserLikes.keySet()) {
-                                        if (!liked.equals(key))
-                                            createConnection(liked, key);
+                                //Create the media object in firebase
+                                //If movie doesn't exist
+                                if (dataSnapshot.getValue() == null) {
+                                    Log.v("DOUBLETOYSTORYERRORIF", user + " " + liked + " " + type);
+                                    Firebase newPostRef = myFirebaseMoviesRef.push();
+                                    newPostRef.child("name").setValue(liked);
+                                    newPostRef.child("totalUserLikes").setValue(1);
+                                    newPostRef.child("type").setValue(type);
+                                } else { //If movie does exist
+                                    Log.v("DOUBLETOYSTORYERRORELSE", user + " " + liked);
+                                    for (DataSnapshot singleObject : dataSnapshot.getChildren()) { // this should really only loop once
+                                        MediaObject object = singleObject.getValue(MediaObject.class);
+                                        int totalUserLikes = object.getTotalUserLikes();
+                                        Firebase ref = singleObject.getRef();
+                                        ref.child("totalUserLikes").setValue(1 + totalUserLikes);
                                     }
                                 }
 
-                                @Override
-                                public void onCancelled(FirebaseError firebaseError) {
-
+                                for (String key : finalUserLikes.keySet()) {
+                                    if (!liked.equals(key))
+                                        createConnection(liked, key);
                                 }
-                            });
-                        }
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
 
                         userLikes.put(liked, true);
                         Firebase postRef = singleObject.getRef();
@@ -229,14 +229,14 @@ public class RCMDFirebase {
 
                                 @Override
                                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                    setManyLikes(toLike, user, pos + 1);
+                                    setManyLikes(toLike, user, pos + 1, type);
                                 }
                             });
                         else
                             postRef.child("liked").setValue(userLikes, new Firebase.CompletionListener() {
                                 @Override
                                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                    setManyLikes(toLike, user, pos + 1);
+                                    setManyLikes(toLike, user, pos + 1, type);
                                 }
                             });
                     }
@@ -288,7 +288,6 @@ public class RCMDFirebase {
                                             ref.child("totalUserLikes").setValue(1 + totalUserLikes);
                                         }
                                     }
-
                                     for (String key : finalUserLikes.keySet()) {
                                         if (!liked.equals(key))
                                             createConnection(liked, key);
