@@ -26,6 +26,7 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
     private RCMDFirebase firebase;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

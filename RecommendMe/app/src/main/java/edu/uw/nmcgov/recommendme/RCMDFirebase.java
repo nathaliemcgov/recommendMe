@@ -1,16 +1,22 @@
 package edu.uw.nmcgov.recommendme;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
+import com.firebase.client.core.Context;
 
+import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,6 +26,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+
+import static android.support.v4.app.ActivityCompat.startActivity;
 
 /**
  * Created by iguest on 3/3/16.
@@ -314,6 +322,29 @@ public class RCMDFirebase {
                 }
             });
         }
+    }
+
+    public void checkUserExists(String user, final Intent success, final Activity activity, final Toast toast) {
+        user = user.toLowerCase();
+        Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    if (dataSnapshot.getValue() != null)
+                        startActivity(activity, success, null);
+                    else {
+                        toast.show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     //Given a user (name), list, and adapter that MUST be connected to that list, will
