@@ -62,13 +62,11 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
             saved.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View V) {
-//                    Log.v(TAG, "saved");
-//                    SavedFragment saved = new SavedFragment();
-//                    getFragmentManager().beginTransaction()
-//                            .replace(R.id.mainContainer, saved)
-//                            .commit();
-
-
+                    Log.v(TAG, "saved");
+                    SavedFragment saved = new SavedFragment();
+                    getFragmentManager().beginTransaction()
+                        .replace(R.id.mainContainer, saved)
+                        .commit();
                 }
             });
 
