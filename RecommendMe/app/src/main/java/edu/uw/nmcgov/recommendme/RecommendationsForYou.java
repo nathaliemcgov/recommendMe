@@ -20,7 +20,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class RecommendationsForYou extends AppCompatActivity
-        implements RecommendationTileGrid.OnMediaSelectionListener{
+        implements RecommendationTileGrid.OnMediaSelectionListener {
 
     private GridView tileGrid;
     private ArrayList<String> recommendationList;

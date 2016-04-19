@@ -316,8 +316,8 @@ public class RCMDFirebase {
         }
     }
 
-    //Given a user (name), list, and adapter that MUST be connected to that list, will
-    //fill up the list/adapter with sorted recomendations for that user.
+    // Given a user (name), list, and adapter that MUST be connected to that list, will
+    // fill up the list/adapter with sorted recomendations for that user.
     public void recommendationsForUser(String user, final List<RelatedObject> list,
                                        final CustomTileAdapter adapter) {
         user = user.toLowerCase();

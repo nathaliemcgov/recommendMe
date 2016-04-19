@@ -10,6 +10,13 @@ public class RelatedObject implements Comparable<RelatedObject> {
     public int totalLikes;
     public double ratio; //Ratio of likes to totalLikes
 
+    public RelatedObject(String name) {
+        this.name = name;
+        this.likes = 0;
+        this.totalLikes = 0;
+        this.ratio = 0;
+    }
+
     public RelatedObject(String name, int likes, int totalLikes) {
         this.name = name;
         this.likes = likes;
