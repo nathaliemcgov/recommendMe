@@ -44,8 +44,8 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
         if(!user.equals("")) {
             Log.v(TAG, user +"test");
 
-            login.setVisibility(View.INVISIBLE);
-            signUp.setVisibility(View.INVISIBLE);
+            login.setVisibility(View.GONE);
+            signUp.setVisibility(View.GONE);
 
             linked.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -93,10 +93,10 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
             });
         } else {
 
-            linked.setVisibility(View.INVISIBLE);
-            saved.setVisibility(View.INVISIBLE);
-            picked.setVisibility(View.INVISIBLE);
-            logout.setVisibility(View.INVISIBLE);
+            linked.setVisibility(View.GONE);
+            saved.setVisibility(View.GONE);
+            picked.setVisibility(View.GONE);
+            logout.setVisibility(View.GONE);
 
             login.setOnClickListener(new View.OnClickListener() {
                 @Override
