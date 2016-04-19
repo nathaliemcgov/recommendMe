@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+
 import java.util.HashMap;
 
 /**
@@ -28,6 +30,7 @@ public class ExistingLogin extends Activity {
     private EditText usernameField;
     private String username;
     private HashMap<String, String> map;
+    private RCMDFirebase firebase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,8 @@ public class ExistingLogin extends Activity {
         setContentView(R.layout.existing_login_activity);
         count = 0;
         map = new HashMap<String, String>();
+        Firebase.setAndroidContext(this);
+        firebase = new RCMDFirebase();
 
         changeVisibility(R.id.existing_password, View.GONE, 0);
 
@@ -42,37 +47,45 @@ public class ExistingLogin extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                changeVisibility(R.id.existing_password, View.VISIBLE, ActionBar.LayoutParams.WRAP_CONTENT);
+                changeVisibility(R.id.existing_password, View.GONE, ActionBar.LayoutParams.WRAP_CONTENT);
                 usernameField = (EditText) findViewById(R.id.existing_email_entry);
                 username = usernameField.getText().toString().trim();
-                recommendationsForYou();
-                if (count < 1) {
-                    changeVisibility(R.id.existing_password, View.VISIBLE, ActionBar.LayoutParams.WRAP_CONTENT);
-                    usernameField = (EditText) findViewById(R.id.existing_email_entry);
-                    username = usernameField.getText().toString();
-                    changeVisibility(R.id.existing_email, View.GONE, 0);
-                    count++;
-                } else {
-                    recommendationsForYou();
-                    Log.v(TAG, "back");
 
-                    EditText edit = (EditText) findViewById(R.id.existing_email_entry);
-                    if (edit.getText().length() == 0) {
-                        toasted("email");
-                    } else {
-                        map.put("email", edit.getText().toString());
-                        /*changeVisibility(R.id.existing_password, View.VISIBLE, ActionBar.LayoutParams.WRAP_CONTENT);
-                        changeVisibility(R.id.existing_email, View.GONE, 0);*/
-                    }
-                }
+
+                recommendationsForYou(username);
+//                if (count < 1) {
+//                    changeVisibility(R.id.existing_password, View.VISIBLE, ActionBar.LayoutParams.WRAP_CONTENT);
+//                    usernameField = (EditText) findViewById(R.id.existing_email_entry);
+//                    username = usernameField.getText().toString();
+//                    changeVisibility(R.id.existing_email, View.GONE, 0);
+//                    count++;
+//                } else {
+//                    recommendationsForYou(username);
+//                    Log.v(TAG, "back");
+//
+//                    EditText edit = (EditText) findViewById(R.id.existing_email_entry);
+//                    if (edit.getText().length() == 0) {
+//                        toasted("email");
+//                    } else {
+//                        map.put("email", edit.getText().toString());
+//                        /*changeVisibility(R.id.existing_password, View.VISIBLE, ActionBar.LayoutParams.WRAP_CONTENT);
+//                        changeVisibility(R.id.existing_email, View.GONE, 0);*/
+//                    }
+//                }
             }
         });
     }
 
-    public void recommendationsForYou() {
+    public void recommendationsForYou(String user) {
         Intent intent = new Intent(this, RecommendationsForYou.class);
         intent.putExtra("user", username);
-        startActivity(intent);
+
+        Context context = getApplicationContext();
+        CharSequence text = "User does not exist";
+        int duration = Toast.LENGTH_LONG;
+        Toast toast = Toast.makeText(context, text, duration);
+
+        firebase.checkUserExists(user, intent, this, toast);
     }
 
     public void toasted(String type){

@@ -64,7 +64,7 @@ public class FireBaseActivity extends AppCompatActivity  {
             tylerLikes.add("beach house");
 
 
-            firebase.setManyLikes(tylerLikes, "tyler");
+            //firebase.setManyLikes(tylerLikes, "tyler");
 
             tylerLikes = new ArrayList<String>();
 
@@ -75,7 +75,7 @@ public class FireBaseActivity extends AppCompatActivity  {
             tylerLikes.add("slaughterhouse 5");
             tylerLikes.add("modest mouse");
 
-            firebase.setManyLikes(tylerLikes, "chris");
+            //firebase.setManyLikes(tylerLikes, "chris");
 
             tylerLikes = new ArrayList<String>();
 
@@ -86,7 +86,7 @@ public class FireBaseActivity extends AppCompatActivity  {
             tylerLikes.add("beach house");
             tylerLikes.add("2001 : A space odyssey");
 
-            firebase.setManyLikes(tylerLikes, "allison");
+            //firebase.setManyLikes(tylerLikes, "allison");
 
             tylerLikes = new ArrayList<String>();
 
@@ -99,7 +99,7 @@ public class FireBaseActivity extends AppCompatActivity  {
             tylerLikes.add("beach house");
             tylerLikes.add("2001 : A space odyssey");
 
-            firebase.setManyLikes(tylerLikes, "austin");
+            //firebase.setManyLikes(tylerLikes, "austin");
 
             tylerLikes = new ArrayList<String>();
 
@@ -107,7 +107,7 @@ public class FireBaseActivity extends AppCompatActivity  {
 
             tylerLikes.add("radiohead");
 
-            firebase.setManyLikes(tylerLikes, "nathalie");
+            //firebase.setManyLikes(tylerLikes, "nathalie");
 
         }
 
