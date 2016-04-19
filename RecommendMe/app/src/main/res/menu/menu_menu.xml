@@ -9,4 +9,9 @@
         android:title="Rcmds For You"
         android:orderInCategory="2"
         app:showAsAction="never" />
+    <item android:id="@+id/profile"
+        android:title="Profile"
+        android:orderInCategory="2"
+        app:showAsAction="never" />
+
 </menu>

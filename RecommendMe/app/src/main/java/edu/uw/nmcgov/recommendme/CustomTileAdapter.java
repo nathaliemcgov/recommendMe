@@ -65,7 +65,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
 
         TextView mediaTitle = (TextView) convertView.findViewById(R.id.recommendationElement);
 
-        mediaTitle.setText(object.name);
+        mediaTitle.setText(object.name + " " + ((int) Math.floor(object.getRatio() * 100)) + "%");
 
         mediaTitle.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -320,7 +320,7 @@ public class RCMDFirebase {
     //fill up the list/adapter with sorted recomendations for that user.
     public void recommendationsForUser(String user, final List<RelatedObject> list,
                                        final CustomTileAdapter adapter) {
-        user.toLowerCase();
+        user = user.toLowerCase();
         final Map<String, RelatedObject> overAllMap = new HashMap<String, RelatedObject>();
         Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {

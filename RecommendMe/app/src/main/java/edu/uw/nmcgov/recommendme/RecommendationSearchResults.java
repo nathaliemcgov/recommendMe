@@ -103,6 +103,10 @@ public class RecommendationSearchResults extends AppCompatActivity
             case R.id.recommendationsForYou:
                 showRecommendationsForYou();
                 return true;
+            case R.id.profile:
+                Log.v(TAG, "in profile");
+                showProfile();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -114,6 +118,12 @@ public class RecommendationSearchResults extends AppCompatActivity
         if (user != null && user.length() > 0) {
             intent.putExtra("user", user);
         }
+        startActivity(intent);
+    }
+
+    private void showProfile() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 
