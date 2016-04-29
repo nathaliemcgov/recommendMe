@@ -11,10 +11,12 @@
     android:id="@+id/searchForRecommendations"
     tools:context="edu.uw.nmcgov.recommendme.SearchForRecommendations">
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/searchMediaText"
         android:layout_width="250dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+        <requestFocus />
+    </AutoCompleteTextView>
 
     <Button
         android:id="@+id/searchMediaBtn"

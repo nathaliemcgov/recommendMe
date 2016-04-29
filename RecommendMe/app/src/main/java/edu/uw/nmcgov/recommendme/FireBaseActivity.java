@@ -36,80 +36,82 @@ public class FireBaseActivity extends AppCompatActivity  {
 
         Map<String, String> tyler = new HashMap<String, String>();
 
-        int i = 4;
+        //20firebase.autoComplete("20");
 
-        if(i == 0) {
-
-            tyler.put("name", "tyler");
-            firebase.createUser(tyler);
-            tyler.put("name", "chris");
-            firebase.createUser(tyler);
-            tyler.put("name", "austin");
-            firebase.createUser(tyler);
-            tyler.put("name", "nathalie");
-            firebase.createUser(tyler);
-            tyler.put("name", "allison");
-            firebase.createUser(tyler);
-        }
-
-
-        List<String> tylerLikes = new ArrayList<String>();
-
-        if(i == 1) {
-
-            tylerLikes.add("toy story");
-            tylerLikes.add("death cab for cutie");
-            tylerLikes.add("slaughterhouse 5");
-            tylerLikes.add("modest mouse");
-            tylerLikes.add("beach house");
-
-
-            //firebase.setManyLikes(tylerLikes, "tyler");
-
-            tylerLikes = new ArrayList<String>();
-
-        } if(i == 2) {
-
-            tylerLikes.add("elliot smith");
-            tylerLikes.add("american beauty");
-            tylerLikes.add("slaughterhouse 5");
-            tylerLikes.add("modest mouse");
-
-            //firebase.setManyLikes(tylerLikes, "chris");
-
-            tylerLikes = new ArrayList<String>();
-
-        } if(i == 3) {
-
-            tylerLikes.add("toy story");
-            tylerLikes.add("frozen");
-            tylerLikes.add("beach house");
-            tylerLikes.add("2001 : A space odyssey");
-
-            //firebase.setManyLikes(tylerLikes, "allison");
-
-            tylerLikes = new ArrayList<String>();
-
-
-        } if(i == 4) {
-
-
-            tylerLikes.add("speedy ortiz");
-            tylerLikes.add("the world is a beautiful place and i am no longer afraid to die");
-            tylerLikes.add("beach house");
-            tylerLikes.add("2001 : A space odyssey");
-
-            //firebase.setManyLikes(tylerLikes, "austin");
-
-            tylerLikes = new ArrayList<String>();
-
-        } if(i == 5) {
-
-            tylerLikes.add("radiohead");
-
-            //firebase.setManyLikes(tylerLikes, "nathalie");
-
-        }
+//        int i = 4;
+//
+//        if(i == 0) {
+//
+//            tyler.put("name", "tyler");
+//            firebase.createUser(tyler);
+//            tyler.put("name", "chris");
+//            firebase.createUser(tyler);
+//            tyler.put("name", "austin");
+//            firebase.createUser(tyler);
+//            tyler.put("name", "nathalie");
+//            firebase.createUser(tyler);
+//            tyler.put("name", "allison");
+//            firebase.createUser(tyler);
+//        }
+//
+//
+//        List<String> tylerLikes = new ArrayList<String>();
+//
+//        if(i == 1) {
+//
+//            tylerLikes.add("toy story");
+//            tylerLikes.add("death cab for cutie");
+//            tylerLikes.add("slaughterhouse 5");
+//            tylerLikes.add("modest mouse");
+//            tylerLikes.add("beach house");
+//
+//
+//            //firebase.setManyLikes(tylerLikes, "tyler");
+//
+//            tylerLikes = new ArrayList<String>();
+//
+//        } if(i == 2) {
+//
+//            tylerLikes.add("elliot smith");
+//            tylerLikes.add("american beauty");
+//            tylerLikes.add("slaughterhouse 5");
+//            tylerLikes.add("modest mouse");
+//
+//            //firebase.setManyLikes(tylerLikes, "chris");
+//
+//            tylerLikes = new ArrayList<String>();
+//
+//        } if(i == 3) {
+//
+//            tylerLikes.add("toy story");
+//            tylerLikes.add("frozen");
+//            tylerLikes.add("beach house");
+//            tylerLikes.add("2001 : A space odyssey");
+//
+//            //firebase.setManyLikes(tylerLikes, "allison");
+//
+//            tylerLikes = new ArrayList<String>();
+//
+//
+//        } if(i == 4) {
+//
+//
+//            tylerLikes.add("speedy ortiz");
+//            tylerLikes.add("the world is a beautiful place and i am no longer afraid to die");
+//            tylerLikes.add("beach house");
+//            tylerLikes.add("2001 : A space odyssey");
+//
+//            //firebase.setManyLikes(tylerLikes, "austin");
+//
+//            tylerLikes = new ArrayList<String>();
+//
+//        } if(i == 5) {
+//
+//            tylerLikes.add("radiohead");
+//
+//            //firebase.setManyLikes(tylerLikes, "nathalie");
+//
+//        }
 
 //
 //        firebase.setLike("elliot smith", "chris");

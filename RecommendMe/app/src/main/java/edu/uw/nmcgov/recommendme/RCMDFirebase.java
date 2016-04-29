@@ -34,6 +34,7 @@ import static android.support.v4.app.ActivityCompat.startActivity;
  */
 public class RCMDFirebase {
 
+    private static final String TAG = "FIREBASE";
     final Firebase myFirebaseMoviesRef = new Firebase("https://rcmd.firebaseio.com/Movies");
     final Firebase myFirebaseUserRef = new Firebase("https://rcmd.firebaseio.com/Users");
 
@@ -428,5 +429,29 @@ public class RCMDFirebase {
             }
         });
 
+    }
+
+    public void autoComplete(final String input, final ArrayAdapter<String> adapter) {
+        Query mediaQuery = myFirebaseMoviesRef.orderByChild("name").startAt(input).limitToFirst(5);
+        adapter.clear();
+        mediaQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
+                        MediaObject object = singleObject.getValue(MediaObject.class);
+
+                        adapter.add(object.getName());
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 }

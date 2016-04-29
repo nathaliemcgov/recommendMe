@@ -5,34 +5,57 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.firebase.client.Firebase;
 
 public class SearchForRecommendations extends AppCompatActivity {
 
     private final String TAG = "SearchForRcmds";
 
-    private EditText searchMediaText;
+    private AutoCompleteTextView searchMediaText;
     private Button searchTitleBtn;
     private String user;
+    private RCMDFirebase firebase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_for_recommendations);
 
+        Firebase.setAndroidContext(this);
+        firebase = new RCMDFirebase();
+
         // Sets keyboard to always hidden on create
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         // The text entry so user can search
-        searchMediaText = (EditText) findViewById(R.id.searchMediaText);
+        searchMediaText = (AutoCompleteTextView) findViewById(R.id.searchMediaText);
+        String[] suggestions = {};
+
+        final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,suggestions);
+
+        searchMediaText.setAdapter(adapter);
+        searchMediaText.setThreshold(2);
+
+        searchMediaText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                firebase.autoComplete(searchMediaText.getText().toString(), adapter);
+                return false;
+            }
+        });
 
         // Click listener for search title button
         searchTitleBtn = (Button) findViewById(R.id.searchMediaBtn);
