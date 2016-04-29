@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -441,7 +442,8 @@ public class RCMDFirebase {
                 if (dataSnapshot != null) {
                     for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
                         MediaObject object = singleObject.getValue(MediaObject.class);
-                        addIfDoesntContain(adapter, object.getName().trim());
+                        if(object.getName().startsWith(input))
+                            addIfDoesntContain(adapter, object.getName().trim());
                     }
                 }
             }
@@ -455,10 +457,25 @@ public class RCMDFirebase {
 
     private void addIfDoesntContain(final ArrayAdapter<String> adapter, final String name) {
         for(int i = 0; i < adapter.getCount(); i++) {
-            Log.v(TAG, name + adapter.getItem(i));
+            Log.v(TAG, name + adapter.getItem(i) + adapter.getCount());
             if(name.equals(adapter.getItem(i)))
                 return;
         }
         adapter.add(name);
+    }
+
+    private void removeDuplicates(final ArrayAdapter<String> adapter) {
+        Set<String> set = new HashSet<String>();
+        int size = adapter.getCount();
+        Log.v(TAG, size + "");
+        for(int i = 0; i < size; i++) {
+            String item = adapter.getItem(i);
+            if(set.contains(item)) {
+                adapter.remove(item);
+                i--;
+            } else {
+                set.add(item);
+            }
+        }
     }
 }
