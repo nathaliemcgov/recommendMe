@@ -323,6 +323,38 @@ public class RCMDFirebase {
         }
     }
 
+    // Given a username, sets a dislike for the selected media title
+    public void setDislike(String user, String dislikedTitle) {
+        if (user != null && !user.equals("")) {
+            Log.v("FIREBASE", "Reached dislike");
+            final String disliked = dislikedTitle.toLowerCase();
+            Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
+
+            userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+                        UserObject object = child.getValue(UserObject.class);
+
+                        Map<String, Object> userDislikes = object.getLiked();
+
+                        // If the user has not disliked yet - create a map for dislikes
+                        if (userDislikes == null) {
+                            userDislikes = new HashMap<String, Object>();
+                        } else {
+
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+        }
+    }
+
     public void checkUserExists(String user, final Intent success, final Activity activity, final Toast toast) {
         user = user.toLowerCase();
         Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
