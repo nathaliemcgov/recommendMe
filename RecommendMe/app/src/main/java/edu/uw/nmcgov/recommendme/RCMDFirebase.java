@@ -432,8 +432,8 @@ public class RCMDFirebase {
     }
 
     public void autoComplete(final String input, final ArrayAdapter<String> adapter) {
-        Query mediaQuery = myFirebaseMoviesRef.orderByChild("name").startAt(input).limitToFirst(5);
-        adapter.clear();
+        Log.v(TAG, input);
+        Query mediaQuery = myFirebaseMoviesRef.orderByChild("name").startAt(input).limitToFirst(3);
         mediaQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -441,9 +441,7 @@ public class RCMDFirebase {
                 if (dataSnapshot != null) {
                     for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
                         MediaObject object = singleObject.getValue(MediaObject.class);
-
-                        adapter.add(object.getName());
-
+                        addIfDoesntContain(adapter, object.getName().trim());
                     }
                 }
             }
@@ -453,5 +451,14 @@ public class RCMDFirebase {
 
             }
         });
+    }
+
+    private void addIfDoesntContain(final ArrayAdapter<String> adapter, final String name) {
+        for(int i = 0; i < adapter.getCount(); i++) {
+            Log.v(TAG, name + adapter.getItem(i));
+            if(name.equals(adapter.getItem(i)))
+                return;
+        }
+        adapter.add(name);
     }
 }

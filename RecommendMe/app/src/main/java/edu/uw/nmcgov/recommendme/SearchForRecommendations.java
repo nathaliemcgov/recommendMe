@@ -47,12 +47,13 @@ public class SearchForRecommendations extends AppCompatActivity {
         final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,suggestions);
 
         searchMediaText.setAdapter(adapter);
-        searchMediaText.setThreshold(2);
+        searchMediaText.setThreshold(1);
 
         searchMediaText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                firebase.autoComplete(searchMediaText.getText().toString(), adapter);
+                if(event.getAction() == KeyEvent.ACTION_UP)
+                    firebase.autoComplete(searchMediaText.getText().toString(), adapter);
                 return false;
             }
         });
