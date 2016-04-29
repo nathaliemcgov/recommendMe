@@ -11,6 +11,7 @@ public class MediaObject {
     private String name;
     private Map<String, Object> related;
     private int totalUserLikes;
+    private int totalUserDislikes;
     private String type;
 
     public MediaObject() {
@@ -26,6 +27,8 @@ public class MediaObject {
     }
 
     public int getTotalUserLikes() { return totalUserLikes; }
+
+    public int getTotalUserDislikes() { return totalUserDislikes; }
 
     public String getType() { return type; }
 

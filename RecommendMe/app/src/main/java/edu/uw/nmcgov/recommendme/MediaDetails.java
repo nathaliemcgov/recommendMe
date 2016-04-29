@@ -73,7 +73,7 @@ public class MediaDetails extends AppCompatActivity {
         // Setting on click listener to make button appear selected
         // Later will need to store like/dislike in firebase
         thumbsUpBtn = (ImageButton) findViewById(R.id.thumbsUpBtn);
-//        thumbsDownBtn = (ImageButton) rootView.findViewById(R.id.thumbsDownBtn);
+        thumbsDownBtn = (ImageButton) findViewById(R.id.thumbsDownBtn);
 
         thumbsUpBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View button) {
@@ -89,21 +89,27 @@ public class MediaDetails extends AppCompatActivity {
             }
         });
 
+        thumbsDownBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View button) {
+                //Set the button's appearance
+                button.setSelected(!button.isSelected());
+                Log.v("tag", selectedMediaTitle);
+                if (button.isSelected()) {    // If the user 'likes' the title
+//                    // Send to db the user's email + title of liked media
+                    firebase.setDislike(user, selectedMediaTitle);
+//                } else {      // If the user 'undislikes' the title
+//                    // Send to db the user's email + title of undisliked media
+                }
+            }
+        });
+
         // Switches to Madison's fragment
 //        FragmentManager fm = getSupportFragmentManager();
 //        FragmentTransaction ft = fm.beginTransaction();
 //        PhoneCapability pc = new PhoneCapability();
 //        ft.add(R.id.fragContainer, pc);
 //        ft.commit();
-
-//        thumbsDownBtn.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                thumbsDownBtn.setPressed(true);
-//                thumbsUpBtn.setPressed(false);
-//                return true;
-//            }
-//        });
     }
 
     // Writes saved media title to phone's external storage

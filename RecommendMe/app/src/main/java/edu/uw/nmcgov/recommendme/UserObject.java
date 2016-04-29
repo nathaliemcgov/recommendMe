@@ -9,10 +9,9 @@ import java.util.Objects;
 public class UserObject {
     private String name;
     private Map<String, Object> liked;
+    private Map<String, Object> disliked;
 
-    public UserObject() {
-
-    }
+    public UserObject() {}
 
     public String getName() {
         return name;
@@ -21,4 +20,8 @@ public class UserObject {
     public Map<String, Object> getLiked() {
             return liked;
         }
+
+    public Map<String, Object> getDisliked() {
+        return disliked;
+    }
 }

@@ -42,8 +42,8 @@ public class RCMDFirebase {
     }
 
 
-    //Creates a connection in firebase between the two objects
-    //Calls the pushToFirebase method
+    // Creates a connection in firebase between the two objects
+    // Calls the pushToFirebase method
     private boolean createConnection(String one, String two) {
         final String mediaOne = one.trim().toLowerCase();
         final String mediaTwo = two.trim().toLowerCase();
@@ -323,34 +323,67 @@ public class RCMDFirebase {
         }
     }
 
-    // Given a username, sets a dislike for the selected media title
+    // Given a username - sets a dislike for the selected media title
     public void setDislike(String user, String dislikedTitle) {
-        if (user != null && !user.equals("")) {
+        if (!user.equals("") && user != null) {
             Log.v("FIREBASE", "Reached dislike");
             final String disliked = dislikedTitle.toLowerCase();
-            Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
+            Query getUser = myFirebaseUserRef.orderByChild("name").equalTo(user);
 
-            userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            getUser.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
                         UserObject object = child.getValue(UserObject.class);
 
-                        Map<String, Object> userDislikes = object.getLiked();
+                        Map<String, Object> dislikes = object.getDisliked();
 
                         // If the user has not disliked yet - create a map for dislikes
-                        if (userDislikes == null) {
-                            userDislikes = new HashMap<String, Object>();
+                        if (dislikes == null) {
+                            dislikes = new HashMap<String, Object>();
+                        // The user has disliked at least one title
                         } else {
+                            final Map<String, Object> userDislikes = dislikes;
+                            Query getTitle = myFirebaseMoviesRef.orderByChild("name").equalTo(disliked);
 
+                            getTitle.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    // If title does not exist - create media obj in firebase
+                                    if (dataSnapshot.getValue() == null) {
+                                        // Pushes media titles and sets total # of dislikes of title to 1
+                                        Firebase newEntryRef = myFirebaseMoviesRef.push();
+                                        newEntryRef.child("name").setValue(disliked);
+                                        newEntryRef.child("totalUserDislikes").setValue(1);
+                                    // If title exists
+                                    } else {
+                                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                            // Finds the media title and increments the total # of dislikes
+                                            MediaObject object = child.getValue(MediaObject.class);
+                                            int totalUserDislikes = object.getTotalUserDislikes();
+                                            Firebase ref = child.getRef();
+                                            ref.child("totalUserDislikes").setValue(1 + totalUserDislikes);
+                                        }
+                                    }
+                                    // Makes connections between disliked titles
+                                    for (String key : userDislikes.keySet()) {
+                                        if (!disliked.equals(key)) createConnection(disliked, key);
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(FirebaseError firebaseError) {}
+                            });
                         }
+                        // Adds the dislike to the user
+                        dislikes.put(disliked, true);
+                        Firebase putRef = child.getRef();
+                        Log.v("LOGGG", dislikes + "");
+                        if (dislikes.size() == 1) putRef.child("disliked").updateChildren(dislikes);
+                        else putRef.child("disliked").setValue(dislikes);
                     }
                 }
-
                 @Override
-                public void onCancelled(FirebaseError firebaseError) {
-
-                }
+                public void onCancelled(FirebaseError firebaseError) {}
             });
         }
     }
