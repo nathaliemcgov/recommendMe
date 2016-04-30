@@ -8,12 +8,12 @@
         android:layout_height="wrap_content"
         android:textSize="40dp"
         android:gravity="center"
-        android:text="Linked Accounts"/>
+        android:text="Linked Accounts" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="back"
-        android:id="@+id/linked_back"/>
+        android:id="@+id/linked_back" />
 
 </LinearLayout>

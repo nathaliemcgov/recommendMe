@@ -11,16 +11,54 @@
     android:id="@+id/searchForRecommendations"
     tools:context="edu.uw.nmcgov.recommendme.SearchForRecommendations">
 
-    <EditText
-        android:id="@+id/searchMediaText"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/searchMediaBtn"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search"
-        android:layout_toRightOf="@+id/searchMediaText"/>
+        android:id="@+id/exploreTitle">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EXPLORE"
+            android:textSize="30sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/exploreTitle"
+        android:id="@+id/searchPrompt">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search a unique musical artist, author, or film to get started."
+            android:gravity="center"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/searchPrompt"
+        android:id="@+id/searchArea">
+
+        <EditText
+            android:id="@+id/searchMediaText"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/searchMediaBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Search"
+            android:layout_toRightOf="@+id/searchMediaText"/>
+    </LinearLayout>
+
 
 </RelativeLayout>
