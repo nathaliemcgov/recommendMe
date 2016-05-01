@@ -27,8 +27,6 @@ public class RecommendationSearchResults extends AppCompatActivity
     private RCMDFirebase firebase;
     private String user;
 
-    RecommendationTileGrid tileGridFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +41,6 @@ public class RecommendationSearchResults extends AppCompatActivity
         final String titleSearched = bundle.getString("title");
         if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
             user = bundle.getString("user");
-            Log.v(TAG, "USERRRR " + user);
         }
 
         // Adds title searched for to header
@@ -70,11 +67,15 @@ public class RecommendationSearchResults extends AppCompatActivity
             }
         });
 
+        Bundle bundle1 = new Bundle();
+        bundle1.putString("user", user);
+
         // Fragment to display tile grid
         FragmentManager fm = getSupportFragmentManager();
 
         FragmentTransaction ft = fm.beginTransaction();
         RecommendationTileGrid tileGridFragment = new RecommendationTileGrid();
+        tileGridFragment.setArguments(bundle1);
         ft.add(R.id.gridContainer, tileGridFragment, "Grid");
         ft.commit();
     }
@@ -115,8 +116,12 @@ public class RecommendationSearchResults extends AppCompatActivity
     // Show search screen
     private void showSearchForRecommendations() {
         Intent intent = new Intent(this, SearchForRecommendations.class);
-        if (user != null && user.length() > 0) {
-            intent.putExtra("user", user);
+
+        String username;
+        Bundle bundle = getIntent().getExtras();
+        if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
+            username = bundle.getString("user");
+            intent.putExtra("user", username);
         }
         startActivity(intent);
     }

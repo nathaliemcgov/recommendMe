@@ -23,6 +23,14 @@
         android:textColor="@color/textColor"
         />
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:id="@+id/tileRatio"
+        android:textAlignment="center"
+        android:layout_margin="5dp"
+        android:textColor="@color/textColor"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,5 +46,16 @@
             android:focusable="false"
             android:background="@drawable/thumbs_up_button"
             android:src="@drawable/ic_thumbs_up" />
+
+        <ImageButton
+            android:id="@+id/thumbsDownBtn"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:focusable="false"
+            android:src="@drawable/ic_thumbs_down"
+            android:state_selected="false"
+            android:layout_toRightOf="@+id/thumbsUpBtn" />
     </LinearLayout>
 </LinearLayout>
