@@ -53,7 +53,6 @@ public class RecommendationTileGrid extends Fragment {
     }
 
     public RecommendationTileGrid() {
-        // Required empty public constructor
     }
 
     public interface OnMediaSelectionListener {
@@ -74,7 +73,6 @@ public class RecommendationTileGrid extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.v(TAG, "Reached tile grid fragment!");
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_recommendation_tile_grid, container, false);
 
@@ -82,12 +80,9 @@ public class RecommendationTileGrid extends Fragment {
         firebase = new RCMDFirebase();
 
         Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            Log.v("in bundle", bundle.toString());
+        if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
             user = bundle.getString("user");
         }
-
-        if(user == null) user = "";
 
         // Container for tiles
         tileGrid = (GridView) rootView.findViewById(R.id.recommendationList);
@@ -107,12 +102,12 @@ public class RecommendationTileGrid extends Fragment {
         // Listens for click on specific media recommendation
         tileGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                // Gets the media tile that was selected
-                String selectedMedia = parent.getItemAtPosition(position).toString();
+            // Gets the media tile that was selected
+            String selectedMedia = parent.getItemAtPosition(position).toString();
 
-                Log.v(TAG, "Selected media: " + selectedMedia);
+            Log.v(TAG, "Selected media: " + selectedMedia);
 
-                ((OnMediaSelectionListener) getActivity()).onMediaSelected(selectedMedia);
+            ((OnMediaSelectionListener) getActivity()).onMediaSelected(selectedMedia);
             }
         });
 
@@ -121,17 +116,20 @@ public class RecommendationTileGrid extends Fragment {
 
     // If the user reached screen by searching media title
     private void populateTilesForSearch() {
-        Log.v("USERRR", user);
         CustomTileAdapter customAdapter = new CustomTileAdapter(this.getContext(), recommendationList, user);
 
         tileGrid.setAdapter(customAdapter);
 
-        firebase.queryTitle(title, recommendationList, customAdapter);
+        firebase.queryTitle(title, user, recommendationList, customAdapter);
     }
 
     // If the user reached screen by creating an account or logging in
     private void populateTilesForUser() {
-        Log.v("USERRR", user);
+//        String username;
+//        Bundle bundle = getIntent().getExtras();
+//        if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
+//            username = bundle.getString("user");
+//        }
         CustomTileAdapter customAdapter = new CustomTileAdapter(this.getContext(), recommendationList, user);
 
         tileGrid.setAdapter(customAdapter);

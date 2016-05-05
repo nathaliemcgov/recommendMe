@@ -72,10 +72,11 @@ public class SearchForRecommendations extends AppCompatActivity {
         });
 
         if (getIntent().getExtras() != null) {
-            user = getIntent().getExtras().getString("user");
+            Bundle bundle = getIntent().getExtras();
+            if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
+                user = bundle.getString("user");
+            }
         }
-
-        if(user == null) user = "";
     }
 
     // Creates the options menu in the action bar
