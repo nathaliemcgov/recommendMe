@@ -31,11 +31,21 @@ public class SavedActivity extends AppCompatActivity implements RecommendationTi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved);
 
+        if (getIntent().getExtras() != null) {
+            Bundle bundle = getIntent().getExtras();
+            if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
+                user = bundle.getString("user");
+            }
+        }
+
         // Fragment to display tile grid for saved media titles
         FragmentManager fm = getSupportFragmentManager();
 
         FragmentTransaction ft = fm.beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putString("user", user);
         tileGridFragment = new RecommendationTileGrid();
+        tileGridFragment.setArguments(bundle);
         ft.add(R.id.gridContainer3, tileGridFragment, "Grid");
         ft.commit();
     }

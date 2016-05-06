@@ -25,8 +25,6 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
     private String user;
     private RCMDFirebase firebase;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +95,7 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
                 public void onClick(View V) {
                     Log.v(TAG, "saved");
                     Intent intent = new Intent(V.getContext(), SavedActivity.class);
+                    intent.putExtra("user", user);
                     startActivity(intent);
                 }
             });

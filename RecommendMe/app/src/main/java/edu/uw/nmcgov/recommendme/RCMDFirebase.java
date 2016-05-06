@@ -131,7 +131,9 @@ public class RCMDFirebase {
     //Given a title, list, and adapter that MUST be connected to that list, will
     //query and sort related titles based on relevance
     public void queryTitle(String title, String username, final List<RelatedObject> titleArray, final CustomTileAdapter adapter) {
-        final String user = username.toLowerCase();
+        String userHold = "";
+        if (username != null) userHold = username.toLowerCase();
+        final String user = userHold;
         Log.v("Query title", user + " is the user");
         title = title.trim();
         Query userQuery = myFirebaseMoviesRef.orderByChild("name").equalTo(title.trim().toLowerCase());
@@ -148,7 +150,7 @@ public class RCMDFirebase {
                         for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
                             UserObject userObject = singleObject.getValue(UserObject.class);
                             Map<String, Object> map = userObject.getDisliked();
-
+                            if (map == null) map = new HashMap<String, Object>();
                             for (String key : map.keySet()) {
                                 dislikedTitles.add(key);
                             }
@@ -558,6 +560,7 @@ public class RCMDFirebase {
             if(name.equals(adapter.getItem(i)))
                 return;
         }
+        Log.v(TAG, name + adapter.getCount());
         adapter.add(name);
     }
 

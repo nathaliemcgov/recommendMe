@@ -20,6 +20,9 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class SearchForRecommendations extends AppCompatActivity {
 
     private final String TAG = "SearchForRcmds";
@@ -43,8 +46,8 @@ public class SearchForRecommendations extends AppCompatActivity {
         // The text entry so user can search
         searchMediaText = (AutoCompleteTextView) findViewById(R.id.searchMediaText);
         String[] suggestions = {};
-
-        final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,suggestions);
+        ArrayList<String> lst = new ArrayList<String>(Arrays.asList(suggestions));
+        final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, lst);
 
         searchMediaText.setAdapter(adapter);
         searchMediaText.setThreshold(1);
