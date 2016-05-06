@@ -38,7 +38,8 @@ public class ManageAccountActivity extends AppCompatActivity {
         updateEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                Intent intent = new Intent(V.getContext(), ManageAccountActivity.class);
+                Intent intent = new Intent(V.getContext(), UpdateEmailActivity.class);
+                intent.putExtra("user", user);
                 startActivity(intent);
             }
         });
@@ -49,7 +50,7 @@ public class ManageAccountActivity extends AppCompatActivity {
                 new AlertDialog.Builder(v.getContext())
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle("Delete Profile")
-                        .setMessage("Are you sure you want to delete the profile?")
+                        .setMessage("Are you sure you want to delete your profile?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener()
                         {
                             @Override

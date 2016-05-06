@@ -45,8 +45,6 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
         Button login = (Button) findViewById(R.id.login);
         Button linked = (Button) findViewById(R.id.linked);
         Button manageAccount = (Button) findViewById(R.id.manageAccount);
-//        Button saved = (Button) findViewById(R.id.saved);
-//        Button picked = (Button) findViewById(R.id.picked);
         Button signUp = (Button) findViewById(R.id.signUp);
         Button logout = (Button) findViewById(R.id.logout);
         Button delete = (Button) findViewById(R.id.deleteProfile);
@@ -61,6 +59,7 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
                 @Override
                 public void onClick(View V) {
                     Intent intent = new Intent(V.getContext(), ManageAccountActivity.class);
+                    intent.putExtra("user", user);
                     startActivity(intent);
                 }
             });
@@ -78,30 +77,6 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
 //                }
 //            });
 
-            // For saved recommendations
-//            saved.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View V) {
-//                    Log.v(TAG, "saved");
-//                    Intent intent = new Intent(V.getContext(), SavedActivity.class);
-//                    intent.putExtra("user", user);
-//                    startActivity(intent);
-//                }
-//            });
-
-            // For desert island picks
-//            picked.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View V) {
-//                    Log.v(TAG, "picked");
-//                    PicksFragment picks = new PicksFragment();
-//                    getFragmentManager().beginTransaction()
-//                            .replace(R.id.mainContainer, picks)
-//                            .commit();
-//
-//                }
-//            });
-
             logout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View V) {
@@ -112,8 +87,6 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
         } else {
             linked.setVisibility(View.GONE);
             manageAccount.setVisibility(View.GONE);
-//            saved.setVisibility(View.GONE);
-//            picked.setVisibility(View.GONE);
             logout.setVisibility(View.GONE);
             delete.setVisibility(View.GONE);
 
@@ -150,20 +123,6 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
 //            pick = false;
 //        }
     }
-
-    // For desert island picks
-//    @Override
-//    public void onPickSelected(String type) {
-//        bottom fragment for the editTexts
-//        pick = true;
-//        Bundle bundle = new Bundle();
-//        bundle.putString("type", type);
-//        Fragment edit = new EditFragment();
-//        edit.setArguments(bundle);
-//        getFragmentManager().beginTransaction()
-//                .replace(R.id.edit_container, edit)
-//                .commit();
-//    }
 
     // Creates the options menu in the action bar
     @Override
