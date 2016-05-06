@@ -12,7 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/exploreTitle">
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -21,7 +20,6 @@
             android:textSize="40dp"
             android:layout_marginBottom="5dp"
             android:textColor="#000000"/>
-
     </LinearLayout>
 
     <View
@@ -36,6 +34,16 @@
         android:layout_height="wrap_content"
         android:text="Linked Accounts"
         android:id="@+id/linked"
+        android:textSize="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/tile_shape"
+        />
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Manage Account"
+        android:id="@+id/manageAccount"
         android:textSize="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/tile_shape"
@@ -84,16 +92,6 @@
         android:layout_height="wrap_content"
         android:text="Sign Up"
         android:id="@+id/signUp"
-        android:textSize="20dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/tile_shape"
-        />
-
-    <Button
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="Delete Profile"
-        android:id="@+id/deleteProfile"
         android:textSize="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/tile_shape"

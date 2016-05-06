@@ -19,7 +19,7 @@ public class AccountsFragment extends Fragment {
     //so we can communicate with the profile activity
     public interface OnProfileSelectedListener {
         void onProfileSelected();
-        void onPickSelected(String type);
+//        void onPickSelected(String type);
     }
 
     public AccountsFragment(){

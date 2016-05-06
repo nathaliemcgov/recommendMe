@@ -47,41 +47,41 @@ public class PicksFragment extends Fragment {
             }
         });
 
-        //books category
-        Button books = (Button)rootView.findViewById(R.id.book_button);
-        books.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View V) {
-                Log.v(TAG, "book");
-                ((AccountsFragment.OnProfileSelectedListener)getActivity()).onPickSelected("book");
-                TextView edit = (TextView)getActivity().findViewById(R.id.edit_picks_type);
-                edit.setText("edit book picks");
-            }
-        });
-
-        //movies category
-        Button movies = (Button)rootView.findViewById(R.id.movies_button);
-        movies.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View V) {
-                Log.v(TAG, "movies");
-                ((AccountsFragment.OnProfileSelectedListener)getActivity()).onPickSelected("movie");
-                TextView edit = (TextView)getActivity().findViewById(R.id.edit_picks_type);
-                edit.setText("edit movie picks");
-            }
-        });
-
-        //music category
-        Button music = (Button)rootView.findViewById(R.id.music_button);
-        music.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View V) {
-                Log.v(TAG, "music");
-                ((AccountsFragment.OnProfileSelectedListener)getActivity()).onPickSelected("music");
-                TextView edit = (TextView)getActivity().findViewById(R.id.edit_picks_type);
-                edit.setText("edit music picks");
-            }
-        });
+//        //books category
+//        Button books = (Button)rootView.findViewById(R.id.book_button);
+//        books.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View V) {
+//                Log.v(TAG, "book");
+//                ((AccountsFragment.OnProfileSelectedListener)getActivity()).onPickSelected("book");
+//                TextView edit = (TextView)getActivity().findViewById(R.id.edit_picks_type);
+//                edit.setText("edit book picks");
+//            }
+//        });
+//
+//        //movies category
+//        Button movies = (Button)rootView.findViewById(R.id.movies_button);
+//        movies.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View V) {
+//                Log.v(TAG, "movies");
+//                ((AccountsFragment.OnProfileSelectedListener)getActivity()).onPickSelected("movie");
+//                TextView edit = (TextView)getActivity().findViewById(R.id.edit_picks_type);
+//                edit.setText("edit movie picks");
+//            }
+//        });
+//
+//        //music category
+//        Button music = (Button)rootView.findViewById(R.id.music_button);
+//        music.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View V) {
+//                Log.v(TAG, "music");
+//                ((AccountsFragment.OnProfileSelectedListener)getActivity()).onPickSelected("music");
+//                TextView edit = (TextView)getActivity().findViewById(R.id.edit_picks_type);
+//                edit.setText("edit music picks");
+//            }
+//        });
 
         return rootView;
 
