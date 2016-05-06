@@ -102,6 +102,7 @@ public class RCMDFirebase {
                 i++;
                 MediaObject object = singleObject.getValue(MediaObject.class);
                 Map<String, Object> map = object.getRelated();
+                Log.v(TAG, movieOne + " " + movieTwo);
                 if(map == null)
                     map = new HashMap<String, Object>();
                 if (map.get(movieTwo) != null) {
@@ -293,7 +294,7 @@ public class RCMDFirebase {
         if (user != null && !user.equals("")) {
             Log.v("tag", "tagtagtag");
             //Get user
-            final String liked = likedUnformatted.toLowerCase();
+            final String liked = likedUnformatted;
             Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
             userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
