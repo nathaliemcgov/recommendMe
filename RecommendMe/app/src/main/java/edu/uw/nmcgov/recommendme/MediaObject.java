@@ -13,6 +13,7 @@ public class MediaObject {
     private int totalUserLikes;
     private int totalUserDislikes;
     private String type;
+    private String nameLowerCase;
 
     public MediaObject() {
 
@@ -31,6 +32,8 @@ public class MediaObject {
     public int getTotalUserDislikes() { return totalUserDislikes; }
 
     public String getType() { return type; }
+
+    public String getNameLowerCase() {return nameLowerCase; }
 
     public String toString() {
         String map = null;
