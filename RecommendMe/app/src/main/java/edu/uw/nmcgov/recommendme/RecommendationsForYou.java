@@ -72,6 +72,9 @@ public class RecommendationsForYou extends AppCompatActivity
             case R.id.profile:
                 showProfile();
                 return true;
+            case R.id.savedRecommendations:
+                showSavedRecommendations();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -80,6 +83,12 @@ public class RecommendationsForYou extends AppCompatActivity
     // Show search screen
     private void showSearchForRecommendations() {
         Intent intent = new Intent(this, SearchForRecommendations.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+    }
+
+    private void showSavedRecommendations() {
+        Intent intent = new Intent(this, SavedActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
     }

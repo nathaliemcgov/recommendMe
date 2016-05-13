@@ -105,8 +105,10 @@ public class SearchForRecommendations extends AppCompatActivity {
             case R.id.recommendationsForYou:
                 showRecommendationsForYou();
                 return true;
+            case R.id.savedRecommendations:
+                showSavedRecommendations();
+                return true;
             case R.id.profile:
-                Log.v(TAG, "in profile");
                 showProfile();
                 return true;
             default:
@@ -122,6 +124,12 @@ public class SearchForRecommendations extends AppCompatActivity {
 
     private void showProfile() {
         Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+    }
+
+    private void showSavedRecommendations() {
+        Intent intent = new Intent(this, SavedActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
     }

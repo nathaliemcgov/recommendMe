@@ -47,7 +47,6 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
         Button manageAccount = (Button) findViewById(R.id.manageAccount);
         Button signUp = (Button) findViewById(R.id.signUp);
         Button logout = (Button) findViewById(R.id.logout);
-        Button delete = (Button) findViewById(R.id.deleteProfile);
 
         if(!user.equals("")) {
             Log.v(TAG, user +"test");
@@ -88,7 +87,6 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
             linked.setVisibility(View.GONE);
             manageAccount.setVisibility(View.GONE);
             logout.setVisibility(View.GONE);
-            delete.setVisibility(View.GONE);
 
             login.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -153,6 +151,9 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
             case R.id.savedRecommendations:
                 showSavedRecommendations();
                 return true;
+            case R.id.profile:
+                showProfile();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -172,6 +173,12 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
 
     private void showSavedRecommendations() {
         Intent intent = new Intent(this, SavedActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+    }
+
+    private void showProfile() {
+        Intent intent = new Intent(this, ProfileActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
     }
