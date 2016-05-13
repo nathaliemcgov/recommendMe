@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,6 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/background"
     android:id="@+id/recommendationSearchResults"
+    android:orientation="vertical"
     tools:context="edu.uw.nmcgov.recommendme.RecommendationSearchResults">
 
     <TextView
@@ -19,6 +20,37 @@
         android:textSize="25dp"
         android:text="Recommendations based on:"
         />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <CheckBox
+            android:id="@+id/movie_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:checked="true"
+            android:textSize="20dp"
+            android:text="Movies" />
+        <CheckBox
+            android:id="@+id/book_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:checked="true"
+            android:paddingRight="10dp"
+            android:text="Books" />
+        <CheckBox
+            android:id="@+id/music_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:textSize="20dp"
+            android:text="Music" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/titleSearchedFor"
@@ -47,4 +79,4 @@
         android:layout_below="@+id/thumbsUpBtnSearchRes">
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

@@ -130,9 +130,17 @@ public class RCMDFirebase {
         userRef.setValue(map);
     }
 
+    public void queryTitle(String title, String username, final List<RelatedObject> titleArray, final CustomTileAdapter adapter) {
+        List<String> types = new ArrayList<String>();
+        types.add("movie");
+        types.add("music");
+        types.add("book");
+        queryTitle(title, username, titleArray, adapter, types);
+    }
+
     //Given a title, list, and adapter that MUST be connected to that list, will
     //query and sort related titles based on relevance
-    public void queryTitle(String title, String username, final List<RelatedObject> titleArray, final CustomTileAdapter adapter) {
+    public void queryTitle(String title, String username, final List<RelatedObject> titleArray, final CustomTileAdapter adapter, final List<String> types) {
         String userHold = "";
         if (username != null) userHold = username.toLowerCase();
         final String user = userHold;
@@ -178,15 +186,34 @@ public class RCMDFirebase {
                             relatedObjects.add(new RelatedObject(key, Integer.parseInt(map.get(key).toString()), object.getTotalUserLikes()));
                         }
 
-                        for (RelatedObject related : relatedObjects) {
+                        for (final RelatedObject related : relatedObjects) {
                             Log.v("relateddd", "" + !dislikedTitles.contains(related.name));
                             if (!dislikedTitles.contains(related.name)) {
 //                                Log.v("objects", related.name + " related " + dislikedTitles);
-                                titleArray.add(related);
+                                Query typeQuery = myFirebaseMoviesRef.orderByChild("nameLowerCase").equalTo(related.name.trim().toLowerCase());
+                                typeQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot != null) {
+                                            for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
+                                                MediaObject object = singleObject.getValue(MediaObject.class);
+                                                if(types.contains(object.getType())) {
+                                                    Log.v(TAG, related.toString());
+                                                    titleArray.add(related);
+                                                    adapter.notifyDataSetChanged();
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(FirebaseError firebaseError) {
+
+                                    }
+                                });
                             }
                         }
-
-
                     }
                 }
                 adapter.notifyDataSetChanged();
@@ -289,8 +316,12 @@ public class RCMDFirebase {
         }
     }
 
-    //Sets a single like given a username
     public void setLike(String likedUnformatted, String user) {
+        setLike(likedUnformatted, user, "movie");
+    }
+
+    //Sets a single like given a username
+    public void setLike(String likedUnformatted, String user, final String type) {
         if (user != null && !user.equals("")) {
             Log.v("tag", "tagtagtag");
             //Get user
@@ -320,6 +351,7 @@ public class RCMDFirebase {
                                         newPostRef.child("name").setValue(liked);
                                         newPostRef.child("nameLowerCase").setValue(liked.toLowerCase());
                                         newPostRef.child("totalUserLikes").setValue(1);
+                                        newPostRef.child("type").setValue(type);
                                     } else { //If movie does exist
                                         for (DataSnapshot singleObject : dataSnapshot.getChildren()) { // this should really only loop once
                                             MediaObject object = singleObject.getValue(MediaObject.class);
@@ -455,7 +487,7 @@ public class RCMDFirebase {
     //Given a user (name), list, and adapter that MUST be connected to that list, will
     //fill up the list/adapter with sorted recomendations for that user.
     public void recommendationsForUser(String user, final List<RelatedObject> list,
-                                       final CustomTileAdapter adapter) {
+                                       final CustomTileAdapter adapter, final List<String> types) {
         Log.v("rcmdsForUser", user);
         user = user.toLowerCase();
         final Map<String, RelatedObject> overAllMap = new HashMap<String, RelatedObject>();
@@ -486,9 +518,31 @@ public class RCMDFirebase {
                                                     if (overAllMap.containsKey(key)) {
                                                         overAllMap.get(key).ratio += Integer.parseInt(map.get(key).toString()) / totalLikes;
                                                     } else {
-                                                        RelatedObject related = new RelatedObject(key, Integer.parseInt(map.get(key).toString()), totalLikes);
+                                                        final RelatedObject related = new RelatedObject(key, Integer.parseInt(map.get(key).toString()), totalLikes);
                                                         overAllMap.put(key, related);
-                                                        list.add(related);
+
+                                                        Query typeQuery = myFirebaseMoviesRef.orderByChild("nameLowerCase").equalTo(related.name.trim().toLowerCase());
+                                                        typeQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                                            @Override
+                                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                if (dataSnapshot != null) {
+                                                                    for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
+                                                                        MediaObject object = singleObject.getValue(MediaObject.class);
+                                                                        if(types.contains(object.getType())) {
+                                                                            Log.v(TAG, related.toString());
+                                                                            list.add(related);
+                                                                            adapter.notifyDataSetChanged();
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            @Override
+                                                            public void onCancelled(FirebaseError firebaseError) {
+
+                                                            }
+                                                        });
                                                     }
                                                 }
                                             }
