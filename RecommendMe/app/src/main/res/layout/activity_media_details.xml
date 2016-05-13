@@ -26,33 +26,33 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/detailHeader"
         android:layout_centerInParent="true">
-        <Button
+        <ImageButton
             android:id="@+id/saveMediaTitleDetails"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:textSize="30dp"
             android:layout_gravity="center"
             android:layout_marginRight="30dp"
-            android:text="Save" />
+            android:background="@drawable/ic_bookmark" />
         <ImageButton
             android:id="@+id/thumbsUpBtn"
-            android:layout_toRightOf="@+id/saveMediaTitleDetails"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:background="@drawable/thumbs_up_button"
-            android:src="@drawable/ic_thumbs_up" />
+            android:src="@drawable/ic_thumbs_up"
+            android:layout_toRightOf="@+id/thumbsDownBtn"/>
 
         <ImageButton
             android:id="@+id/thumbsDownBtn"
+            android:layout_toRightOf="@+id/saveMediaTitleDetails"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_thumbs_down"
-            android:state_selected="false"
-            android:layout_toRightOf="@+id/thumbsUpBtn" />
+            android:state_selected="false" />
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/fragContainer"
