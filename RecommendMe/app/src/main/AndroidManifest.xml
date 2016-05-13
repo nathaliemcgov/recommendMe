@@ -35,7 +35,8 @@
         <activity android:name=".MediaDetails" />
         <activity android:name=".SavedActivity" />
         <activity android:name=".ManageAccountActivity" />
-        <activity android:name=".UpdateEmailActivity"></activity>
+        <activity android:name=".UpdateEmailActivity" />
+        <activity android:name=".CoolTipActivity"></activity>
     </application>
 
 </manifest>
