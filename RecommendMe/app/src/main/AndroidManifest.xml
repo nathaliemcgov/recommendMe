@@ -33,7 +33,9 @@
         <activity android:name=".CreateProfileActivity" />
         <activity android:name=".ExistingLogin" />
         <activity android:name=".MediaDetails" />
-        <activity android:name=".SavedActivity"></activity>
+        <activity android:name=".SavedActivity" />
+        <activity android:name=".ManageAccountActivity" />
+        <activity android:name=".UpdateEmailActivity"></activity>
     </application>
 
 </manifest>

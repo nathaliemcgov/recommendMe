@@ -47,11 +47,11 @@ public class RCMDFirebase {
     // Creates a connection in firebase between the two objects
     // Calls the pushToFirebase method
     private boolean createConnection(String one, String two) {
-        final String mediaOne = one.trim().toLowerCase();
-        final String mediaTwo = two.trim().toLowerCase();
+        final String mediaOne = one.trim();
+        final String mediaTwo = two.trim();
 
-        final Query mediaQuery1 = myFirebaseMoviesRef.orderByChild("name").equalTo(mediaOne);
-        final Query mediaQuery2 = myFirebaseMoviesRef.orderByChild("name").equalTo(mediaTwo);
+        final Query mediaQuery1 = myFirebaseMoviesRef.orderByChild("nameLowerCase").equalTo(mediaOne.toLowerCase());
+        final Query mediaQuery2 = myFirebaseMoviesRef.orderByChild("nameLowerCase").equalTo(mediaTwo.toLowerCase());
 
         if (mediaOne.length() > 0 && mediaTwo.length() > 0) {
             mediaQuery1.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -90,6 +90,7 @@ public class RCMDFirebase {
             //Pushes a new link from MovieOne to MovieTwo
             Firebase newPostRef = myFirebaseMoviesRef.push();
             newPostRef.child("name").setValue(movieOne);
+            newPostRef.child("nameLowerCase").setValue(movieOne.toLowerCase());
             Map<String, Integer> map = new HashMap<String, Integer>();
             map.put(movieTwo, 1);
             newPostRef.child("related").setValue(map);
@@ -101,6 +102,7 @@ public class RCMDFirebase {
                 i++;
                 MediaObject object = singleObject.getValue(MediaObject.class);
                 Map<String, Object> map = object.getRelated();
+                Log.v(TAG, movieOne + " " + movieTwo);
                 if(map == null)
                     map = new HashMap<String, Object>();
                 if (map.get(movieTwo) != null) {
@@ -136,7 +138,7 @@ public class RCMDFirebase {
         final String user = userHold;
         Log.v("Query title", user + " is the user");
         title = title.trim();
-        Query userQuery = myFirebaseMoviesRef.orderByChild("name").equalTo(title.trim().toLowerCase());
+        Query userQuery = myFirebaseMoviesRef.orderByChild("nameLowerCase").equalTo(title.trim().toLowerCase());
 
         final Set<String> dislikedTitles = new HashSet<String>();
         if (!user.equals("")) {
@@ -170,6 +172,7 @@ public class RCMDFirebase {
                         MediaObject object = singleObject.getValue(MediaObject.class);
                         Map<String, Object> map = object.getRelated();
                         Set<RelatedObject> relatedObjects = new TreeSet<RelatedObject>();
+                        if(map == null) map = new HashMap<String, Object>();
 
                         for (String key : map.keySet()) {
                             relatedObjects.add(new RelatedObject(key, Integer.parseInt(map.get(key).toString()), object.getTotalUserLikes()));
@@ -208,7 +211,7 @@ public class RCMDFirebase {
     private void setManyLikes(final List<String> toLike, final String user, final int pos, final String type) {
         if(pos < toLike.size()) {
             Log.v("tag", toLike.get(pos) + ' ' + user);
-            final String liked = toLike.get(pos).toLowerCase();
+            final String liked = toLike.get(pos);
             Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
             userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -220,7 +223,7 @@ public class RCMDFirebase {
                         if (userLikes == null)
                             userLikes = new HashMap<String, Object>();
                         //Update everything in the map to have a relationship to the new object
-                        Query movieQuery = myFirebaseMoviesRef.orderByChild("name").equalTo(liked);
+                        Query movieQuery = myFirebaseMoviesRef.orderByChild("nameLowerCase").equalTo(liked.toLowerCase());
                         final Map<String, Object> finalUserLikes = userLikes;
                         movieQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -233,6 +236,7 @@ public class RCMDFirebase {
                                     Log.v("DOUBLETOYSTORYERRORIF", user + " " + liked + " " + type);
                                     Firebase newPostRef = myFirebaseMoviesRef.push();
                                     newPostRef.child("name").setValue(liked);
+                                    newPostRef.child("nameLowerCase").setValue(liked.toLowerCase());
                                     newPostRef.child("totalUserLikes").setValue(1);
                                     newPostRef.child("type").setValue(type);
                                 } else { //If movie does exist
@@ -290,7 +294,7 @@ public class RCMDFirebase {
         if (user != null && !user.equals("")) {
             Log.v("tag", "tagtagtag");
             //Get user
-            final String liked = likedUnformatted.toLowerCase();
+            final String liked = likedUnformatted;
             Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
             userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -302,7 +306,7 @@ public class RCMDFirebase {
                         if (userLikes == null) {
                             userLikes = new HashMap<String, Object>();
                         } else { //Update everything in the map to have a relationship to the new object
-                            Query userQuery = myFirebaseMoviesRef.orderByChild("name").equalTo(liked);
+                            Query userQuery = myFirebaseMoviesRef.orderByChild("nameLowerCase").equalTo(liked.toLowerCase());
                             final Map<String, Object> finalUserLikes = userLikes;
                             userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -314,6 +318,7 @@ public class RCMDFirebase {
                                     if (dataSnapshot.getValue() == null) {
                                         Firebase newPostRef = myFirebaseMoviesRef.push();
                                         newPostRef.child("name").setValue(liked);
+                                        newPostRef.child("nameLowerCase").setValue(liked.toLowerCase());
                                         newPostRef.child("totalUserLikes").setValue(1);
                                     } else { //If movie does exist
                                         for (DataSnapshot singleObject : dataSnapshot.getChildren()) { // this should really only loop once
@@ -379,7 +384,7 @@ public class RCMDFirebase {
                         // The user has disliked at least one title
                         } else {
                             final Map<String, Object> userDislikes = dislikes;
-                            Query getTitle = myFirebaseMoviesRef.orderByChild("name").equalTo(disliked);
+                            Query getTitle = myFirebaseMoviesRef.orderByChild("nameLowerCase").equalTo(disliked.toLowerCase());
 
                             getTitle.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -389,6 +394,7 @@ public class RCMDFirebase {
                                         // Pushes media titles and sets total # of dislikes of title to 1
                                         Firebase newEntryRef = myFirebaseMoviesRef.push();
                                         newEntryRef.child("name").setValue(disliked);
+                                        newEntryRef.child("nameLowerCase").setValue(disliked.toLowerCase());
                                         newEntryRef.child("totalUserDislikes").setValue(1);
                                     // If title exists
                                     } else {
@@ -464,7 +470,7 @@ public class RCMDFirebase {
                         final Map<String, Object> userLikes = object.getLiked();
 
                         for(String liked : userLikes.keySet()) {
-                            Query singleMediaQuery = myFirebaseMoviesRef.orderByChild("name").equalTo(liked);
+                            Query singleMediaQuery = myFirebaseMoviesRef.orderByChild("nameLowerCase").equalTo(liked.toLowerCase());
                             singleMediaQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
                                 @Override
@@ -533,7 +539,7 @@ public class RCMDFirebase {
 
     public void autoComplete(final String input, final ArrayAdapter<String> adapter) {
         Log.v(TAG, input);
-        Query mediaQuery = myFirebaseMoviesRef.orderByChild("name").startAt(input).limitToFirst(3);
+        Query mediaQuery = myFirebaseMoviesRef.orderByChild("nameLowerCase").startAt(input.toLowerCase()).limitToFirst(3);
         mediaQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -541,7 +547,7 @@ public class RCMDFirebase {
                 if (dataSnapshot != null) {
                     for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
                         MediaObject object = singleObject.getValue(MediaObject.class);
-                        if(object.getName().startsWith(input))
+                        if(object.getNameLowerCase().startsWith(input.toLowerCase()))
                             addIfDoesntContain(adapter, object.getName().trim());
                     }
                 }
