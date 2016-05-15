@@ -10,49 +10,136 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
-        android:gravity="center">
+        android:layout_gravity="center">
         <TextView
             android:id="@+id/selectedMediaTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColor"
             android:textAlignment="center"
-            android:textSize="30dp"/>
-    </RelativeLayout>
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:textSize="35dp"
+            android:text="TITLE"/>
 
-    <RelativeLayout
-        android:id="@+id/thumbBtnContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/detailHeader"
-        android:layout_centerInParent="true">
+
         <ImageButton
             android:id="@+id/saveMediaTitleDetails"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:textSize="30dp"
-            android:layout_gravity="center"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/ic_bookmark" />
-        <ImageButton
-            android:id="@+id/thumbsUpBtn"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:adjustViewBounds="true"
+            android:layout_height="80dp"
             android:scaleType="fitCenter"
-            android:background="@drawable/thumbs_up_button"
-            android:src="@drawable/ic_thumbs_up"
-            android:layout_toRightOf="@+id/thumbsDownBtn"/>
+            android:background="@drawable/bookmark_details_button"
+            android:src="@drawable/ic_bookmark"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
 
-        <ImageButton
-            android:id="@+id/thumbsDownBtn"
-            android:layout_toRightOf="@+id/saveMediaTitleDetails"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_thumbs_down"
-            android:state_selected="false" />
+
+    <View
+        android:id="@+id/whiteBar"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#ffffff"
+        android:layout_below="@+id/detailHeader"
+        android:layout_marginTop="-38dp"
+        android:layout_marginBottom="15dp"
+        />
+
+    <RelativeLayout
+        android:id="@+id/contentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/whiteBar">
+
+        <RelativeLayout
+            android:id="@+id/contentPercentPrompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/contentPercent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:textAlignment="center"
+                android:textSize="45dp"
+                android:text="99%"/>
+
+            <TextView
+                android:id="@+id/contentLine2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/contentPercent"
+                android:textColor="@color/textColor"
+                android:textAlignment="center"
+                android:textSize="22dp"
+                android:text="of users who like"/>
+
+            <TextView
+                android:id="@+id/searchTerm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/contentLine2"
+                android:textColor="@color/colorAccent"
+                android:textAlignment="center"
+                android:textSize="30dp"
+                android:text="SEARCH TERM"/>
+
+            <TextView
+                android:id="@+id/contentLine4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/searchTerm"
+                android:textColor="@color/textColor"
+                android:textAlignment="center"
+                android:textSize="22dp"
+                android:text="also like this"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/contentDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/contentPercentPrompt"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="25dp"
+            android:textColor="@color/textColor"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:text="lorem ipsum shit\nshitshitshitshitshitshitshit\nshitshitshitshitshit\nlots of shit."/>
+
+        <RelativeLayout
+            android:id="@+id/thumbBtnContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/contentDetails"
+            android:layout_centerHorizontal="true">
+
+            <ImageButton
+                android:id="@+id/thumbsDownBtn"
+                android:layout_width="110dp"
+                android:layout_height="70dp"
+                android:layout_marginRight="25dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_thumbs_down"
+                android:background="@drawable/thumbs_down_button"
+                android:state_selected="false" />
+
+            <ImageButton
+                android:id="@+id/thumbsUpBtn"
+                android:layout_width="110dp"
+                android:layout_height="70dp"
+                android:layout_marginLeft="25dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:background="@drawable/thumbs_up_button"
+                android:src="@drawable/ic_thumbs_up"
+                android:layout_toRightOf="@+id/thumbsDownBtn"/>
+        </RelativeLayout>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/fragContainer"

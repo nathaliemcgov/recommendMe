@@ -5,8 +5,11 @@
     <color name="colorAccent">#ffffff</color>
     <color name="background">#f5b93d</color>
     <color name="textColor">#000000</color>
-    <color name="thumbsUpNotSelected">#fce74b</color>
-    <color name="thumbsUpSelected">#65d3ed</color>
-    <color name="thumbsDownNotSelected">#fce74b</color>
-    <color name="thumbsDownSelected">#65d3ed</color>
+    <color name="thumbsUpNotSelected">#fbe6b7</color>
+    <color name="thumbsUpSelected">#f5b93d</color>
+    <color name="thumbsDownNotSelected">#fbe6b7</color>
+    <color name="thumbsDownSelected">#f5b93d</color>
+    <color name="bookmarkNotSelected">#fbe6b7</color>
+    <color name="bookmarkSelected">#65d3ed</color>
+    <color name="bookmarkDetailsNotSelected">#f5b93d</color>
 </resources>

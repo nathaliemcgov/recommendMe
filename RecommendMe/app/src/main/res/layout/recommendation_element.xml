@@ -7,20 +7,17 @@
     android:clickable="true"
     android:background="@drawable/tile_shape">
 
-    <!--<Button-->
-        <!--android:id="@+id/saveMediaTitle"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:text="Save" />-->
-
     <ImageButton
         android:id="@+id/saveMediaTitle"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:textSize="30dp"
         android:layout_gravity="right"
-        android:background="@drawable/ic_bookmark"/>
+        android:layout_weight="1"
+        android:background="@drawable/ic_bookmark"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        />
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/recommendationElement"
@@ -32,39 +29,46 @@
         android:text="title title title"
         />
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:id="@+id/tileRatio"
-        android:textAlignment="center"
-        android:layout_margin="5dp"
-        android:textColor="@color/textColor" />
+    <!--<TextView-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:id="@+id/tileRatio"-->
+        <!--android:textAlignment="center"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:textColor="@color/textColor" />-->
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_gravity="center"
         android:layout_marginBottom="10dp">
-        <ImageButton
-            android:id="@+id/thumbsUpBtn"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:focusable="false"
-            android:background="@drawable/thumbs_up_button"
-            android:src="@drawable/ic_thumbs_up"
-            android:layout_toRightOf="@+id/thumbsDownBtn"/>
 
         <ImageButton
             android:id="@+id/thumbsDownBtn"
             android:layout_width="60dp"
             android:layout_height="40dp"
+            android:layout_marginRight="5dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:focusable="false"
+            android:background="@drawable/thumbs_down_button"
             android:src="@drawable/ic_thumbs_down"
-            android:state_selected="false" />
+            android:state_selected="false"
+            android:layout_toLeftOf="@+id/thumbsUpBtn"/>
+
+        <ImageButton
+            android:id="@+id/thumbsUpBtn"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:focusable="false"
+            android:background="@drawable/thumbs_up_button"
+            android:src="@drawable/ic_thumbs_up"
+            />
+
+
     </LinearLayout>
 </LinearLayout>
