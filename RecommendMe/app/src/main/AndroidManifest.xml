@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".StartPage"
+            android:name=".HomePageActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -35,7 +35,9 @@
         <activity android:name=".MediaDetails" />
         <activity android:name=".SavedActivity" />
         <activity android:name=".ManageAccountActivity" />
-        <activity android:name=".UpdateEmailActivity"></activity>
+        <activity android:name=".UpdateEmailActivity" />
+        <activity android:name=".CoolTipActivity" />
+        <activity android:name=".SetupPageActivity"></activity>
     </application>
 
 </manifest>

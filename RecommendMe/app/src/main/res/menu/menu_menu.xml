@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/searchRecommendations"
-        android:title="Search"
+        android:title="Explore"
         android:orderInCategory="1"
         app:showAsAction="ifRoom" />
     <item android:id="@+id/recommendationsForYou"
-        android:title="Rcmds For You"
-        android:orderInCategory="2"
-        app:showAsAction="never" />
-    <item android:id="@+id/profile"
-        android:title="Profile"
+        android:title="Recommendations For You"
         android:orderInCategory="2"
         app:showAsAction="never" />
     <item android:id="@+id/savedRecommendations"
         android:title="Saved Recommendations"
-        android:orderInCategory="2"
+        android:orderInCategory="3"
+        app:showAsAction="never" />
+    <item android:id="@+id/profile"
+        android:title="Profile"
+        android:orderInCategory="4"
         app:showAsAction="never" />
 </menu>

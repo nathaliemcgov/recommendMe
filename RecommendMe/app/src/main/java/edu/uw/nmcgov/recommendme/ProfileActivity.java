@@ -1,10 +1,7 @@
 package edu.uw.nmcgov.recommendme;
 
-import android.app.Fragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -47,7 +44,6 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
         Button manageAccount = (Button) findViewById(R.id.manageAccount);
         Button signUp = (Button) findViewById(R.id.signUp);
         Button logout = (Button) findViewById(R.id.logout);
-        Button delete = (Button) findViewById(R.id.deleteProfile);
 
         if(!user.equals("")) {
             Log.v(TAG, user +"test");
@@ -80,7 +76,7 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
             logout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View V) {
-                    Intent intent = new Intent(V.getContext(), StartPage.class);
+                    Intent intent = new Intent(V.getContext(), SetupPageActivity.class);
                     startActivity(intent);
                 }
             });
@@ -88,7 +84,6 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
             linked.setVisibility(View.GONE);
             manageAccount.setVisibility(View.GONE);
             logout.setVisibility(View.GONE);
-            delete.setVisibility(View.GONE);
 
             login.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -153,6 +148,9 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
             case R.id.savedRecommendations:
                 showSavedRecommendations();
                 return true;
+            case R.id.profile:
+                showProfile();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -172,6 +170,12 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
 
     private void showSavedRecommendations() {
         Intent intent = new Intent(this, SavedActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+    }
+
+    private void showProfile() {
+        Intent intent = new Intent(this, ProfileActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
     }

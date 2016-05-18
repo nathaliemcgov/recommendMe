@@ -56,7 +56,7 @@ public class ManageAccountActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 firebase.deleteUser(user);
-                                Intent intent = new Intent(v.getContext(), StartPage.class);
+                                Intent intent = new Intent(v.getContext(), SetupPageActivity.class);
                                 startActivity(intent);
                             }
 
