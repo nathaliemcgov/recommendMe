@@ -1,10 +1,7 @@
 package edu.uw.nmcgov.recommendme;
 
-import android.app.Fragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -79,7 +76,7 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
             logout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View V) {
-                    Intent intent = new Intent(V.getContext(), StartPage.class);
+                    Intent intent = new Intent(V.getContext(), SetupPageActivity.class);
                     startActivity(intent);
                 }
             });
