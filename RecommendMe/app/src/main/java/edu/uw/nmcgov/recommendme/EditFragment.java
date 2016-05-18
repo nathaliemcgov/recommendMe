@@ -5,14 +5,20 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,8 +30,9 @@ public class EditFragment extends Fragment {
 
     private String type;
     Activity activity;
-    private List<EditText> texts;
+    private List<AutoCompleteTextView> texts;
     private ArrayList<Button> change_buttons;
+    private RCMDFirebase firebase;
 
     public interface sendList {
         public void update(List<String> list);
@@ -43,12 +50,33 @@ public class EditFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         final View rootView = inflater.inflate(R.layout.edit_fragment, container, false);
 
-        texts = new LinkedList<EditText>();
+        Firebase.setAndroidContext(this.getActivity());
+        firebase = new RCMDFirebase();
 
-        texts.add((EditText)rootView.findViewById(R.id.entry_1));
-        texts.add((EditText)rootView.findViewById(R.id.entry_2));
-        texts.add((EditText)rootView.findViewById(R.id.entry_3));
+        texts = new LinkedList<AutoCompleteTextView>();
 
+        texts.add((AutoCompleteTextView) rootView.findViewById(R.id.searchMediaText1));
+        texts.add((AutoCompleteTextView) rootView.findViewById(R.id.searchMediaText2));
+        texts.add((AutoCompleteTextView) rootView.findViewById(R.id.searchMediaText3));
+
+        String[] suggestions = {};
+        ArrayList<String> lst = new ArrayList<String>(Arrays.asList(suggestions));
+        final ArrayAdapter adapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_list_item_1, lst);
+
+
+        for (final AutoCompleteTextView searchMediaText : texts) {
+            searchMediaText.setAdapter(adapter);
+            searchMediaText.setThreshold(1);
+
+            searchMediaText.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    if(event.getAction() == KeyEvent.ACTION_UP)
+                        firebase.autoComplete(searchMediaText.getText().toString(), adapter);
+                    return false;
+                }
+            });
+        }
 
         //get the type (movie/music/book)
         Bundle bundle = this.getArguments();
@@ -63,7 +91,7 @@ public class EditFragment extends Fragment {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                Log.v(TAG, "changed " + type + ((EditText) rootView.findViewById(R.id.entry_3)).getText().toString());
+                Log.v(TAG, "changed " + type + ((EditText) rootView.findViewById(R.id.searchMediaText1)).getText().toString());
             }
         });
 
@@ -71,7 +99,7 @@ public class EditFragment extends Fragment {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                Log.v(TAG, "changed " + type + ((EditText) rootView.findViewById(R.id.entry_3)).getText().toString());
+                Log.v(TAG, "changed " + type + ((EditText) rootView.findViewById(R.id.searchMediaText2)).getText().toString());
             }
         });
 
@@ -79,9 +107,10 @@ public class EditFragment extends Fragment {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                Log.v(TAG, "changed " + type + ((EditText) rootView.findViewById(R.id.entry_3)).getText().toString());
+                Log.v(TAG, "changed " + type + ((EditText) rootView.findViewById(R.id.searchMediaText3)).getText().toString());
             }
         });
+
         change_buttons.add(button1);
         change_buttons.add(button2);
         change_buttons.add(button3);
@@ -90,10 +119,11 @@ public class EditFragment extends Fragment {
         return rootView;
 
     }
+
     public List send() {
         List<String> list = new LinkedList<String>();
 
-        for (EditText editText : texts) {
+        for (AutoCompleteTextView editText : texts) {
             String text = editText.getText().toString();
             if (text.length() > 0) {
                 list.add(text);
