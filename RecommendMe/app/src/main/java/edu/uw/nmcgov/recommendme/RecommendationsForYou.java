@@ -33,7 +33,9 @@ public class RecommendationsForYou extends AppCompatActivity
         setContentView(R.layout.activity_recommendations_for_you);
 
         Bundle bundle = getIntent().getExtras();
-        user = bundle.getString("user");   // User's email
+        if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
+            user = bundle.getString("user");
+        }
         Log.v("tag", user + " RcmdsForYou");
 
         // Fragment to display tile grid

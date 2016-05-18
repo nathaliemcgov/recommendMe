@@ -35,6 +35,7 @@ public class MediaDetails extends AppCompatActivity {
     private ImageButton thumbsUpBtn;
     private ImageButton thumbsDownBtn;
     private RCMDFirebase firebase;
+    private String user;
 
     public MediaDetails() {
 
@@ -54,21 +55,24 @@ public class MediaDetails extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         final String selectedMediaTitle = bundle.getString("title");
-        final String user = bundle.getString("user");
+
+        if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
+            user = bundle.getString("user");
+        }
 
 //        Bundle bundle = this.getArguments();
 //        final String selectedMediaTitle = bundle.getString("mediaTitle");
         selectedTitle.setText(selectedMediaTitle);
 
         // On click listener for "Save" button on selected tile
-        Button saveTitleButton = (Button) findViewById(R.id.saveMediaTitleDetails);
+//        Button saveTitleButton = (Button) findViewById(R.id.saveMediaTitleDetails);
 
         // Write title to phone's external storage
-        saveTitleButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                handleSaveMediaTitle(selectedMediaTitle);
-            }
-        });
+//        saveTitleButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                handleSaveMediaTitle(selectedMediaTitle);
+//            }
+//        });
 
         // Setting on click listener to make button appear selected
         // Later will need to store like/dislike in firebase
