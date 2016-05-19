@@ -1,5 +1,6 @@
 package edu.uw.nmcgov.recommendme;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
@@ -54,12 +56,19 @@ public class RecommendationSearchResults extends AppCompatActivity
         thumbsUpBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View button) {
                 //Set the button's appearance
-                button.setSelected(!button.isSelected());
                 Log.v("tag", titleSearched);
-                if (button.isSelected()) {    // If the user 'likes' the title
+                if (!button.isSelected()) {    // If the user 'likes' the title
 //                    // Send to db the user's email + title of liked media
                     if (user != null) {
                         firebase.setLike(titleSearched, user);
+                        button.setSelected(!button.isSelected());
+                    } else {
+                        Context context = getApplicationContext();
+                        CharSequence text = "Please login to like media!";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
                     }
 //                } else {      // If the user 'unlikes' the title
 //                    // Send to db the user's email + title of unliked media
