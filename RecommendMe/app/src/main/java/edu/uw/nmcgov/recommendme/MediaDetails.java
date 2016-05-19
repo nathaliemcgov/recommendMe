@@ -1,6 +1,8 @@
 package edu.uw.nmcgov.recommendme;
 
 
+import android.content.Context;
+import android.media.Image;
 import android.os.Environment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
@@ -61,7 +64,7 @@ public class MediaDetails extends AppCompatActivity {
         selectedTitle.setText(selectedMediaTitle);
 
         // On click listener for "Save" button on selected tile
-        Button saveTitleButton = (Button) findViewById(R.id.saveMediaTitleDetails);
+        ImageButton saveTitleButton = (ImageButton) findViewById(R.id.saveMediaTitleDetails);
 
         // Write title to phone's external storage
         saveTitleButton.setOnClickListener(new View.OnClickListener() {
@@ -78,13 +81,18 @@ public class MediaDetails extends AppCompatActivity {
         thumbsUpBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View button) {
                 //Set the button's appearance
-                button.setSelected(!button.isSelected());
-                Log.v("tag", selectedMediaTitle);
-                if (button.isSelected()) {    // If the user 'likes' the title
+                if (!button.isSelected() && user != null && !user.equals("")) {    // If the user 'likes' the title
 //                    // Send to db the user's email + title of liked media
+                    button.setSelected(!button.isSelected());
                     firebase.setLike(selectedMediaTitle, user);
 //                } else {      // If the user 'unlikes' the title
 //                    // Send to db the user's email + title of unliked media
+                } else if (user == null || user.equals("")) {
+                    Context context = getApplicationContext();
+                    CharSequence text = "Please login to like media";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                 }
             }
         });
@@ -93,13 +101,19 @@ public class MediaDetails extends AppCompatActivity {
             @Override
             public void onClick(View button) {
                 //Set the button's appearance
-                button.setSelected(!button.isSelected());
                 Log.v("tag", selectedMediaTitle);
-                if (button.isSelected()) {    // If the user 'likes' the title
+                if (!button.isSelected() && user != null && !user.equals("")) {    // If the user 'likes' the title
 //                    // Send to db the user's email + title of liked media
+                    button.setSelected(!button.isSelected());
                     firebase.setDislike(user, selectedMediaTitle);
 //                } else {      // If the user 'undislikes' the title
 //                    // Send to db the user's email + title of undisliked media
+                } else if (user == null || user.equals("")) {
+                    Context context = getApplicationContext();
+                    CharSequence text = "Please login to dislike media";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                 }
             }
         });
