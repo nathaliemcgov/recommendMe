@@ -58,7 +58,7 @@ public class RecommendationSearchResults extends AppCompatActivity
                 Log.v("tag", titleSearched);
                 if (button.isSelected()) {    // If the user 'likes' the title
 //                    // Send to db the user's email + title of liked media
-                    if (user != null) {
+                    if (user != null && !user.equals("")) {
                         firebase.setLike(titleSearched, user);
                     }
 //                } else {      // If the user 'unlikes' the title

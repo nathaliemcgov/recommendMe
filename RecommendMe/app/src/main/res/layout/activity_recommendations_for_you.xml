@@ -27,6 +27,36 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <CheckBox
+            android:id="@+id/movie_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:paddingRight="10dp"
+            android:checked="true"
+            android:text="Movies" />
+        <CheckBox
+            android:id="@+id/book_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:textSize="20dp"
+            android:paddingRight="10dp"
+            android:text="Books" />
+        <CheckBox
+            android:id="@+id/music_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:textSize="20dp"
+            android:text="Music" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/gridContainer2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

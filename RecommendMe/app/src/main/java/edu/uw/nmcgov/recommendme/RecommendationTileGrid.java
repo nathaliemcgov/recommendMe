@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,6 +46,10 @@ public class RecommendationTileGrid extends Fragment {
     private RCMDFirebase firebase;
     private String user;
     private List<RelatedObject> savedList;
+    private CheckBox movieCheck;
+    private CheckBox bookCheck;
+    private CheckBox musicCheck;
+    private CustomTileAdapter customAdapter;
 
     private OnMediaSelectionListener callback;
 
@@ -84,9 +89,49 @@ public class RecommendationTileGrid extends Fragment {
             user = bundle.getString("user");
         }
 
+
+
         // Container for tiles
         tileGrid = (GridView) rootView.findViewById(R.id.recommendationList);
         recommendationList = new ArrayList<RelatedObject>();
+
+        customAdapter = new CustomTileAdapter(this.getContext(), recommendationList, user);
+
+        tileGrid.setAdapter(customAdapter);
+
+        movieCheck = (CheckBox) getActivity().findViewById(R.id.movie_check);
+        bookCheck = (CheckBox) getActivity().findViewById(R.id.book_check);
+        musicCheck = (CheckBox) getActivity().findViewById(R.id.music_check);
+
+        movieCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getActivity() instanceof RecommendationsForYou)
+                    populateTilesForUser();
+                else
+                    populateTilesForSearch();
+            }
+        });
+
+        musicCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getActivity() instanceof RecommendationsForYou)
+                    populateTilesForUser();
+                else
+                    populateTilesForSearch();
+            }
+        });
+
+        bookCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getActivity() instanceof RecommendationsForYou)
+                    populateTilesForUser();
+                else
+                    populateTilesForSearch();
+            }
+        });
 
         Log.v("tag", "ACTIVITY " + getActivity());
         if (getActivity() instanceof RecommendationsForYou) { // If the user reached screen by creating an account or logging in
@@ -111,16 +156,24 @@ public class RecommendationTileGrid extends Fragment {
             }
         });
 
+
         return rootView;
     }
 
     // If the user reached screen by searching media title
     private void populateTilesForSearch() {
-        CustomTileAdapter customAdapter = new CustomTileAdapter(this.getContext(), recommendationList, user);
+        recommendationList.clear();
+        customAdapter.notifyDataSetChanged();
+        List<String> types = new ArrayList<String>();
+        if(movieCheck.isChecked())
+            types.add("movie");
+        if(musicCheck.isChecked())
+            types.add("music");
+        if(bookCheck.isChecked())
+            types.add("book");
 
-        tileGrid.setAdapter(customAdapter);
 
-        firebase.queryTitle(title, user, recommendationList, customAdapter);
+        firebase.queryTitle(title, user, recommendationList, customAdapter, types);
     }
 
     // If the user reached screen by creating an account or logging in
@@ -130,11 +183,17 @@ public class RecommendationTileGrid extends Fragment {
 //        if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
 //            username = bundle.getString("user");
 //        }
-        CustomTileAdapter customAdapter = new CustomTileAdapter(this.getContext(), recommendationList, user);
+        recommendationList.clear();
+        customAdapter.notifyDataSetChanged();
+        List<String> types = new ArrayList<String>();
+        if(movieCheck.isChecked())
+            types.add("movie");
+        if(musicCheck.isChecked())
+            types.add("music");
+        if(bookCheck.isChecked())
+            types.add("book");
 
-        tileGrid.setAdapter(customAdapter);
-
-        firebase.recommendationsForUser(user, recommendationList, customAdapter);
+        firebase.recommendationsForUser(user, recommendationList, customAdapter, types);
     }
 
     // If the user reached screen by saved recommendations
