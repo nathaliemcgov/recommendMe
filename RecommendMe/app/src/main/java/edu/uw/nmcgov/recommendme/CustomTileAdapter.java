@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
@@ -52,7 +54,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, final ViewGroup parent) {
 
         final View view = convertView;
         // Gets the title of the recommendation
@@ -88,9 +90,18 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.setSelected(!v.isSelected());
                 Log.v("clicked", "clicked that shit" + user);
-                firebase.setLike(object.name, user);
+                if(!v.isSelected() && user != null && !user.equals("")) {
+                    v.setSelected(!v.isSelected());
+                    Log.v("clicked", "clicked that shit" + user);
+                    firebase.setLike(object.name, user);
+                } else if (user == null || user.equals("")) {
+                    Context context = parent.getContext();
+                    CharSequence text = "Please login to like media";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
             }
         });
 
