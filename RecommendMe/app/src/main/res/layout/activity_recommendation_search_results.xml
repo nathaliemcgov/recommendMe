@@ -21,6 +21,24 @@
         android:text="Recommendations based on:"
         />
 
+    <TextView
+        android:id="@+id/titleSearchedFor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:textColor="@color/textColor"
+        android:layout_below="@+id/searchHeader"/>
+
+    <ImageButton
+        android:id="@+id/thumbsUpBtnSearchRes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleSearchedFor"
+        android:state_selected="false"
+        android:background="@drawable/thumbs_up_button"
+        android:src="@drawable/ic_thumbs_up" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,25 +70,6 @@
             android:text="Music" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/titleSearchedFor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        android:textColor="@color/textColor"
-        android:layout_below="@+id/searchHeader"/>
-
-    <ImageButton
-        android:id="@+id/thumbsUpBtnSearchRes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titleSearchedFor"
-        android:state_selected="false"
-        android:background="@drawable/thumbs_up_button"
-        android:src="@drawable/ic_thumbs_up" />
-
     <LinearLayout
         android:id="@+id/gridContainer"
         android:layout_width="match_parent"
@@ -78,5 +77,7 @@
         android:orientation="vertical"
         android:layout_below="@+id/thumbsUpBtnSearchRes">
     </LinearLayout>
+
+
 
 </LinearLayout>

@@ -95,7 +95,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         });
 
         // On click listener for "Save" button on each tile
-        Button saveTitleButton = (Button) convertView.findViewById(R.id.saveMediaTitle);
+        ImageButton saveTitleButton = (ImageButton) convertView.findViewById(R.id.saveMediaTitle);
 
         // Write title to phone's external storage
         saveTitleButton.setOnClickListener(new View.OnClickListener() {
