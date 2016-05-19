@@ -46,6 +46,8 @@ public class CreateProfileActivity extends Activity implements EditFragment.send
         emailText.setText(types[index]);
         index++;
 
+
+
         Button button = (Button)findViewById(R.id.next_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
