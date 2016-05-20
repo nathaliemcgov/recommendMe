@@ -21,8 +21,6 @@ public class CreateProfileActivity extends Activity implements EditFragment.send
     private static final String TAG = "start";
     private String[] types;
     private int index;
-    private String userEmail;
-    private TextView emailText;
     private EditFragment current;
     private RCMDFirebase firebase;
 
@@ -35,49 +33,42 @@ public class CreateProfileActivity extends Activity implements EditFragment.send
         Firebase.setAndroidContext(this);
         firebase = new RCMDFirebase();
 
-        types = new String[4];
-        types[0] = "email";
-        types[1] = "movie";
-        types[2] = "music";
-        types[3] = "book";
+        types = new String[3];
+        types[0] = "Movies";
+        types[1] = "Music";
+        types[2] = "Books";
+        types[3] = "Email Address";
+        types[4] = "Password";
 
-        // Entering user's email address
-        emailText = (TextView)findViewById(R.id.type_box);
-        emailText.setText(types[index]);
         index++;
-
-
 
         Button button = (Button)findViewById(R.id.next_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                if (index == 1) {
-                    EditText email = (EditText) findViewById(R.id.email_pass);
-                    userEmail = email.getText().toString(); // User's email address
-                    Log.v("email", userEmail);
-                    Map<String, String> map = new HashMap<String, String>();
-                    map.put("name", userEmail);
-                    firebase.createUser(map);
-                }
-                if(index < types.length) {
+//                if (index == 1) {
+//                    EditText email = (EditText) findViewById(R.id.email_pass);
+//                    userEmail = email.getText().toString(); // User's email address
+//                    Log.v("email", userEmail);
+//                    Map<String, String> map = new HashMap<String, String>();
+//                    map.put("name", userEmail);
+//                    firebase.createUser(map);
+//                }
+                if (index < types.length) {
                     Log.v("index", index + "");
-                    if(index >= 1){
-                        if(current != null){
+                    if (index >= 1) {
+                        if (current != null) {
                             List<String> list = ((EditFragment)current).send();
                             Log.v("LIST222", list.toString());
-                            firebase.setManyLikes(list, userEmail, types[index - 1]);
-                            for(String input : list) {
-                                Log.v(TAG, input);
-                            }
+
+                            // Logging likes into Firebase
+                            // Make a list of lists of 3 books, 3 movies, 3 music artists
+//                            firebase.setManyLikes(list, userEmail, types[index - 1]);
                         }
 
                         current = addFragment(types[index]);
                         ((EditFragment)current).hideButtons();
 
-                        EditText editText = (EditText)findViewById(R.id.email_pass);
-                        editText.setVisibility(View.INVISIBLE);
-                        editText.setHeight(0);
                         /*TextView text = (TextView)findViewById(R.id.confirm);
                         text.setVisibility(View.INVISIBLE);
                         text.setHeight(0);
@@ -93,10 +84,9 @@ public class CreateProfileActivity extends Activity implements EditFragment.send
                 } else {
                     List<String> list = ((EditFragment)current).send();
                     Log.v("LIST222", list.toString());
-                    firebase.setManyLikes(list, userEmail, types[index - 1]);
-                    for(String input : list) {
-                        Log.v(TAG, input);
-                    }
+
+                    // Logging likes into Firebase
+//                    firebase.setManyLikes(list, userEmail, types[index - 1]);
                     Log.v(TAG, "Account Created!");
                     sendToRecommendationsForYou();
                 }
@@ -107,7 +97,7 @@ public class CreateProfileActivity extends Activity implements EditFragment.send
     // Sends user to RecommendationsForYou screen w/ username
     public void sendToRecommendationsForYou(){
         Intent intent = new Intent(this, RecommendationsForYou.class);
-        intent.putExtra("user", userEmail);
+//        intent.putExtra("user", userEmail);
         startActivity(intent);
     }
 
@@ -121,7 +111,6 @@ public class CreateProfileActivity extends Activity implements EditFragment.send
                 .replace(R.id.add_box, edit)
                 .commit();
         return (EditFragment)edit;
-
     }
 
     @Override

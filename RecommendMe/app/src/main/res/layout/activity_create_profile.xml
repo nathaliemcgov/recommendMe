@@ -17,30 +17,10 @@
         android:text="placeholder"
         android:textSize="30dp"
         android:id="@+id/type_box"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/type_box"
-        android:orientation="vertical"
-        android:id="@+id/add_box">
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/email_pass"/>
-        <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/confirm"-->
-            <!--android:text="confirm entry"/>-->
-        <!--<EditText-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/email_pass_confirm"/>-->
-    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_below="@+id/add_box"
+        android:layout_below="@+id/type_box"
         android:layout_height="wrap_content"
         android:id="@+id/next_button"
         android:text="next"/>
