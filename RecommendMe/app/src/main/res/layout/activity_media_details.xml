@@ -139,13 +139,6 @@
                 android:src="@drawable/ic_thumbs_up"
                 android:layout_toRightOf="@+id/thumbsDownBtn"/>
         </RelativeLayout>
-
-        <Button
-            android:id="@+id/queryWiki"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:text="WIKI"
-            />
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/fragContainer"

@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Verb;
 
@@ -185,6 +187,7 @@ public class MediaDetails extends AppCompatActivity {
 
                 URL url = new URL
                         ("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + formattedForWiki);
+//                https://en.wikipedia.org/w/api.php?action=mobileview&page=Therion_(band)
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 try {
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
@@ -195,7 +198,11 @@ public class MediaDetails extends AppCompatActivity {
                         Log.v("LINE", line);
                     }
                     bufferedReader.close();
-                    return stringBuilder.toString();
+                    String unformatted = stringBuilder.toString();
+                    JSONObject json = new JSONObject(unformatted);
+                    JSONObject description = new JSONObject(json.getString("query"));
+//                    description = description.getString()
+//                    return description;
                 }
                 finally {
                     urlConnection.disconnect();
@@ -213,10 +220,9 @@ public class MediaDetails extends AppCompatActivity {
             if (response == null) {
                 Log.v("WIKI", "No response from Wikipedia");
             }
-
             contentDetails = (TextView) findViewById(R.id.contentDetails);
             contentDetails.setText(response);
-            Log.v("WIKI", response);
+            Log.v("WIKI", "" + response);
         }
     }
 }
