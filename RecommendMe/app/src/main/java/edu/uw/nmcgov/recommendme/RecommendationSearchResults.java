@@ -41,8 +41,11 @@ public class RecommendationSearchResults extends AppCompatActivity
         titleSearchedFor = (TextView) findViewById(R.id.titleSearchedFor);
         Bundle bundle = getIntent().getExtras();
         final String titleSearched = bundle.getString("title");
+
         if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
             user = bundle.getString("user");
+        } else {
+            user = "";
         }
 
         // Adds title searched for to header
@@ -157,6 +160,8 @@ public class RecommendationSearchResults extends AppCompatActivity
 
         Intent intent = new Intent(this, MediaDetails.class);
         intent.putExtra("title", mediaTile);
+        intent.putExtra("user", user);
+        intent.putExtra("activity", "RecommendationSearchResults");
         startActivity(intent);
     }
 }

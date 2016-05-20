@@ -19,11 +19,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.scribe.model.OAuthRequest;
@@ -51,6 +53,8 @@ public class MediaDetails extends AppCompatActivity {
     private String selectedMediaTitle;
     private Button wikiButton;
     private TextView contentDetails;
+    private String user;
+    private String activity;
 
     public MediaDetails() {
 
@@ -69,15 +73,29 @@ public class MediaDetails extends AppCompatActivity {
         selectedTitle = (TextView) findViewById(R.id.selectedMediaTitle);
 
         Bundle bundle = getIntent().getExtras();
+//        Log.v("TAGGGGG", bundle.getString("activity"));
         selectedMediaTitle = bundle.getString("title");
-        final String user = bundle.getString("user");
+        if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
+            user = bundle.getString("user");
+        } else {
+            user = "";
+        }
+
+//        if (bundle.getString("activity") != null && bundle.getString("activity").length() > 0) {
+//            activity = bundle.getString("activity");
+//        }
+
+//        RelativeLayout ratio = (RelativeLayout) findViewById(R.id.contentPercentPrompt);
+//        if (activity.equals("recommendationsforyou")) {
+//            ratio.setVisibility(View.GONE);
+//        } else {
+//            selectedTitle.setText(selectedMediaTitle);
+//        }
+
+        selectedTitle.setText(selectedMediaTitle);
 
         WikipediaData wikipediaData = new WikipediaData();
         wikipediaData.execute();
-
-//        Bundle bundle = this.getArguments();
-//        final String selectedMediaTitle = bundle.getString("mediaTitle");
-        selectedTitle.setText(selectedMediaTitle);
 
         // On click listener for "Save" button on selected tile
         ImageButton saveTitleButton = (ImageButton) findViewById(R.id.saveMediaTitleDetails);
@@ -195,14 +213,21 @@ public class MediaDetails extends AppCompatActivity {
                     String line;
                     while ((line = bufferedReader.readLine()) != null) {
                         stringBuilder.append(line).append("\n");
-                        Log.v("LINE", line);
                     }
                     bufferedReader.close();
                     String unformatted = stringBuilder.toString();
                     JSONObject json = new JSONObject(unformatted);
                     JSONObject description = new JSONObject(json.getString("query"));
-//                    description = description.getString()
-//                    return description;
+                    JSONObject pages = new JSONObject(description.getString("pages"));
+
+                    JSONArray keySet = pages.names();
+                    String pageID = keySet.get(0).toString();
+
+                    JSONObject obj = pages.getJSONObject(pageID);
+                    String extract = obj.getString("extract");
+                    Log.v("TAGGGGG", extract);
+
+                    return extract;
                 }
                 finally {
                     urlConnection.disconnect();
@@ -222,7 +247,6 @@ public class MediaDetails extends AppCompatActivity {
             }
             contentDetails = (TextView) findViewById(R.id.contentDetails);
             contentDetails.setText(response);
-            Log.v("WIKI", "" + response);
         }
     }
 }
