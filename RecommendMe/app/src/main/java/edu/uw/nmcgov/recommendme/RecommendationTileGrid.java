@@ -89,8 +89,6 @@ public class RecommendationTileGrid extends Fragment {
             user = bundle.getString("user");
         }
 
-
-
         // Container for tiles
         tileGrid = (GridView) rootView.findViewById(R.id.recommendationList);
         recommendationList = new ArrayList<RelatedObject>();

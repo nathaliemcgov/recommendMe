@@ -3,6 +3,7 @@ package edu.uw.nmcgov.recommendme;
 
 import android.content.Context;
 import android.media.Image;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -23,9 +24,16 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Verb;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 /**
@@ -38,6 +46,9 @@ public class MediaDetails extends AppCompatActivity {
     private ImageButton thumbsUpBtn;
     private ImageButton thumbsDownBtn;
     private RCMDFirebase firebase;
+    private String selectedMediaTitle;
+    private Button wikiButton;
+    private TextView contentDetails;
 
     public MediaDetails() {
 
@@ -56,8 +67,11 @@ public class MediaDetails extends AppCompatActivity {
         selectedTitle = (TextView) findViewById(R.id.selectedMediaTitle);
 
         Bundle bundle = getIntent().getExtras();
-        final String selectedMediaTitle = bundle.getString("title");
+        selectedMediaTitle = bundle.getString("title");
         final String user = bundle.getString("user");
+
+        WikipediaData wikipediaData = new WikipediaData();
+        wikipediaData.execute();
 
 //        Bundle bundle = this.getArguments();
 //        final String selectedMediaTitle = bundle.getString("mediaTitle");
@@ -117,13 +131,6 @@ public class MediaDetails extends AppCompatActivity {
                 }
             }
         });
-
-        // Switches to Madison's fragment
-//        FragmentManager fm = getSupportFragmentManager();
-//        FragmentTransaction ft = fm.beginTransaction();
-//        PhoneCapability pc = new PhoneCapability();
-//        ft.add(R.id.fragContainer, pc);
-//        ft.commit();
     }
 
     // Writes saved media title to phone's external storage
@@ -156,5 +163,60 @@ public class MediaDetails extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    // Class to query Wikipedia
+    class WikipediaData extends AsyncTask<Void, Void, String> {
+
+        private Exception exception;
+        private final String API_URL = "https://en.wikipedia.org/w/api.php";
+
+        @Override
+        protected void onPreExecute() {
+            Log.v("WIKI", "Querying Wikipedia...");
+        }
+
+        // Querying Wikipedia
+        @Override
+        protected String doInBackground(Void... params) {
+            // Logging in
+            try {
+                String formattedForWiki = selectedMediaTitle.replace(" ", "_");
+
+                URL url = new URL
+                        ("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + formattedForWiki);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                try {
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(line).append("\n");
+                        Log.v("LINE", line);
+                    }
+                    bufferedReader.close();
+                    return stringBuilder.toString();
+                }
+                finally {
+                    urlConnection.disconnect();
+                }
+            }
+            catch (Exception e) {
+                Log.v("WIKI", e.getMessage());
+                return null;
+            }
+        }
+
+        // Once the async task is complete
+        @Override
+        protected void onPostExecute(String response) {
+            if (response == null) {
+                Log.v("WIKI", "No response from Wikipedia");
+            }
+
+            contentDetails = (TextView) findViewById(R.id.contentDetails);
+            contentDetails.setText(response);
+            Log.v("WIKI", response);
+        }
     }
 }

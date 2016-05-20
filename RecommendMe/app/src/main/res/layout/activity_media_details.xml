@@ -108,9 +108,8 @@
             android:layout_marginBottom="25dp"
             android:textColor="@color/textColor"
             android:textAlignment="center"
-            android:textSize="20dp"
-            android:text="lorem ipsum shit\nshitshitshitshitshitshitshit\nshitshitshitshitshit\nlots of shit."/>
-
+            android:textSize="20dp">
+        </TextView>
         <RelativeLayout
             android:id="@+id/thumbBtnContainer"
             android:layout_width="wrap_content"
@@ -140,6 +139,13 @@
                 android:src="@drawable/ic_thumbs_up"
                 android:layout_toRightOf="@+id/thumbsDownBtn"/>
         </RelativeLayout>
+
+        <Button
+            android:id="@+id/queryWiki"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:text="WIKI"
+            />
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/fragContainer"
