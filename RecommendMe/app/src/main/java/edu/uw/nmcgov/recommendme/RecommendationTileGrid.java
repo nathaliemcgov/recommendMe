@@ -89,8 +89,6 @@ public class RecommendationTileGrid extends Fragment {
             user = bundle.getString("user");
         }
 
-
-
         // Container for tiles
         tileGrid = (GridView) rootView.findViewById(R.id.recommendationList);
         recommendationList = new ArrayList<RelatedObject>();
@@ -133,7 +131,6 @@ public class RecommendationTileGrid extends Fragment {
             }
         });
 
-        Log.v("tag", "ACTIVITY " + getActivity());
         if (getActivity() instanceof RecommendationsForYou) { // If the user reached screen by creating an account or logging in
             populateTilesForUser();
         } else if (getActivity() instanceof RecommendationSearchResults) { // If the user reached screen by searching media title
