@@ -499,8 +499,9 @@ public class RCMDFirebase {
                 if (dataSnapshot != null) {
                     for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
                         UserObject object = singleObject.getValue(UserObject.class);
-                        final Map<String, Object> userLikes = object.getLiked();
-
+                        Map<String, Object> tempUserLikes = object.getLiked();
+                        if(tempUserLikes == null) tempUserLikes = new HashMap<String, Object>();
+                        final Map<String, Object> userLikes = tempUserLikes;
                         for(String liked : userLikes.keySet()) {
                             Query singleMediaQuery = myFirebaseMoviesRef.orderByChild("nameLowerCase").equalTo(liked.toLowerCase());
                             singleMediaQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -637,5 +638,27 @@ public class RCMDFirebase {
                 set.add(item);
             }
         }
+    }
+
+    public void changeEmail(String currUser, final String newUser) {
+        Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(currUser);
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
+                        UserObject object = singleObject.getValue(UserObject.class);
+                        Firebase userName = singleObject.getRef();
+                        userName.child("name").setValue(newUser);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 }

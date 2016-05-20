@@ -3,7 +3,9 @@ package edu.uw.nmcgov.recommendme;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.firebase.client.Firebase;
 
@@ -29,5 +31,12 @@ public class UpdateEmailActivity extends AppCompatActivity {
         Log.v(TAG, user);
 
         Button updateEmailFinish = (Button) findViewById(R.id.updateEmailBtn);
+
+        updateEmailFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                firebase.changeEmail(user, ((EditText) findViewById(R.id.newEmailEntry)).getText().toString());
+            }
+        });
     }
 }

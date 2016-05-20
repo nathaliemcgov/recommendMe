@@ -8,10 +8,12 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.core.view.View;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -238,5 +240,10 @@ public class DrawingSurfaceView extends SurfaceView implements SurfaceHolder.Cal
                 }
             }
         }
+    }
+
+    public boolean onTouch(View v, MotionEvent event) {
+        Log.v(TAG, event.getX() + "");
+        return true;
     }
 }
