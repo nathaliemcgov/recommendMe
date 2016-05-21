@@ -14,7 +14,9 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EmailPasswordActivity extends AppCompatActivity {
 
@@ -81,7 +83,11 @@ public class EmailPasswordActivity extends AppCompatActivity {
                 if (password1.equals(password2)) {  // Passwords match - account created
                     // Getting hashcode of password
                     int hashedPass = password1.hashCode();
-                    Log.v("Hashed password", "" + hashedPass);
+
+                    // Adding user to firebase
+                    Map<String, String> userMap = new HashMap<String, String>();
+                    userMap.put("name", email);
+                    firebase.createUser(userMap);
 
                     // Send desert island lists to firebase
                     firebase.setManyLikes(movieList, email, "movie");    // Movies
@@ -95,6 +101,10 @@ public class EmailPasswordActivity extends AppCompatActivity {
                 } else {
                     // Alert that passwords entered do not match
                     toasted();
+
+                    // Clearing password fields
+                    password1CreateAcc.getText().clear();
+                    password2CreateAcc.getText().clear();
                 }
             }
             }
