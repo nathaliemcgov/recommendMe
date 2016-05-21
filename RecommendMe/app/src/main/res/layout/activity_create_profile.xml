@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,41 +8,74 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".SetupPageActivity"
+    android:orientation="vertical"
     android:background="@color/background"
     >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="placeholder"
-        android:textSize="30dp"
-        android:id="@+id/type_box"/>
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/type_box"
+        android:id="@+id/createProfileArea"
         android:orientation="vertical"
-        android:id="@+id/add_box">
-        <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/email_pass"/>
-        <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/confirm"-->
-            <!--android:text="confirm entry"/>-->
-        <!--<EditText-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/email_pass_confirm"/>-->
+            android:textSize="30dp"
+            android:id="@+id/firstHalfTitle"
+            android:text="Imagine you're stranded on a desert island... What"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/mediaTypeDI"
+            android:textSize="30dp"
+            android:layout_below="@+id/firstHalfTitle"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/secondHalfTitle"
+            android:textSize="30dp"
+            android:layout_below="@+id/mediaTypeDI"
+            android:text="would you bring?"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/searchMediaText1"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/secondHalfTitle">
+            <requestFocus />
+        </AutoCompleteTextView>
+
+        <AutoCompleteTextView
+            android:id="@+id/searchMediaText2"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/searchMediaText1">
+            <requestFocus />
+        </AutoCompleteTextView>
+
+        <AutoCompleteTextView
+            android:id="@+id/searchMediaText3"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/searchMediaText2">
+            <requestFocus />
+        </AutoCompleteTextView>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_below="@+id/searchMediaText3"
+            android:layout_height="wrap_content"
+            android:id="@+id/next_button"
+            android:text="next"/>
     </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_below="@+id/add_box"
-        android:layout_height="wrap_content"
-        android:id="@+id/next_button"
-        android:text="next"/>
+    <LinearLayout
+        android:id="@+id/emailPassContainer"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

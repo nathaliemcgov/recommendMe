@@ -5,42 +5,21 @@
     android:background="@color/background"
     android:weightSum="1">
 
-    <AutoCompleteTextView
-        android:id="@+id/searchMediaText1"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content">
-        <requestFocus />
-    </AutoCompleteTextView>
-    <Button
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight=".30"
-        android:text="change"
-        android:id="@+id/change_1"/>
-    <AutoCompleteTextView
-        android:id="@+id/searchMediaText2"
+        android:textSize="30dp"
+        android:text="Almost done!\nPlease enter your email address"/>
+
+    <EditText
         android:layout_width="250dp"
-        android:layout_height="wrap_content">
-        <requestFocus />
-    </AutoCompleteTextView>
-    <Button
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight=".30"
-        android:text="change"
-        android:id="@+id/change_2"/>
-    <AutoCompleteTextView
-        android:id="@+id/searchMediaText3"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content">
-        <requestFocus />
-    </AutoCompleteTextView>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight=".30"
-        android:text="change"
-        android:id="@+id/change_3"
+        android:id="@+id/emailAddrCreateAcc"
         />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        android:id="@+id/nextBtnEmailPass"/>
 
 </LinearLayout>

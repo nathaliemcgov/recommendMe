@@ -42,5 +42,8 @@ repositories {
 }
 
 dependencies {
+    compile 'com.android.support:support-v4:23.+'
+}
+dependencies {
     compile 'org.scribe:scribe:1.1.0'
 }
