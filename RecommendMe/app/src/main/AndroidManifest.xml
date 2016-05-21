@@ -33,6 +33,7 @@
         <activity android:name=".CreateProfileActivity" />
         <activity android:name=".ExistingLogin" />
         <activity android:name=".CircleGraphicActivity" />
+        <activity android:name=".AccountsActivity" />
         <activity android:name=".MediaDetails" />
         <activity android:name=".SavedActivity" />
         <activity android:name=".ManageAccountActivity" />

@@ -118,6 +118,12 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         // Write title to phone's external storage
         saveTitleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                CharSequence text = "Saved : " + object.toString();
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(getContext(), text, duration);
+                toast.show();
+
                 handleSaveMediaTitle(object);
             }
         });
