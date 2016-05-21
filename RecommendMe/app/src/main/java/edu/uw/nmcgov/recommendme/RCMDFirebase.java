@@ -532,6 +532,7 @@ public class RCMDFirebase {
                                                                 if (dataSnapshot != null) {
                                                                     for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
                                                                         MediaObject object = singleObject.getValue(MediaObject.class);
+                                                                        related.type = object.getType();
                                                                         if(types.contains(object.getType())) {
                                                                             Log.v(TAG, related.toString());
                                                                             list.add(related);
