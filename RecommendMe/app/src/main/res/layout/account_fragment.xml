@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".SetupPageActivity"
+    android:orientation="vertical"
     android:background="@color/background"
     >
 
@@ -18,10 +18,21 @@
         android:gravity="center"
         android:text="Linked Accounts" />
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:id="@+id/lastFMUserName"
+        android:hint="LastFM username"
+        />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="back"
+        android:text="Link LastFM"
         android:id="@+id/linked_back" />
+
+
 
 </LinearLayout>

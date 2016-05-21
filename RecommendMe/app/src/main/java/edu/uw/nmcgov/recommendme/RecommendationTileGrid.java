@@ -89,8 +89,6 @@ public class RecommendationTileGrid extends Fragment {
             user = bundle.getString("user");
         }
 
-
-
         // Container for tiles
         tileGrid = (GridView) rootView.findViewById(R.id.recommendationList);
         recommendationList = new ArrayList<RelatedObject>();
@@ -99,41 +97,43 @@ public class RecommendationTileGrid extends Fragment {
 
         tileGrid.setAdapter(customAdapter);
 
-        movieCheck = (CheckBox) getActivity().findViewById(R.id.movie_check);
-        bookCheck = (CheckBox) getActivity().findViewById(R.id.book_check);
-        musicCheck = (CheckBox) getActivity().findViewById(R.id.music_check);
 
-        movieCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getActivity() instanceof RecommendationsForYou)
-                    populateTilesForUser();
-                else
-                    populateTilesForSearch();
-            }
-        });
+        if(! (getActivity() instanceof SavedActivity)) {
+            movieCheck = (CheckBox) getActivity().findViewById(R.id.movie_check);
+            bookCheck = (CheckBox) getActivity().findViewById(R.id.book_check);
+            musicCheck = (CheckBox) getActivity().findViewById(R.id.music_check);
 
-        musicCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getActivity() instanceof RecommendationsForYou)
-                    populateTilesForUser();
-                else
-                    populateTilesForSearch();
-            }
-        });
+            movieCheck.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (getActivity() instanceof RecommendationsForYou)
+                        populateTilesForUser();
+                    else
+                        populateTilesForSearch();
+                }
+            });
 
-        bookCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getActivity() instanceof RecommendationsForYou)
-                    populateTilesForUser();
-                else
-                    populateTilesForSearch();
-            }
-        });
+            musicCheck.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (getActivity() instanceof RecommendationsForYou)
+                        populateTilesForUser();
+                    else
+                        populateTilesForSearch();
+                }
+            });
 
-        Log.v("tag", "ACTIVITY " + getActivity());
+            bookCheck.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (getActivity() instanceof RecommendationsForYou)
+                        populateTilesForUser();
+                    else
+                        populateTilesForSearch();
+                }
+            });
+        }
+
         if (getActivity() instanceof RecommendationsForYou) { // If the user reached screen by creating an account or logging in
             populateTilesForUser();
         } else if (getActivity() instanceof RecommendationSearchResults) { // If the user reached screen by searching media title
@@ -225,6 +225,7 @@ public class RecommendationTileGrid extends Fragment {
             }
         }
 
+        if(savedList == null) savedList = new ArrayList<RelatedObject>();
         CustomTileAdapter customAdapter = new CustomTileAdapter(this.getContext(), savedList, user);
         tileGrid.setAdapter(customAdapter);
     }

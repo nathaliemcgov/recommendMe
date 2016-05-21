@@ -39,14 +39,29 @@ public class RecommendationSearchResults extends AppCompatActivity
 
         // TextView for header of screen
         titleSearchedFor = (TextView) findViewById(R.id.titleSearchedFor);
+
+
         Bundle bundle = getIntent().getExtras();
         final String titleSearched = bundle.getString("title");
+
         if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
             user = bundle.getString("user");
+        } else {
+            user = "";
         }
 
         // Adds title searched for to header
         titleSearchedFor.setText(titleSearched);
+        titleSearchedFor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MediaDetails.class);
+                intent.putExtra("title", titleSearched);
+                intent.putExtra("user", user);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getApplicationContext().startActivity(intent);
+            }
+        });
 
         // Setting on click listener to make button appear selected
         // Later will need to store like/dislike in firebase
@@ -157,6 +172,8 @@ public class RecommendationSearchResults extends AppCompatActivity
 
         Intent intent = new Intent(this, MediaDetails.class);
         intent.putExtra("title", mediaTile);
+        intent.putExtra("user", user);
+        intent.putExtra("activity", "RecommendationSearchResults");
         startActivity(intent);
     }
 }

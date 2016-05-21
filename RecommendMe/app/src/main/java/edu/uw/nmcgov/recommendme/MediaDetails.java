@@ -2,7 +2,10 @@ package edu.uw.nmcgov.recommendme;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -18,14 +21,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Verb;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 /**
@@ -38,6 +55,11 @@ public class MediaDetails extends AppCompatActivity {
     private ImageButton thumbsUpBtn;
     private ImageButton thumbsDownBtn;
     private RCMDFirebase firebase;
+
+    private String selectedMediaTitle;
+    private TextView contentDetails;
+    private String user;
+    private String activity;
 
     public MediaDetails() {
 
@@ -56,12 +78,38 @@ public class MediaDetails extends AppCompatActivity {
         selectedTitle = (TextView) findViewById(R.id.selectedMediaTitle);
 
         Bundle bundle = getIntent().getExtras();
-        final String selectedMediaTitle = bundle.getString("title");
-        final String user = bundle.getString("user");
+//        Log.v("TAGGGGG", bundle.getString("activity"));
+        selectedMediaTitle = bundle.getString("title");
+        if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
+            user = bundle.getString("user");
+        } else {
+            user = "";
+        }
 
-//        Bundle bundle = this.getArguments();
-//        final String selectedMediaTitle = bundle.getString("mediaTitle");
+        if (bundle.getString("activity") != null && bundle.getString("activity").length() > 0) {
+            activity = bundle.getString("activity");
+        }
+
+        RelativeLayout ratio = (RelativeLayout) findViewById(R.id.contentPercentPrompt);
+        if (activity.equals("recommendationsforyou")) {
+            ratio.setVisibility(View.GONE);
+        } else {
+            selectedTitle.setText(selectedMediaTitle);
+        }
+
         selectedTitle.setText(selectedMediaTitle);
+
+        selectedTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CircleGraphicActivity.class);
+                intent.putExtra("title", selectedMediaTitle);
+                startActivity(intent);
+            }
+        });
+
+        WikipediaData wikipediaData = new WikipediaData();
+        wikipediaData.execute();
 
         // On click listener for "Save" button on selected tile
         ImageButton saveTitleButton = (ImageButton) findViewById(R.id.saveMediaTitleDetails);
@@ -117,13 +165,6 @@ public class MediaDetails extends AppCompatActivity {
                 }
             }
         });
-
-        // Switches to Madison's fragment
-//        FragmentManager fm = getSupportFragmentManager();
-//        FragmentTransaction ft = fm.beginTransaction();
-//        PhoneCapability pc = new PhoneCapability();
-//        ft.add(R.id.fragContainer, pc);
-//        ft.commit();
     }
 
     // Writes saved media title to phone's external storage
@@ -156,5 +197,70 @@ public class MediaDetails extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    // Class to query Wikipedia
+    class WikipediaData extends AsyncTask<Void, Void, String> {
+
+        private Exception exception;
+        private final String API_URL = "https://en.wikipedia.org/w/api.php";
+
+        @Override
+        protected void onPreExecute() {
+            Log.v("WIKI", "Querying Wikipedia...");
+        }
+
+        // Querying Wikipedia
+        @Override
+        protected String doInBackground(Void... params) {
+            // Logging in
+            try {
+                String formattedForWiki = selectedMediaTitle.replace(" ", "_");
+
+                URL url = new URL
+                        ("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + formattedForWiki);
+//                https://en.wikipedia.org/w/api.php?action=mobileview&page=Therion_(band)
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                try {
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(line).append("\n");
+                    }
+                    bufferedReader.close();
+                    String unformatted = stringBuilder.toString();
+                    JSONObject json = new JSONObject(unformatted);
+                    JSONObject description = new JSONObject(json.getString("query"));
+                    JSONObject pages = new JSONObject(description.getString("pages"));
+
+                    JSONArray keySet = pages.names();
+                    String pageID = keySet.get(0).toString();
+
+                    JSONObject obj = pages.getJSONObject(pageID);
+                    String extract = obj.getString("extract");
+                    Log.v("TAGGGGG", extract);
+
+                    return extract;
+                }
+                finally {
+                    urlConnection.disconnect();
+                }
+            }
+            catch (Exception e) {
+                Log.v("WIKI", e.getMessage());
+                return null;
+            }
+        }
+
+        // Once the async task is complete
+        @Override
+        protected void onPostExecute(String response) {
+            if (response == null) {
+                Log.v("WIKI", "No response from Wikipedia");
+            }
+            contentDetails = (TextView) findViewById(R.id.contentDetails);
+            contentDetails.setText(response);
+        }
     }
 }

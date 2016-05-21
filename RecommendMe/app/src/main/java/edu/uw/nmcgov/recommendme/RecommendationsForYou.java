@@ -33,7 +33,11 @@ public class RecommendationsForYou extends AppCompatActivity
         setContentView(R.layout.activity_recommendations_for_you);
 
         Bundle bundle = getIntent().getExtras();
-        user = bundle.getString("user");   // User's email
+        if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
+            user = bundle.getString("user");
+        } else {
+            user = "";
+        }
         Log.v("tag", user + " RcmdsForYou");
 
         // Fragment to display tile grid
@@ -102,11 +106,14 @@ public class RecommendationsForYou extends AppCompatActivity
     // When a tile is selected, move to fragment that gives details about the tile selected
     @Override
     public void onMediaSelected(String mediaTile) {
+
         // Fragment that contains details about the selected tile
         MediaDetails details = new MediaDetails();
 
         Intent intent = new Intent(this, MediaDetails.class);
         intent.putExtra("title", mediaTile);
+        intent.putExtra("user", user);
+        intent.putExtra("activity", "recommendationsforyou");
         startActivity(intent);
     }
 }

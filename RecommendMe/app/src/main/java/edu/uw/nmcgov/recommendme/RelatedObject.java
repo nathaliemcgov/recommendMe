@@ -6,6 +6,7 @@ package edu.uw.nmcgov.recommendme;
 public class RelatedObject implements Comparable<RelatedObject> {
 
     public String name;
+    public String type;
     public int likes;
     public int totalLikes;
     public double ratio; //Ratio of likes to totalLikes
@@ -38,6 +39,8 @@ public class RelatedObject implements Comparable<RelatedObject> {
     public String toString() {
         return name;
     }
+
+    public String getType() { return type; }
 
     public double getRatio() {
         return ratio;

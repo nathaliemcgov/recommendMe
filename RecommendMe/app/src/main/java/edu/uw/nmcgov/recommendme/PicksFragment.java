@@ -19,7 +19,7 @@ public class PicksFragment extends Fragment {
     private static final String TAG = "saved";
 
     //so we can communicate with the profile activity
-    public interface OnProfileSelectedListener extends AccountsFragment.OnProfileSelectedListener {
+    public interface OnProfileSelectedListener {
         void onProfileSelected();
         void onPickSelected(String type);
     }
@@ -42,7 +42,7 @@ public class PicksFragment extends Fragment {
             @Override
             public void onClick(View V) {
                 Log.v(TAG, "back");
-                ((AccountsFragment.OnProfileSelectedListener)getActivity()).onProfileSelected();
+                //((AccountsFragment.OnProfileSelectedListener)getActivity()).onProfileSelected();
 
             }
         });
