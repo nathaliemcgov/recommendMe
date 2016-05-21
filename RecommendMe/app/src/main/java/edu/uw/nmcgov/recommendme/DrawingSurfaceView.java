@@ -63,7 +63,7 @@ public class DrawingSurfaceView extends SurfaceView implements SurfaceHolder.Cal
         Firebase.setAndroidContext(context);
         firebase = new RCMDFirebase();
 
-        MAX = 2;
+        MAX = 20;
 
 
         viewWidth = 1; viewHeight = 1; //positive defaults; will be replaced when #surfaceChanged() is called
@@ -77,7 +77,7 @@ public class DrawingSurfaceView extends SurfaceView implements SurfaceHolder.Cal
         //set up drawing variables ahead of timme
         redPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         redPaint.setColor(Color.WHITE);
-        redPaint.setTextSize(20);
+        redPaint.setTextSize(30);
 
 
         list = new ArrayList<RelatedObject>();

@@ -86,16 +86,16 @@ public class MediaDetails extends AppCompatActivity {
             user = "";
         }
 
-//        if (bundle.getString("activity") != null && bundle.getString("activity").length() > 0) {
-//            activity = bundle.getString("activity");
-//        }
+        if (bundle.getString("activity") != null && bundle.getString("activity").length() > 0) {
+            activity = bundle.getString("activity");
+        }
 
-//        RelativeLayout ratio = (RelativeLayout) findViewById(R.id.contentPercentPrompt);
-//        if (activity.equals("recommendationsforyou")) {
-//            ratio.setVisibility(View.GONE);
-//        } else {
-//            selectedTitle.setText(selectedMediaTitle);
-//        }
+        RelativeLayout ratio = (RelativeLayout) findViewById(R.id.contentPercentPrompt);
+        if (activity.equals("recommendationsforyou")) {
+            ratio.setVisibility(View.GONE);
+        } else {
+            selectedTitle.setText(selectedMediaTitle);
+        }
 
         selectedTitle.setText(selectedMediaTitle);
 

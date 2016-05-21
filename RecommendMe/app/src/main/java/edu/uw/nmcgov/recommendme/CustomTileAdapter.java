@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.PendingIntent.getActivity;
+
 /**
  * Created by iguest on 3/8/16.
  */
@@ -88,9 +90,14 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                 String title = titleView.getText().toString();
                 Log.v("tag", title);
 
+                String activity = "random";
+                Log.v("tile adapter", mContext.toString());
+                if (mContext instanceof RecommendationsForYou) activity = "recommendationsforyou";
+
                 Intent intent = new Intent(mContext, MediaDetails.class);
                 intent.putExtra("title", title);
                 intent.putExtra("user", user);
+                intent.putExtra("activity", activity);
                 mContext.startActivity(intent);
             }
         });
@@ -122,6 +129,12 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         // Write title to phone's external storage
         saveTitleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                CharSequence text = "Saved : " + object.toString();
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(getContext(), text, duration);
+                toast.show();
+
                 handleSaveMediaTitle(object);
             }
         });

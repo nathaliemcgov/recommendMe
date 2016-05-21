@@ -15,7 +15,7 @@ import com.firebase.client.Firebase;
 /**
  * Created by austinweale on 3/3/16.
  */
-public class ProfileActivity extends AppCompatActivity implements AccountsFragment.OnProfileSelectedListener {
+public class ProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "profile activity";
     private boolean pick;
@@ -60,18 +60,18 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
                 }
             });
 
-            // For linked accounts
-//            linked.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View V) {
-//                    Log.v(TAG, "linked");
-//                    AccountsFragment accounts = new AccountsFragment();
-//                    getFragmentManager().beginTransaction()
-//                            .replace(R.id.mainContainer, accounts)
-//                            .commit();
-//
-//                }
-//            });
+            //For linked accounts
+            linked.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View V) {
+                    Log.v(TAG, "linked");
+                    Intent intent = new Intent(V.getContext(), AccountsActivity.class);
+                    intent.putExtra("user", user);
+
+                    startActivity(intent);
+
+                }
+            });
 
             logout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -103,7 +103,6 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
         }
     }
 
-    @Override
     public void onProfileSelected() {
 //        //main profile fragment
 //        ProfileFragment profile = new ProfileFragment();
@@ -178,5 +177,9 @@ public class ProfileActivity extends AppCompatActivity implements AccountsFragme
         Intent intent = new Intent(this, ProfileActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
+    }
+
+    public String getUser() {
+        return user;
     }
 }
