@@ -12,26 +12,63 @@
     >
 
     <TextView
+        android:id="@+id/linkedTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="40dp"
+        android:textSize="38dp"
         android:gravity="center"
-        android:text="Linked Accounts" />
+        android:text="LINK ACCOUNTS"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginBottom="5dp"/>
 
-    <EditText
-        android:layout_width="match_parent"
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#ffffff"
+        android:layout_below="@+id/linkedTitle"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/linkedBlurb"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:layout_gravity="center"
         android:gravity="center"
-        android:id="@+id/lastFMUserName"
-        android:hint="LastFM username"
+        android:text="Active on other media platforms?\nGreat news!\nBy logging into your other accounts,\nwe can give you even better\nrecommendations"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
         />
 
-    <Button
+
+    <LinearLayout
+        android:id="@+id/linkedFields"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Link LastFM"
-        android:id="@+id/linked_back" />
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/linkedBlurb">
+
+        <EditText
+            android:id="@+id/lastFMUserName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".70"
+            android:textSize="20dp"
+            android:hint="LastFM username" />
+
+        <Button
+            android:id="@+id/linked_back"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".30"
+            android:text="Link"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/link_button"/>
+
+    </LinearLayout>
+
 
 
 
