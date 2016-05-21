@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.PendingIntent.getActivity;
+
 /**
  * Created by iguest on 3/8/16.
  */
@@ -64,7 +66,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.recommendation_element,
                     parent, false);
-    }
+        }
 
         TextView mediaTitle = (TextView) convertView.findViewById(R.id.recommendationElement);
         //TextView ratio = (TextView) convertView.findViewById(R.id.tileRatio);
@@ -79,9 +81,14 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                 String title = titleView.getText().toString();
                 Log.v("tag", title);
 
+                String activity = "random";
+                Log.v("tile adapter", mContext.toString());
+                if (mContext instanceof RecommendationsForYou) activity = "recommendationsforyou";
+
                 Intent intent = new Intent(mContext, MediaDetails.class);
                 intent.putExtra("title", title);
                 intent.putExtra("user", user);
+                intent.putExtra("activity", activity);
                 mContext.startActivity(intent);
             }
         });
