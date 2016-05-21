@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class CreateProfileActivity extends FragmentActivity {
+public class CreateProfileActivity extends Activity {
     private static final String TAG = "start";
     private EditFragment current;
 
@@ -129,20 +129,27 @@ public class CreateProfileActivity extends FragmentActivity {
                     LinearLayout desertIslandEntry = (LinearLayout) findViewById(R.id.createProfileArea);
                     desertIslandEntry.setVisibility(View.INVISIBLE);
 
+                    // Send user to recommendationsForYou
+                    Intent intent = new Intent(getApplicationContext(), EmailPasswordActivity.class);
+                    intent.putExtra("movies", desertIslandList.get(0));
+                    intent.putExtra("books", desertIslandList.get(1));
+                    intent.putExtra("music", desertIslandList.get(2));
+                    startActivity(intent);
+
                     // Replacing current screen with fragment
-                    android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-
-                    FragmentTransaction ft = fm.beginTransaction();
-                    EmailPasswordFragment emailPasswordFrag = new EmailPasswordFragment();
-
-                    Bundle desertIslandBundle = new Bundle();
-                    desertIslandBundle.putString("movies", desertIslandList.get(0));
-                    desertIslandBundle.putString("books", desertIslandList.get(1));
-                    desertIslandBundle.putString("music", desertIslandList.get(2));
-                    emailPasswordFrag.setArguments(desertIslandBundle);
-
-                    ft.add(R.id.emailPassContainer, emailPasswordFrag, "EmailPass");
-                    ft.commit();
+//                    android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+//
+//                    FragmentTransaction ft = fm.beginTransaction();
+//                    EmailPasswordFragment emailPasswordFrag = new EmailPasswordFragment();
+//
+//                    Bundle desertIslandBundle = new Bundle();
+//                    desertIslandBundle.putString("movies", desertIslandList.get(0));
+//                    desertIslandBundle.putString("books", desertIslandList.get(1));
+//                    desertIslandBundle.putString("music", desertIslandList.get(2));
+//                    emailPasswordFrag.setArguments(desertIslandBundle);
+//
+//                    ft.add(R.id.emailPassContainer, emailPasswordFrag, "EmailPass");
+//                    ft.commit();
                 }
             }
         });
