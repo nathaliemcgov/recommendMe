@@ -29,6 +29,14 @@
         android:text="title title title"
         />
 
+    <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/mediaType"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:textAlignment="center"
+        android:background="@drawable/ic_book_icon"
+        />
+
     <!--<TextView-->
         <!--android:layout_width="fill_parent"-->
         <!--android:layout_height="40dp"-->
