@@ -60,11 +60,20 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         // Gets the title of the recommendation
         final RelatedObject object = getItem(position);
 
+
         // Checking if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.recommendation_element,
                     parent, false);
-    }
+        }
+
+        //Set up media type icon
+        ImageButton mediaTypeButton = (ImageButton) convertView.findViewById(R.id.mediaType);
+        String mediaType = object.getType();
+        int backgroundResource = R.drawable.ic_book_icon;
+        if(mediaType.equals("music")) backgroundResource = R.drawable.ic_music_icon;
+        else if(mediaType.equals("movie")) backgroundResource = R.drawable.ic_movie_icon;
+        mediaTypeButton.setBackgroundResource(backgroundResource);
 
         TextView mediaTitle = (TextView) convertView.findViewById(R.id.recommendationElement);
         //TextView ratio = (TextView) convertView.findViewById(R.id.tileRatio);
@@ -104,6 +113,8 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                 }
             }
         });
+
+
 
         // On click listener for "Save" button on each tile
         ImageButton saveTitleButton = (ImageButton) convertView.findViewById(R.id.saveMediaTitle);
