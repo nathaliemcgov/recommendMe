@@ -19,10 +19,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,10 +35,13 @@ public class CreateProfileActivity extends Activity {
 
     private String[] types;
     private int index;
-    private AutoCompleteTextView desertIslandTextViews;
     private RCMDFirebase firebase;
     private Button nextButton;
     private List<String> desertIslandList;
+    private List<AutoCompleteTextView> texts;
+    private AutoCompleteTextView field1;
+    private AutoCompleteTextView field2;
+    private AutoCompleteTextView field3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,27 +52,36 @@ public class CreateProfileActivity extends Activity {
         Firebase.setAndroidContext(this);
         firebase = new RCMDFirebase();
 
-        // AUTOCOMPLETE
         // Sets keyboard to always hidden on create
-//        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-//
-//        // The text entry so user can search
-//        desertIslandTextViews = (AutoCompleteTextView) findViewById(R.id.searchMediaText);
-//        String[] suggestions = {};
-//        ArrayList<String> lst = new ArrayList<String>(Arrays.asList(suggestions));
-//        final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, lst);
-//
-//        desertIslandTextViews.setAdapter(adapter);
-//        desertIslandTextViews.setThreshold(1);
-//
-//        desertIslandTextViews.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                if(event.getAction() == KeyEvent.ACTION_UP)
-//                    firebase.autoComplete(desertIslandTextViews.getText().toString(), adapter);
-//                return false;
-//            }
-//        });
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        field1 = (AutoCompleteTextView) findViewById(R.id.searchMediaText1);
+        field2 = (AutoCompleteTextView) findViewById(R.id.searchMediaText2);
+        field3 = (AutoCompleteTextView) findViewById(R.id.searchMediaText3);
+
+        // Adding autocomplete to all three fields
+        texts = new LinkedList<AutoCompleteTextView>();
+        texts.add(field1);
+        texts.add(field2);
+        texts.add(field3);
+
+        String[] suggestions = {};
+        ArrayList<String> lst = new ArrayList<String>(Arrays.asList(suggestions));
+        final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, lst);
+
+        for (final AutoCompleteTextView searchMediaText : texts) {
+            searchMediaText.setAdapter(adapter);
+            searchMediaText.setThreshold(1);
+
+            searchMediaText.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    if(event.getAction() == KeyEvent.ACTION_UP)
+                        firebase.autoComplete(searchMediaText.getText().toString(), adapter);
+                    return false;
+                }
+            });
+        }
 
         desertIslandList = new ArrayList<String>();
 
@@ -88,57 +103,59 @@ public class CreateProfileActivity extends Activity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // AUTOCOMPLETE
-                // Hides keyboard when search button is clicked
-//                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(desertIslandTextViews.getWindowToken(), 0);
-                index++;
+                // Get the titles that the user entered in the three fields - add to list
+                String firstField = field1.getText().toString();
+                String secondField = field2.getText().toString();
+                String thirdField = field3.getText().toString();
+                // Checking if any of the fields were filled in + enforcing at least one desert island field to be filled
+                if (firstField.length() > 0 || secondField.length() > 0 || thirdField.length() > 0) {
+                    index++;
+                    if (index < 3) {
+                        // Enforcing at least one desert island field to be filled
+                        // 3 titles
+                        String titles = field1.getText().toString() + "," +
+                                field2.getText().toString() + "," + field3.getText().toString();
+                        desertIslandList.add(titles);
 
-                if (index < 3) {
-                    // Get the titles that the user entered in the three fields - add to list
-                    EditText field1 = (EditText) findViewById(R.id.searchMediaText1);
-                    EditText field2 = (EditText) findViewById(R.id.searchMediaText2);
-                    EditText field3 = (EditText) findViewById(R.id.searchMediaText3);
+                        field1.getText().clear();
+                        field2.getText().clear();
+                        field3.getText().clear();
 
-                    // 3 titles
-                    String titles = field1.getText().toString() + "," +
-                            field2.getText().toString() + "," + field3.getText().toString();
-                    desertIslandList.add(titles);
+                        // Books, Music
+                        TextView text = (TextView) findViewById(R.id.mediaTypeDI);
+                        text.setText(types[index]);
+                    } else {
+                        List<String> singleMediaTypeDI = new ArrayList<String>();
 
-                    field1.getText().clear();
-                    field2.getText().clear();
-                    field3.getText().clear();
+                        // 3 titles
+                        String titles = firstField + "," + secondField + "," + thirdField;
+                        desertIslandList.add(titles);
+                        Log.v("Desert Island List", desertIslandList.toString());
 
-                    // Books, Music
-                    TextView text = (TextView) findViewById(R.id.mediaTypeDI);
-                    text.setText(types[index]);
+                        // Hide desert island entries
+                        LinearLayout desertIslandEntry = (LinearLayout) findViewById(R.id.createProfileArea);
+                        desertIslandEntry.setVisibility(View.INVISIBLE);
 
+                        // Send user to recommendationsForYou
+                        Intent intent = new Intent(getApplicationContext(), EmailPasswordActivity.class);
+                        intent.putExtra("movies", desertIslandList.get(0));
+                        intent.putExtra("books", desertIslandList.get(1));
+                        intent.putExtra("music", desertIslandList.get(2));
+                        startActivity(intent);
+                    }
                 } else {
-                    List<String> singleMediaTypeDI = new ArrayList<String>();
-                    EditText field1 = (EditText) findViewById(R.id.searchMediaText1);
-                    EditText field2 = (EditText) findViewById(R.id.searchMediaText2);
-                    EditText field3 = (EditText) findViewById(R.id.searchMediaText3);
-
-                    // 3 titles
-                    String titles = field1.getText().toString() + "," +
-                            field2.getText().toString() + "," + field3.getText().toString();
-                    desertIslandList.add(titles);
-                    Log.v("Desert Island List", desertIslandList.toString());
-
-                    // Hide desert island entries
-                    LinearLayout desertIslandEntry = (LinearLayout) findViewById(R.id.createProfileArea);
-                    desertIslandEntry.setVisibility(View.INVISIBLE);
-
-                    // Send user to recommendationsForYou
-                    Intent intent = new Intent(getApplicationContext(), EmailPasswordActivity.class);
-                    intent.putExtra("movies", desertIslandList.get(0));
-                    intent.putExtra("books", desertIslandList.get(1));
-                    intent.putExtra("music", desertIslandList.get(2));
-                    startActivity(intent);
-
+                    toasted(types[index]);
                 }
             }
         });
+    }
+
+    public void toasted(String mediaType) {
+        CharSequence text = "Please input at least one " + mediaType;
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(this, text, duration);
+        toast.show();
     }
 }
 

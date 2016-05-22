@@ -56,60 +56,66 @@ public class EmailPasswordActivity extends AppCompatActivity {
         nextBtnEmailPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            if (index == 0) {
-                // Getting email address entered
-                EditText emailAddrCreateAcc = (EditText) findViewById(R.id.emailAddrCreateAcc);
-                email = emailAddrCreateAcc.getText().toString();
+                if (index == 0) {
+                    // Getting email address entered
+                    EditText emailAddrCreateAcc = (EditText) findViewById(R.id.emailAddrCreateAcc);
+                    email = emailAddrCreateAcc.getText().toString();
+                    if (email.length() > 0 && !email.equals(" ")) {
+                        index++;
 
-                index++;
+                        // Reached password entry screen
+                        // Change text at top of page
+                        TextView titleText = (TextView) findViewById(R.id.credsTitle);
+                        titleText.setText("Now set a password\n(Enter it twice)");
 
-                // Reached password entry screen
-                // Change text at top of page
-                TextView titleText = (TextView) findViewById(R.id.credsTitle);
-                titleText.setText("Now set a password\n(Enter it twice)");
+                        // Hide email address edit text
+                        EditText emailEntry = (EditText) findViewById(R.id.emailAddrCreateAcc);
+                        emailEntry.setVisibility(View.INVISIBLE);
 
-                // Hide email address edit text
-                EditText emailEntry = (EditText) findViewById(R.id.emailAddrCreateAcc);
-                emailEntry.setVisibility(View.INVISIBLE);
-
-                password1CreateAcc.setVisibility(View.VISIBLE);
-                password2CreateAcc.setVisibility(View.VISIBLE);
-            } else {
-                // User is done entering email address and password
-                // Getting password entered in field 1 and 2
-                String password1 = password1CreateAcc.getText().toString();
-                String password2 = password2CreateAcc.getText().toString();
-
-                if (password1.equals(password2)) {  // Passwords match - account created
-                    // Getting hashcode of password
-                    int hashedPass = password1.hashCode();
-
-                    // Adding user to firebase
-                    Map<String, String> userMap = new HashMap<String, String>();
-                    userMap.put("name", email);
-                    firebase.createUser(userMap);
-
-                    // Send desert island lists to firebase
-                    firebase.setManyLikes(movieList, email, "movie");    // Movies
-                    firebase.setManyLikes(bookList, email, "book");    // Books
-                    firebase.setManyLikes(musicList, email, "music");    // Music
-
-                    // Send user to recommendationsForYou
-                    Intent intent = new Intent(getApplicationContext(), RecommendationsForYou.class);
-                    intent.putExtra("user", email);
-                    startActivity(intent);
+                        password1CreateAcc.setVisibility(View.VISIBLE);
+                        password2CreateAcc.setVisibility(View.VISIBLE);
+                    } else {
+                        toasted("username");
+                    }
                 } else {
-                    // Alert that passwords entered do not match
-                    toasted();
+                    // User is done entering email address and password
+                    // Getting password entered in field 1 and 2
+                    String password1 = password1CreateAcc.getText().toString();
+                    String password2 = password2CreateAcc.getText().toString();
 
-                    // Clearing password fields
-                    password1CreateAcc.getText().clear();
-                    password2CreateAcc.getText().clear();
+                    if (password1.length() > 0 && password2.length() > 0) {
+                        if (password1.equals(password2)) {  // Passwords match - account created
+                            // Getting hashcode of password
+                            int hashedPass = password1.hashCode();
+
+                            // Adding user to firebase
+                            Map<String, String> userMap = new HashMap<String, String>();
+                            userMap.put("name", email);
+                            firebase.createUser(userMap);
+
+                            // Send desert island lists to firebase
+                            firebase.setManyLikes(movieList, email, "movie");    // Movies
+                            firebase.setManyLikes(bookList, email, "book");    // Books
+                            firebase.setManyLikes(musicList, email, "music");    // Music
+
+                            // Send user to recommendationsForYou
+                            Intent intent = new Intent(getApplicationContext(), RecommendationsForYou.class);
+                            intent.putExtra("user", email);
+                            startActivity(intent);
+                        } else {
+                            // Alert that passwords entered do not match
+                            toasted("password");
+
+                            // Clearing password fields
+                            password1CreateAcc.getText().clear();
+                            password2CreateAcc.getText().clear();
+                        }
+                    } else {
+                        toasted("nopassword");
+                    }
                 }
             }
-            }
         });
-
     }
 
     // Makes list of titles to send to firebase
@@ -122,8 +128,15 @@ public class EmailPasswordActivity extends AppCompatActivity {
         return typeTitles;
     }
 
-    public void toasted() {
-        CharSequence text = "Sorry, your passwords do not match";
+    public void toasted(String fieldName) {
+        CharSequence text = "";
+        if (fieldName.equals("username")) {
+            text = "Please enter an email address";
+        } else if (fieldName.equals("nopassword")) {
+            text = "Please fill out both password fields";
+        } else {
+            text = "Sorry, your passwords do not match";
+        }
         int duration = Toast.LENGTH_SHORT;
 
         Toast toast = Toast.makeText(this, text, duration);

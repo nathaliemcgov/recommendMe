@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -463,7 +464,7 @@ public class RCMDFirebase {
         }
     }
 
-    public void checkUserExists(String user, final Intent success, final Activity activity, final Toast toast) {
+    public void checkUserExists(String user, String password, final Intent success, final Activity activity, final Toast toast) {
         user = user.toLowerCase();
         Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -471,9 +472,10 @@ public class RCMDFirebase {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
-                    if (dataSnapshot.getValue() != null)
+                    if (dataSnapshot.getValue() != null) {
+
                         startActivity(activity, success, null);
-                    else {
+                    } else {
                         toast.show();
                     }
                 }
