@@ -88,6 +88,8 @@ public class MediaDetails extends AppCompatActivity {
 
         if (bundle.getString("activity") != null && bundle.getString("activity").length() > 0) {
             activity = bundle.getString("activity");
+        } else {
+            activity = "search";
         }
 
         RelativeLayout ratio = (RelativeLayout) findViewById(R.id.contentPercentPrompt);
