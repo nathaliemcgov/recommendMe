@@ -31,7 +31,8 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/existing_password_entry"/>
+            android:id="@+id/existing_password_entry"
+            android:inputType="textPassword"/>
     </LinearLayout>
     <Button
         android:layout_width="wrap_content"
