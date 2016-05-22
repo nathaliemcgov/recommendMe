@@ -16,33 +16,56 @@
         android:id="@+id/createProfileArea"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
         <TextView
+            android:id="@+id/firstHalfTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="30dp"
-            android:id="@+id/firstHalfTitle"
-            android:text="Imagine you're stranded on a desert island... What"/>
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/colorPrimary"
+            android:text="Imagine you're stranded on\na desert island...What"/>
 
         <TextView
+            android:id="@+id/mediaTypeDI"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/mediaTypeDI"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:textSize="30dp"
+            android:textColor="@color/colorAccent"
+            android:text="SHIT"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_below="@+id/firstHalfTitle"/>
 
         <TextView
+            android:id="@+id/secondHalfTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/secondHalfTitle"
-            android:textSize="30dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="20dp"
             android:layout_below="@+id/mediaTypeDI"
-            android:text="would you bring?"/>
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/colorPrimary"
+            android:text="would you bring?" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#ffffff"
+            android:layout_below="@+id/credsTitle"
+            android:layout_marginBottom="20dp"/>
 
         <AutoCompleteTextView
             android:id="@+id/searchMediaText1"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_below="@+id/secondHalfTitle">
             <requestFocus />
         </AutoCompleteTextView>
@@ -51,6 +74,7 @@
             android:id="@+id/searchMediaText2"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_below="@+id/searchMediaText1">
             <requestFocus />
         </AutoCompleteTextView>
@@ -59,7 +83,9 @@
             android:id="@+id/searchMediaText3"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/searchMediaText2">
+            android:layout_gravity="center"
+            android:layout_below="@+id/searchMediaText2"
+            android:layout_marginBottom="15dp">
             <requestFocus />
         </AutoCompleteTextView>
 
@@ -67,7 +93,9 @@
             android:layout_width="wrap_content"
             android:layout_below="@+id/searchMediaText3"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:id="@+id/next_button"
+            android:background="@drawable/tile_shape"
             android:text="next"/>
     </LinearLayout>
 
