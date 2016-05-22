@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
@@ -92,53 +93,68 @@ public class CreateProfileActivity extends Activity {
                 // Hides keyboard when search button is clicked
 //                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 //                imm.hideSoftInputFromWindow(desertIslandTextViews.getWindowToken(), 0);
-                index++;
+//                index++;
 
-                if (index < 3) {
-                    // Get the titles that the user entered in the three fields - add to list
-                    EditText field1 = (EditText) findViewById(R.id.searchMediaText1);
-                    EditText field2 = (EditText) findViewById(R.id.searchMediaText2);
-                    EditText field3 = (EditText) findViewById(R.id.searchMediaText3);
+                EditText field1 = (EditText) findViewById(R.id.searchMediaText1);
+                String firstField = field1.getText().toString();
+                if (firstField.length() > 0) {
+                    index++;
+                    if (index < 3) {
+                        // Get the titles that the user entered in the three fields - add to list
+                        //                    EditText field1 = (EditText) findViewById(R.id.searchMediaText1);
+                        EditText field2 = (EditText) findViewById(R.id.searchMediaText2);
+                        EditText field3 = (EditText) findViewById(R.id.searchMediaText3);
 
-                    // 3 titles
-                    String titles = field1.getText().toString() + "," +
-                            field2.getText().toString() + "," + field3.getText().toString();
-                    desertIslandList.add(titles);
+                        // Enforcing at least one desert island field to be filled
+//                        String firstField = field1.getText().toString();
+                        // 3 titles
+                        String titles = field1.getText().toString() + "," +
+                                field2.getText().toString() + "," + field3.getText().toString();
+                        desertIslandList.add(titles);
 
-                    field1.getText().clear();
-                    field2.getText().clear();
-                    field3.getText().clear();
+                        field1.getText().clear();
+                        field2.getText().clear();
+                        field3.getText().clear();
 
-                    // Books, Music
-                    TextView text = (TextView) findViewById(R.id.mediaTypeDI);
-                    text.setText(types[index]);
+                        // Books, Music
+                        TextView text = (TextView) findViewById(R.id.mediaTypeDI);
+                        text.setText(types[index]);
+                    } else {
+                        List<String> singleMediaTypeDI = new ArrayList<String>();
+    //                    EditText field1 = (EditText) findViewById(R.id.searchMediaText1);
+                        EditText field2 = (EditText) findViewById(R.id.searchMediaText2);
+                        EditText field3 = (EditText) findViewById(R.id.searchMediaText3);
 
+                        // 3 titles
+                        String titles = field1.getText().toString() + "," +
+                                field2.getText().toString() + "," + field3.getText().toString();
+                        desertIslandList.add(titles);
+                        Log.v("Desert Island List", desertIslandList.toString());
+
+                        // Hide desert island entries
+                        LinearLayout desertIslandEntry = (LinearLayout) findViewById(R.id.createProfileArea);
+                        desertIslandEntry.setVisibility(View.INVISIBLE);
+
+                        // Send user to recommendationsForYou
+                        Intent intent = new Intent(getApplicationContext(), EmailPasswordActivity.class);
+                        intent.putExtra("movies", desertIslandList.get(0));
+                        intent.putExtra("books", desertIslandList.get(1));
+                        intent.putExtra("music", desertIslandList.get(2));
+                        startActivity(intent);
+                    }
                 } else {
-                    List<String> singleMediaTypeDI = new ArrayList<String>();
-                    EditText field1 = (EditText) findViewById(R.id.searchMediaText1);
-                    EditText field2 = (EditText) findViewById(R.id.searchMediaText2);
-                    EditText field3 = (EditText) findViewById(R.id.searchMediaText3);
-
-                    // 3 titles
-                    String titles = field1.getText().toString() + "," +
-                            field2.getText().toString() + "," + field3.getText().toString();
-                    desertIslandList.add(titles);
-                    Log.v("Desert Island List", desertIslandList.toString());
-
-                    // Hide desert island entries
-                    LinearLayout desertIslandEntry = (LinearLayout) findViewById(R.id.createProfileArea);
-                    desertIslandEntry.setVisibility(View.INVISIBLE);
-
-                    // Send user to recommendationsForYou
-                    Intent intent = new Intent(getApplicationContext(), EmailPasswordActivity.class);
-                    intent.putExtra("movies", desertIslandList.get(0));
-                    intent.putExtra("books", desertIslandList.get(1));
-                    intent.putExtra("music", desertIslandList.get(2));
-                    startActivity(intent);
-
+                    toasted(types[index]);
                 }
             }
         });
+    }
+
+    public void toasted(String mediaType) {
+        CharSequence text = "Please input at least one " + mediaType;
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(this, text, duration);
+        toast.show();
     }
 }
 
