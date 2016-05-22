@@ -40,10 +40,10 @@ import static android.app.PendingIntent.getActivity;
  */
 public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
 
-    private RecommendationTileGrid.BtnClickListener mClickListener = null;
+    //private RecommendationTileGrid.BtnClickListener mClickListener = null;
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    private List<String> recommendationList;
+    private List<RelatedObject> recommendationList;
     private RCMDFirebase firebase;
     private String user;
 
@@ -53,10 +53,11 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         this.user = user;
         Firebase.setAndroidContext(context);
         firebase = new RCMDFirebase();
+        recommendationList = titles;
     }
 
     @Override
-    public View getView(int position, View convertView, final ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
 
         final View view = convertView;
         // Gets the title of the recommendation
@@ -105,14 +106,23 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         });
 
         ImageButton button = (ImageButton) convertView.findViewById(R.id.thumbsUpBtn);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("clicked", "clicked that shit" + user);
                 if(!v.isSelected() && user != null && !user.equals("")) {
-                    v.setSelected(!v.isSelected());
+                    //v.setSelected(!v.isSelected());
                     Log.v("clicked", "clicked that shit" + user);
+                    recommendationList.remove(position);
+                    notifyDataSetChanged();
                     firebase.setLike(object.name, user);
+
+                    Context context = parent.getContext();
+                    CharSequence text = "Liked : " + object.name;
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
                 } else if (user == null || user.equals("")) {
                     Context context = parent.getContext();
                     CharSequence text = "Please login to like media";

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +21,7 @@ import java.util.Map;
 
 public class EmailPasswordActivity extends AppCompatActivity {
 
-    private RCMDFirebase firebase;
+    private RCMDFirebase myFirebase;
     private String email;
     private String password;
     private int index;
@@ -29,6 +30,7 @@ public class EmailPasswordActivity extends AppCompatActivity {
     private List<String> movieList;
     private List<String> bookList;
     private List<String> musicList;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,9 @@ public class EmailPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_email_password);
 
         Firebase.setAndroidContext(this);
-        firebase = new RCMDFirebase();
+        myFirebase = new RCMDFirebase();
+
+        mContext = this;
 
         // Hide 2 password edit text fields
         password1CreateAcc = (EditText) findViewById(R.id.password1CreateAcc);
@@ -60,56 +64,57 @@ public class EmailPasswordActivity extends AppCompatActivity {
                     // Getting email address entered
                     EditText emailAddrCreateAcc = (EditText) findViewById(R.id.emailAddrCreateAcc);
                     email = emailAddrCreateAcc.getText().toString();
-                    if (email.length() > 0 && !email.equals(" ")) {
-                        index++;
 
-                        // Reached password entry screen
-                        // Change text at top of page
-                        TextView titleText = (TextView) findViewById(R.id.credsTitle);
-                        titleText.setText("Now set a password\n(Enter it twice)");
+                    index++;
 
-                        // Hide email address edit text
-                        EditText emailEntry = (EditText) findViewById(R.id.emailAddrCreateAcc);
-                        emailEntry.setVisibility(View.INVISIBLE);
+                    // Reached password entry screen
+                    // Change text at top of page
+                    TextView titleText = (TextView) findViewById(R.id.credsTitle);
+                    titleText.setText("Now set a password\n(Enter it twice)");
 
-                        password1CreateAcc.setVisibility(View.VISIBLE);
-                        password2CreateAcc.setVisibility(View.VISIBLE);
-                    } else {
-                        toasted("username");
-                    }
+                    // Hide email address edit text
+                    EditText emailEntry = (EditText) findViewById(R.id.emailAddrCreateAcc);
+                    emailEntry.setVisibility(View.INVISIBLE);
+
+                    password1CreateAcc.setVisibility(View.VISIBLE);
+                    password2CreateAcc.setVisibility(View.VISIBLE);
                 } else {
                     // User is done entering email address and password
                     // Getting password entered in field 1 and 2
                     String password1 = password1CreateAcc.getText().toString();
                     String password2 = password2CreateAcc.getText().toString();
 
-                    if (password1.length() > 0 && password2.length() > 0) {
-                        if (password1.equals(password2)) {  // Passwords match - account created
-                            // Getting hashcode of password
-                            int hashedPass = password1.hashCode();
+                    if (password1.equals(password2)) {  // Passwords match - account created
+                        // Getting hashcode of password
+                        int hashedPass = password1.hashCode();
 
-                            // Adding user to firebase
-                            Map<String, String> userMap = new HashMap<String, String>();
-                            userMap.put("name", email);
-                            firebase.createUser(userMap);
+                        // Adding user to firebase
+                        Map<String, String> userMap = new HashMap<String, String>();
+                        userMap.put("name", email);
+                        myFirebase.createUser(userMap);
 
-                            // Send desert island lists to firebase
-                            firebase.setManyLikes(movieList, email, "movie");    // Movies
-                            firebase.setManyLikes(bookList, email, "book");    // Books
-                            firebase.setManyLikes(musicList, email, "music");    // Music
+                        // Send desert island lists to firebase
+                        myFirebase.setManyLikes(movieList, email, "movie", new Firebase.CompletionListener() {
+                            @Override
+                            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                myFirebase.setManyLikes(bookList, email, "book", new Firebase.CompletionListener() {
 
-                            // Send user to recommendationsForYou
-                            Intent intent = new Intent(getApplicationContext(), RecommendationsForYou.class);
-                            intent.putExtra("user", email);
-                            startActivity(intent);
-                        } else {
-                            // Alert that passwords entered do not match
-                            toasted("password");
-
-                            // Clearing password fields
-                            password1CreateAcc.getText().clear();
-                            password2CreateAcc.getText().clear();
-                        }
+                                    @Override
+                                    public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                        myFirebase.setManyLikes(musicList, email, "music", new Firebase.CompletionListener() {
+                                            @Override
+                                            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                                // Send user to recommendationsForYou
+                                                Log.v("Final OnComplete", "Here");
+                                                Intent intent = new Intent(mContext, RecommendationsForYou.class);
+                                                intent.putExtra("user", email);
+                                                startActivity(intent);
+                                            }
+                                        });// Music
+                                    }
+                                });// Books
+                            }
+                        });// Movies
                     } else {
                         toasted("nopassword");
                     }
@@ -123,7 +128,9 @@ public class EmailPasswordActivity extends AppCompatActivity {
         List<String> typeTitles = new ArrayList<String>();
 
         for (String title : titles) {
-            typeTitles.add(title);
+            title = title.trim();
+            if(title.length() > 0)
+                typeTitles.add(title);
         }
         return typeTitles;
     }

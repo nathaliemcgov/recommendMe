@@ -53,9 +53,9 @@ public class RecommendationTileGrid extends Fragment {
 
     private OnMediaSelectionListener callback;
 
-    public interface BtnClickListener {
-        public abstract void onBtnClick(int position);
-    }
+    //public interface BtnClickListener {
+        //public abstract void onBtnClick(int position);
+    //}
 
     public RecommendationTileGrid() {
     }
@@ -161,6 +161,8 @@ public class RecommendationTileGrid extends Fragment {
 
     // If the user reached screen by searching media title
     private void populateTilesForSearch() {
+
+
         recommendationList.clear();
         customAdapter.notifyDataSetChanged();
         List<String> types = new ArrayList<String>();
@@ -181,6 +183,8 @@ public class RecommendationTileGrid extends Fragment {
 //        if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
 //            username = bundle.getString("user");
 //        }
+
+
         recommendationList.clear();
         customAdapter.notifyDataSetChanged();
         List<String> types = new ArrayList<String>();
@@ -192,6 +196,7 @@ public class RecommendationTileGrid extends Fragment {
             types.add("book");
 
         firebase.recommendationsForUser(user, recommendationList, customAdapter, types);
+
     }
 
     // If the user reached screen by saved recommendations
@@ -234,5 +239,9 @@ public class RecommendationTileGrid extends Fragment {
             return true;
         }
         return false;
+    }
+
+    public boolean inFirebase() {
+        return recommendationList.size() > 0;
     }
 }

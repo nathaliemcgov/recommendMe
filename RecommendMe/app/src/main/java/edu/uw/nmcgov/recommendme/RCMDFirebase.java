@@ -47,8 +47,8 @@ public class RCMDFirebase {
     // Creates a connection in firebase between the two objects
     // Calls the pushToFirebase method
     private boolean createConnection(String one, String two) {
-        final String mediaOne = one.trim();
-        final String mediaTwo = two.trim();
+        final String mediaOne = makeStringFirebaseSafe(one.trim());
+        final String mediaTwo = makeStringFirebaseSafe(two.trim());
 
         final Query mediaQuery1 = myFirebaseMoviesRef.orderByChild("nameLowerCase").equalTo(mediaOne.toLowerCase());
         final Query mediaQuery2 = myFirebaseMoviesRef.orderByChild("nameLowerCase").equalTo(mediaTwo.toLowerCase());
@@ -233,14 +233,18 @@ public class RCMDFirebase {
     //Adds likes to a user. Will also update connections to other objects
     public void setManyLikes(List<String> toLike, String user, String type) {
         Log.v("SETMANY", "SET SET");
-        setManyLikes(toLike, user, 0, type);
+        setManyLikes(toLike, user, 0, type, null);
+    }
+
+    public void setManyLikes(List<String> toLike, String user, String type, Firebase.CompletionListener complete) {
+        setManyLikes(toLike, user, 0, type, complete);
     }
 
     //Used by the public set many likes method. Recursive :)
-    private void setManyLikes(final List<String> toLike, final String user, final int pos, final String type) {
+    private void setManyLikes(final List<String> toLike, final String user, final int pos, final String type, final Firebase.CompletionListener complete) {
         if(pos < toLike.size()) {
             Log.v("tag", toLike.get(pos) + ' ' + user);
-            final String liked = toLike.get(pos);
+            final String liked = makeStringFirebaseSafe(toLike.get(pos));
             Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
             userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -297,16 +301,18 @@ public class RCMDFirebase {
 
                                 @Override
                                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                    setManyLikes(toLike, user, pos + 1, type);
+                                    setManyLikes(toLike, user, pos + 1, type, complete);
                                 }
                             });
-                        else
+                        else {
+                            Log.v(TAG, userLikes.toString());
                             postRef.child("liked").setValue(userLikes, new Firebase.CompletionListener() {
                                 @Override
                                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                    setManyLikes(toLike, user, pos + 1, type);
+                                    setManyLikes(toLike, user, pos + 1, type, complete);
                                 }
                             });
+                        }
                     }
                 }
 
@@ -315,15 +321,20 @@ public class RCMDFirebase {
 
                 }
             });
+        } else {
+            if(complete != null)
+                complete.onComplete(null, null);
         }
     }
 
     public void setLike(String likedUnformatted, String user) {
+        likedUnformatted = makeStringFirebaseSafe(likedUnformatted);
         setLike(likedUnformatted, user, "movie");
     }
 
     //Sets a single like given a username
     public void setLike(String likedUnformatted, String user, final String type) {
+        likedUnformatted = makeStringFirebaseSafe(likedUnformatted);
         if (user != null && !user.equals("")) {
             Log.v("tag", "tagtagtag");
             //Get user
@@ -551,6 +562,7 @@ public class RCMDFirebase {
                                                     }
                                                 }
                                             }
+                                            Log.v(TAG, "Notify Change");
                                             Collections.sort(list);
                                             adapter.notifyDataSetChanged();
                                         }
@@ -664,5 +676,15 @@ public class RCMDFirebase {
 
             }
         });
+    }
+
+    public String makeStringFirebaseSafe(String input) {
+        String[] theBadThings = {"/" , ".", "#", "[", "]", "$"};
+
+        for(String badBoy : theBadThings) {
+            input = input.replace(badBoy, "");
+        }
+
+        return input;
     }
 }
