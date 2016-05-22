@@ -97,7 +97,6 @@ public class RecommendationTileGrid extends Fragment {
 
         tileGrid.setAdapter(customAdapter);
 
-
         if(! (getActivity() instanceof SavedActivity)) {
             movieCheck = (CheckBox) getActivity().findViewById(R.id.movie_check);
             bookCheck = (CheckBox) getActivity().findViewById(R.id.book_check);
@@ -171,7 +170,6 @@ public class RecommendationTileGrid extends Fragment {
             types.add("music");
         if(bookCheck.isChecked())
             types.add("book");
-
 
         firebase.queryTitle(title, user, recommendationList, customAdapter, types);
     }

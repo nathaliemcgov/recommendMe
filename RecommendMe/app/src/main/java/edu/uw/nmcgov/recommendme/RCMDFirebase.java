@@ -44,7 +44,6 @@ public class RCMDFirebase {
 
     }
 
-
     // Creates a connection in firebase between the two objects
     // Calls the pushToFirebase method
     private boolean createConnection(String one, String two) {

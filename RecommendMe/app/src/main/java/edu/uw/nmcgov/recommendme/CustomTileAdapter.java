@@ -71,7 +71,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
 
         //Set up media type icon
         ImageButton mediaTypeButton = (ImageButton) convertView.findViewById(R.id.mediaType);
-        String mediaType = object.getType();
+        final String mediaType = object.getType();
         Log.v("taaaaaag", object.toString() + mediaType);
         int backgroundResource = R.drawable.ic_book_icon;
         if(mediaType != null && mediaType.equals("music")) backgroundResource = R.drawable.ic_music_icon;
@@ -99,6 +99,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                 intent.putExtra("title", title);
                 intent.putExtra("user", user);
                 intent.putExtra("activity", activity);
+                intent.putExtra("mediaType", mediaType);
                 mContext.startActivity(intent);
             }
         });
