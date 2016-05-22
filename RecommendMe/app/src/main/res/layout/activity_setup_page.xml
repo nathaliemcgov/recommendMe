@@ -10,37 +10,139 @@
     android:background="@color/background"
     tools:context=".SetupPageActivity">
 
+    <RelativeLayout
+        android:id="@+id/prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/promtLineOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hey there! We're"
+            android:textColor="@color/colorPrimary"
+            android:textSize="22dp"
+            android:layout_centerHorizontal="true"
+            />
+
+        <TextView
+            android:id="@+id/promptLineTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RCMD:ME"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            android:textSize="28dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/promtLineOne"/>
+
+        <TextView
+            android:id="@+id/promptLine3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="a media explorer and"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/promptLineTwo" />
+
+        <TextView
+            android:id="@+id/promptLine4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="recommendation platform"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"
+            android:layout_below="@+id/promptLine3"
+            android:layout_marginBottom="7dp"/>
+
+    </RelativeLayout>
+
+
     <View
+        android:id="@+id/viewLine"
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:background="#ffffff"
-        android:layout_below="@+id/exploreTitle"
-        android:layout_marginBottom="10dp"/>
+        android:layout_below="@+id/prompt"
+        android:layout_marginBottom="25dp"/>
 
-    <Button
-        android:id="@+id/createProfBtn"
+
+    <RelativeLayout
+        android:id="@+id/profilePrompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Build Profile"
-        android:textAlignment="center"
-        android:layout_marginTop="25dp"
         android:layout_centerHorizontal="true"
-        android:textSize="15dp"
-        android:padding="15dp"
-        android:background="@drawable/tile_shape"
-        android:layout_below="@+id/appName"/>
+        android:layout_below="@+id/viewLine"
+        android:layout_marginBottom="30dp">
 
-    <Button
-        android:id="@+id/exploreButton"
+        <TextView
+            android:id="@+id/profileBlurb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="We'd like to tailor your\nexperience to fit your interests,\nso le's build your profile!"
+            android:textColor="@color/colorPrimary"
+            android:textSize="19dp"
+            android:gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/profileBlurb2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(this will only take a minute)"
+            android:textSize="17dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/profileBlurb"/>
+
+        <Button
+            android:id="@+id/createProfBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Build Profile"
+            android:textAlignment="center"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:textSize="15dp"
+            android:padding="9dp"
+            android:background="@drawable/tile_shape"
+            android:layout_below="@+id/profileBlurb2"/>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/explorePrompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Explore"
-        android:textAlignment="center"
-        android:layout_marginTop="35dp"
-        android:padding="15dp"
-        android:textSize="15dp"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/tile_shape"
-        android:layout_below="@+id/createProfBtn"/>
+        android:layout_below="@+id/profilePrompt">
+
+        <TextView
+            android:id="@+id/exploreBlurb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="or search our database\nfor a quick recommendation"
+            android:textColor="@color/colorPrimary"
+            android:textSize="19dp"
+            android:gravity="center_horizontal"/>
+
+        <Button
+            android:id="@+id/exploreButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Explore"
+            android:textAlignment="center"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:textSize="15dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/tile_shape"
+            android:layout_below="@+id/exploreBlurb"/>
+
+    </RelativeLayout>
+
+
 
 </RelativeLayout>
