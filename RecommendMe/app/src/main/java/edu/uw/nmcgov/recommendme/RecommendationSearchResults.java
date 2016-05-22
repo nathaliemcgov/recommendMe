@@ -26,8 +26,10 @@ public class RecommendationSearchResults extends AppCompatActivity
     private TextView titleSearchedFor;
     private ImageButton thumbsUpBtn;
     private ImageButton thumbsDownBtn;
+    private RecommendationTileGrid tileGridFragment;
     private RCMDFirebase firebase;
     private String user;
+    private boolean inFirebase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +73,9 @@ public class RecommendationSearchResults extends AppCompatActivity
         thumbsUpBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View button) {
                 //Set the button's appearance
-                Log.v("tag", titleSearched);
+                Log.v("INFRRBASE", tileGridFragment.inFirebase() + "");
                 if (!button.isSelected()) {    // If the user 'likes' the title
-//                    // Send to db the user's email + title of liked media
+                    // Send to db the user's email + title of liked media
                     if (user != null && !user.equals("")) {
                         firebase.setLike(titleSearched, user);
                         button.setSelected(!button.isSelected());
@@ -98,7 +100,7 @@ public class RecommendationSearchResults extends AppCompatActivity
         FragmentManager fm = getSupportFragmentManager();
 
         FragmentTransaction ft = fm.beginTransaction();
-        RecommendationTileGrid tileGridFragment = new RecommendationTileGrid();
+        tileGridFragment = new RecommendationTileGrid();
         tileGridFragment.setArguments(bundle1);
         ft.add(R.id.gridContainer, tileGridFragment, "Grid");
         ft.commit();

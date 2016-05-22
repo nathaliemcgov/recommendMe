@@ -242,4 +242,8 @@ public class RecommendationTileGrid extends Fragment {
         }
         return false;
     }
+
+    public boolean inFirebase() {
+        return recommendationList.size() > 0;
+    }
 }
