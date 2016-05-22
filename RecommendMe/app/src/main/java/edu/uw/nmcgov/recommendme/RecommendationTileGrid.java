@@ -162,6 +162,8 @@ public class RecommendationTileGrid extends Fragment {
 
     // If the user reached screen by searching media title
     private void populateTilesForSearch() {
+
+
         recommendationList.clear();
         customAdapter.notifyDataSetChanged();
         List<String> types = new ArrayList<String>();
@@ -183,6 +185,8 @@ public class RecommendationTileGrid extends Fragment {
 //        if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
 //            username = bundle.getString("user");
 //        }
+
+
         recommendationList.clear();
         customAdapter.notifyDataSetChanged();
         List<String> types = new ArrayList<String>();
