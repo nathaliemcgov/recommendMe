@@ -24,6 +24,8 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,10 +35,13 @@ public class CreateProfileActivity extends Activity {
 
     private String[] types;
     private int index;
-    private AutoCompleteTextView desertIslandTextViews;
     private RCMDFirebase firebase;
     private Button nextButton;
     private List<String> desertIslandList;
+    private List<AutoCompleteTextView> texts;
+    private AutoCompleteTextView field1;
+    private AutoCompleteTextView field2;
+    private AutoCompleteTextView field3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,27 +52,36 @@ public class CreateProfileActivity extends Activity {
         Firebase.setAndroidContext(this);
         firebase = new RCMDFirebase();
 
-        // AUTOCOMPLETE
         // Sets keyboard to always hidden on create
-//        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-//
-//        // The text entry so user can search
-//        desertIslandTextViews = (AutoCompleteTextView) findViewById(R.id.searchMediaText);
-//        String[] suggestions = {};
-//        ArrayList<String> lst = new ArrayList<String>(Arrays.asList(suggestions));
-//        final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, lst);
-//
-//        desertIslandTextViews.setAdapter(adapter);
-//        desertIslandTextViews.setThreshold(1);
-//
-//        desertIslandTextViews.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                if(event.getAction() == KeyEvent.ACTION_UP)
-//                    firebase.autoComplete(desertIslandTextViews.getText().toString(), adapter);
-//                return false;
-//            }
-//        });
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        field1 = (AutoCompleteTextView) findViewById(R.id.searchMediaText1);
+        field2 = (AutoCompleteTextView) findViewById(R.id.searchMediaText2);
+        field3 = (AutoCompleteTextView) findViewById(R.id.searchMediaText3);
+
+        // Adding autocomplete to all three fields
+        texts = new LinkedList<AutoCompleteTextView>();
+        texts.add(field1);
+        texts.add(field2);
+        texts.add(field3);
+
+        String[] suggestions = {};
+        ArrayList<String> lst = new ArrayList<String>(Arrays.asList(suggestions));
+        final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, lst);
+
+        for (final AutoCompleteTextView searchMediaText : texts) {
+            searchMediaText.setAdapter(adapter);
+            searchMediaText.setThreshold(1);
+
+            searchMediaText.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    if(event.getAction() == KeyEvent.ACTION_UP)
+                        firebase.autoComplete(searchMediaText.getText().toString(), adapter);
+                    return false;
+                }
+            });
+        }
 
         desertIslandList = new ArrayList<String>();
 
@@ -89,23 +103,15 @@ public class CreateProfileActivity extends Activity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // AUTOCOMPLETE
-                // Hides keyboard when search button is clicked
-//                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(desertIslandTextViews.getWindowToken(), 0);
-
                 // Get the titles that the user entered in the three fields - add to list
-                EditText field1 = (EditText) findViewById(R.id.searchMediaText1);
-                EditText field2 = (EditText) findViewById(R.id.searchMediaText2);
-                EditText field3 = (EditText) findViewById(R.id.searchMediaText3);
-
                 String firstField = field1.getText().toString();
-//                String secondField =
-                if (firstField.length() > 0) {
+                String secondField = field2.getText().toString();
+                String thirdField = field3.getText().toString();
+                // Checking if any of the fields were filled in + enforcing at least one desert island field to be filled
+                if (firstField.length() > 0 || secondField.length() > 0 || thirdField.length() > 0) {
                     index++;
                     if (index < 3) {
                         // Enforcing at least one desert island field to be filled
-//                        String firstField = field1.getText().toString();
                         // 3 titles
                         String titles = field1.getText().toString() + "," +
                                 field2.getText().toString() + "," + field3.getText().toString();
@@ -120,13 +126,9 @@ public class CreateProfileActivity extends Activity {
                         text.setText(types[index]);
                     } else {
                         List<String> singleMediaTypeDI = new ArrayList<String>();
-    //                    EditText field1 = (EditText) findViewById(R.id.searchMediaText1);
-                        EditText field2 = (EditText) findViewById(R.id.searchMediaText2);
-                        EditText field3 = (EditText) findViewById(R.id.searchMediaText3);
 
                         // 3 titles
-                        String titles = field1.getText().toString() + "," +
-                                field2.getText().toString() + "," + field3.getText().toString();
+                        String titles = firstField + "," + secondField + "," + thirdField;
                         desertIslandList.add(titles);
                         Log.v("Desert Island List", desertIslandList.toString());
 
