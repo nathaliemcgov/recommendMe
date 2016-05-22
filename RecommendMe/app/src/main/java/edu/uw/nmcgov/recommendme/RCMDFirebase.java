@@ -234,11 +234,15 @@ public class RCMDFirebase {
     //Adds likes to a user. Will also update connections to other objects
     public void setManyLikes(List<String> toLike, String user, String type) {
         Log.v("SETMANY", "SET SET");
-        setManyLikes(toLike, user, 0, type);
+        setManyLikes(toLike, user, 0, type, null);
+    }
+
+    public void setManyLikes(List<String> toLike, String user, String type, Firebase.CompletionListener complete) {
+        setManyLikes(toLike, user, 0, type, complete);
     }
 
     //Used by the public set many likes method. Recursive :)
-    private void setManyLikes(final List<String> toLike, final String user, final int pos, final String type) {
+    private void setManyLikes(final List<String> toLike, final String user, final int pos, final String type, final Firebase.CompletionListener complete) {
         if(pos < toLike.size()) {
             Log.v("tag", toLike.get(pos) + ' ' + user);
             final String liked = toLike.get(pos);
@@ -298,14 +302,14 @@ public class RCMDFirebase {
 
                                 @Override
                                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                    setManyLikes(toLike, user, pos + 1, type);
+                                    setManyLikes(toLike, user, pos + 1, type, complete);
                                 }
                             });
                         else
                             postRef.child("liked").setValue(userLikes, new Firebase.CompletionListener() {
                                 @Override
                                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                    setManyLikes(toLike, user, pos + 1, type);
+                                    setManyLikes(toLike, user, pos + 1, type, complete);
                                 }
                             });
                     }
@@ -316,6 +320,9 @@ public class RCMDFirebase {
 
                 }
             });
+        } else {
+            if(complete != null)
+                complete.onComplete(null, null);
         }
     }
 
@@ -552,6 +559,7 @@ public class RCMDFirebase {
                                                     }
                                                 }
                                             }
+                                            Log.v(TAG, "Notify Change");
                                             Collections.sort(list);
                                             adapter.notifyDataSetChanged();
                                         }
