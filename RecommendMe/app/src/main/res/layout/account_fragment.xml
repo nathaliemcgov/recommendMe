@@ -46,14 +46,14 @@
         android:id="@+id/linkedFields"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
         android:layout_below="@id/linkedBlurb">
 
         <EditText
             android:id="@+id/lastFMUserName"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight=".70"
             android:textSize="20dp"
             android:hint="LastFM username" />
@@ -61,8 +61,9 @@
         <Button
             android:id="@+id/linked_back"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".30"
+            android:layout_height="match_parent"
+            android:layout_weight=".20"
+            android:layout_margin="5dp"
             android:text="Link"
             android:layout_alignParentRight="true"
             android:background="@drawable/link_button"/>
