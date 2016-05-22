@@ -29,6 +29,8 @@ public class ExistingLogin extends Activity {
     private int count;
     private EditText usernameField;
     private String username;
+    private EditText passwordField;
+    private String password;
     private HashMap<String, String> map;
     private RCMDFirebase firebase;
 
@@ -41,67 +43,39 @@ public class ExistingLogin extends Activity {
         Firebase.setAndroidContext(this);
         firebase = new RCMDFirebase();
 
-        changeVisibility(R.id.existing_password, View.GONE, 0);
-
         Button button = (Button)findViewById(R.id.proceed);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                changeVisibility(R.id.existing_password, View.GONE, ActionBar.LayoutParams.WRAP_CONTENT);
                 usernameField = (EditText) findViewById(R.id.existing_email_entry);
                 username = usernameField.getText().toString().trim();
 
+                passwordField = (EditText) findViewById(R.id.existing_password_entry);
+                password = passwordField.getText().toString().trim();
 
-                recommendationsForYou(username);
-//                if (count < 1) {
-//                    changeVisibility(R.id.existing_password, View.VISIBLE, ActionBar.LayoutParams.WRAP_CONTENT);
-//                    usernameField = (EditText) findViewById(R.id.existing_email_entry);
-//                    username = usernameField.getText().toString();
-//                    changeVisibility(R.id.existing_email, View.GONE, 0);
-//                    count++;
-//                } else {
-//                    recommendationsForYou(username);
-//                    Log.v(TAG, "back");
-//
-//                    EditText edit = (EditText) findViewById(R.id.existing_email_entry);
-//                    if (edit.getText().length() == 0) {
-//                        toasted("email");
-//                    } else {
-//                        map.put("email", edit.getText().toString());
-//                        /*changeVisibility(R.id.existing_password, View.VISIBLE, ActionBar.LayoutParams.WRAP_CONTENT);
-//                        changeVisibility(R.id.existing_email, View.GONE, 0);*/
-//                    }
-//                }
+                if (username.length() > 0 && password.length() > 0) {
+                    Context context = getApplicationContext();
+                    CharSequence text = "Please fill enter email address and password";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                } else {
+                    recommendationsForYou(username, password);
+                }
             }
         });
     }
 
-    public void recommendationsForYou(String user) {
+    public void recommendationsForYou(String user, String password) {
         Intent intent = new Intent(this, RecommendationsForYou.class);
         intent.putExtra("user", username);
+        intent.putExtra("password", password.hashCode());
 
         Context context = getApplicationContext();
         CharSequence text = "User does not exist";
         int duration = Toast.LENGTH_LONG;
         Toast toast = Toast.makeText(context, text, duration);
 
-        firebase.checkUserExists(user, intent, this, toast);
-    }
-
-    public void toasted(String type){
-        Context context = getApplicationContext();
-        CharSequence text = "please enter a " + type;
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-    }
-
-    public void changeVisibility(int id, int visibility, int height){
-        LinearLayout password = (LinearLayout)findViewById(id);
-        password.setVisibility(visibility);
-        ViewGroup.LayoutParams params = password.getLayoutParams();
-        // Changes the height and width to the specified *pixels*
-        params.height = height;
+        firebase.checkUserExists(user, password, intent, this, toast);
     }
 }
