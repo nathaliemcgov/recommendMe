@@ -128,7 +128,9 @@ public class EmailPasswordActivity extends AppCompatActivity {
         List<String> typeTitles = new ArrayList<String>();
 
         for (String title : titles) {
-            typeTitles.add(title);
+            title = title.trim();
+            if(title.length() > 0)
+                typeTitles.add(title);
         }
         return typeTitles;
     }

@@ -305,13 +305,15 @@ public class RCMDFirebase {
                                     setManyLikes(toLike, user, pos + 1, type, complete);
                                 }
                             });
-                        else
+                        else {
+                            Log.v(TAG, userLikes.toString());
                             postRef.child("liked").setValue(userLikes, new Firebase.CompletionListener() {
                                 @Override
                                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                                     setManyLikes(toLike, user, pos + 1, type, complete);
                                 }
                             });
+                        }
                     }
                 }
 
