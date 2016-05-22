@@ -550,6 +550,7 @@ public class RCMDFirebase {
                                                     }
                                                 }
                                             }
+                                            Log.v(TAG, "Notify Change");
                                             Collections.sort(list);
                                             adapter.notifyDataSetChanged();
                                         }

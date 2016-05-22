@@ -194,6 +194,7 @@ public class RecommendationTileGrid extends Fragment {
             types.add("book");
 
         firebase.recommendationsForUser(user, recommendationList, customAdapter, types);
+
     }
 
     // If the user reached screen by saved recommendations
