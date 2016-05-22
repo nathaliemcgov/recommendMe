@@ -93,18 +93,17 @@ public class CreateProfileActivity extends Activity {
                 // Hides keyboard when search button is clicked
 //                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 //                imm.hideSoftInputFromWindow(desertIslandTextViews.getWindowToken(), 0);
-//                index++;
 
+                // Get the titles that the user entered in the three fields - add to list
                 EditText field1 = (EditText) findViewById(R.id.searchMediaText1);
+                EditText field2 = (EditText) findViewById(R.id.searchMediaText2);
+                EditText field3 = (EditText) findViewById(R.id.searchMediaText3);
+
                 String firstField = field1.getText().toString();
+//                String secondField =
                 if (firstField.length() > 0) {
                     index++;
                     if (index < 3) {
-                        // Get the titles that the user entered in the three fields - add to list
-                        //                    EditText field1 = (EditText) findViewById(R.id.searchMediaText1);
-                        EditText field2 = (EditText) findViewById(R.id.searchMediaText2);
-                        EditText field3 = (EditText) findViewById(R.id.searchMediaText3);
-
                         // Enforcing at least one desert island field to be filled
 //                        String firstField = field1.getText().toString();
                         // 3 titles
