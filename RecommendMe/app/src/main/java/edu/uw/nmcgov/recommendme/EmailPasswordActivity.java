@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +21,7 @@ import java.util.Map;
 
 public class EmailPasswordActivity extends AppCompatActivity {
 
-    private RCMDFirebase firebase;
+    private RCMDFirebase myFirebase;
     private String email;
     private String password;
     private int index;
@@ -29,6 +30,7 @@ public class EmailPasswordActivity extends AppCompatActivity {
     private List<String> movieList;
     private List<String> bookList;
     private List<String> musicList;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,9 @@ public class EmailPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_email_password);
 
         Firebase.setAndroidContext(this);
-        firebase = new RCMDFirebase();
+        myFirebase = new RCMDFirebase();
+
+        mContext = this;
 
         // Hide 2 password edit text fields
         password1CreateAcc = (EditText) findViewById(R.id.password1CreateAcc);
@@ -87,17 +91,30 @@ public class EmailPasswordActivity extends AppCompatActivity {
                     // Adding user to firebase
                     Map<String, String> userMap = new HashMap<String, String>();
                     userMap.put("name", email);
-                    firebase.createUser(userMap);
+                    myFirebase.createUser(userMap);
 
                     // Send desert island lists to firebase
-                    firebase.setManyLikes(movieList, email, "movie");    // Movies
-                    firebase.setManyLikes(bookList, email, "book");    // Books
-                    firebase.setManyLikes(musicList, email, "music");    // Music
+                    myFirebase.setManyLikes(movieList, email, "movie", new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            myFirebase.setManyLikes(bookList, email, "book", new Firebase.CompletionListener() {
 
-                    // Send user to recommendationsForYou
-                    Intent intent = new Intent(getApplicationContext(), RecommendationsForYou.class);
-                    intent.putExtra("user", email);
-                    startActivity(intent);
+                                @Override
+                                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                    myFirebase.setManyLikes(musicList, email, "music", new Firebase.CompletionListener() {
+                                        @Override
+                                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                            // Send user to recommendationsForYou
+                                            Log.v("Final OnComplete", "Here");
+                                            Intent intent = new Intent(mContext, RecommendationsForYou.class);
+                                            intent.putExtra("user", email);
+                                            startActivity(intent);
+                                        }
+                                    });// Music
+                                }
+                            });// Books
+                        }
+                    });// Movies
                 } else {
                     // Alert that passwords entered do not match
                     toasted();
