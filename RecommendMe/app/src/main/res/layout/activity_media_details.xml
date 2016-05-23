@@ -87,7 +87,7 @@
                 android:textSize="40dp"
                 android:text="99%"/>
 
-            <TextView
+            <edu.uw.nmcgov.recommendme.RegularFontTextView
                 android:id="@+id/contentLine2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                 android:textSize="30dp"
                 android:text="SEARCH TERM"/>
 
-            <TextView
+            <edu.uw.nmcgov.recommendme.RegularFontTextView
                 android:id="@+id/contentLine4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

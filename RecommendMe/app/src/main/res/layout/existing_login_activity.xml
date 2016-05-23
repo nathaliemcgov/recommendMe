@@ -15,7 +15,7 @@
         android:paddingBottom="12dp"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="25dp"
         android:background="@drawable/tile_shape">
 
         <LinearLayout
@@ -79,6 +79,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:id="@+id/existing_email_entry"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/text_input"/>
 
     </LinearLayout>
@@ -91,11 +92,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="pass:  "/>
+            android:text=" pass: "/>
         <EditText
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:id="@+id/existing_password_entry"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/text_input"/>
     </LinearLayout>
     <Button

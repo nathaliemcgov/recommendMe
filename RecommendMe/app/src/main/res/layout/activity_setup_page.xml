@@ -17,7 +17,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="6dp">
 
-        <TextView
+        <edu.uw.nmcgov.recommendme.RegularFontTextView
             android:id="@+id/promtLineOne"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
         android:layout_height="2dp"
         android:background="#ffffff"
         android:layout_below="@+id/prompt"
-        android:layout_marginBottom="25dp"/>
+        android:layout_marginBottom="15dp"/>
 
 
     <RelativeLayout
@@ -77,9 +77,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/viewLine"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="20dp">
 
-        <TextView
+        <edu.uw.nmcgov.recommendme.RegularFontTextView
             android:id="@+id/profileBlurb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
             android:textSize="19dp"
             android:gravity="center_horizontal"/>
 
-        <TextView
+        <edu.uw.nmcgov.recommendme.RegularFontTextView
             android:id="@+id/profileBlurb2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/profilePrompt">
 
-        <TextView
+        <edu.uw.nmcgov.recommendme.RegularFontTextView
             android:id="@+id/exploreBlurb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

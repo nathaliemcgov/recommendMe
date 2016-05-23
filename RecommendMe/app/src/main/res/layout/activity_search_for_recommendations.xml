@@ -43,7 +43,7 @@
         android:layout_marginBottom="20dp"
         android:layout_below="@+id/exploreTitle">
 
-        <TextView
+        <edu.uw.nmcgov.recommendme.RegularFontTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Search a unique musical artist,\n author, or film to get started."
