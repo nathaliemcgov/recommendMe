@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/exploreTitle">
 
-        <TextView
+        <edu.uw.nmcgov.recommendme.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="EXPLORE"
@@ -35,17 +35,19 @@
         android:layout_below="@+id/exploreTitle"/>
 
     <LinearLayout
+        android:id="@+id/searchPrompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
-        android:layout_below="@+id/exploreTitle"
-        android:id="@+id/searchPrompt">
+        android:layout_below="@+id/exploreTitle">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search a unique musical artist, author, or film to get started."
+            android:text="Search a unique musical artist,\n author, or film to get started."
+            android:textColor="@color/colorPrimary"
             android:gravity="center"
             android:textSize="20sp"/>
     </LinearLayout>
@@ -59,7 +61,8 @@
         <AutoCompleteTextView
             android:id="@+id/searchMediaText"
             android:layout_width="250dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/text_input">
             <requestFocus />
         </AutoCompleteTextView>
 
@@ -68,6 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:background="@drawable/tile_shape"
             android:text="Search"
             android:layout_toRightOf="@+id/searchMediaText"/>
     </LinearLayout>

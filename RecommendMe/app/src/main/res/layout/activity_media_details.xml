@@ -9,28 +9,47 @@
         android:id="@+id/detailHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:layout_gravity="center">
-        <TextView
-            android:id="@+id/selectedMediaTitle"
+        android:layout_marginBottom="30dp">
+
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
-            android:textAlignment="center"
-            android:layout_centerHorizontal="true"
-            android:layout_centerInParent="true"
-            android:textSize="35dp"
-            android:text="TITLE"/>
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/mediaType"
+                android:layout_width="65dp"
+                android:layout_height="60dp"
+                android:background="@drawable/ic_book_icon"
+
+                />
+
+            <edu.uw.nmcgov.recommendme.CustomTextView
+                android:id="@+id/selectedMediaTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/textColor"
+                android:textAlignment="center"
+                android:textSize="35dp"
+                android:text="TITLE"/>
+
+        </LinearLayout>
+
 
 
         <ImageButton
             android:id="@+id/saveMediaTitleDetails"
-            android:layout_width="100dp"
-            android:layout_height="80dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:scaleType="fitCenter"
             android:background="@drawable/bookmark_details_button"
-            android:src="@drawable/ic_bookmark"
+            android:src="@drawable/ic_star_unselected"
             android:layout_alignParentRight="true"
+            android:layout_marginBottom="5dp"
             />
     </RelativeLayout>
 
@@ -59,13 +78,13 @@
             android:layout_gravity="center"
             android:layout_centerHorizontal="true">
 
-            <TextView
+        <edu.uw.nmcgov.recommendme.CustomTextView
                 android:id="@+id/contentPercent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/textColor"
                 android:textAlignment="center"
-                android:textSize="45dp"
+                android:textSize="40dp"
                 android:text="99%"/>
 
             <TextView
@@ -78,7 +97,7 @@
                 android:textSize="22dp"
                 android:text="of users who like"/>
 
-            <TextView
+            <edu.uw.nmcgov.recommendme.SecondCustomTextView
                 android:id="@+id/searchTerm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -128,6 +147,8 @@
                 android:src="@drawable/ic_thumbs_up"
                 android:layout_toRightOf="@+id/thumbsDownBtn"/>
         </RelativeLayout>
+
+
         <ScrollView
             android:id="@+id/SCROLLER_ID"
             android:layout_below="@+id/thumbBtnContainer"
@@ -140,9 +161,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="25dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginBottom="15dp"
                 android:textColor="@color/textColor"
-                android:textSize="20dp" />
+                android:textSize="18dp" />
         </ScrollView>
 
     </RelativeLayout>
