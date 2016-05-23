@@ -1,6 +1,5 @@
 package edu.uw.nmcgov.recommendme;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
@@ -44,7 +43,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -60,6 +58,8 @@ public class MediaDetails extends AppCompatActivity {
     private TextView contentDetails;
     private String user;
     private String activity;
+    private String mediaType;
+    private String wikiSuffix;
 
     public MediaDetails() {
 
@@ -78,19 +78,32 @@ public class MediaDetails extends AppCompatActivity {
         selectedTitle = (TextView) findViewById(R.id.selectedMediaTitle);
 
         Bundle bundle = getIntent().getExtras();
-//        Log.v("TAGGGGG", bundle.getString("activity"));
         selectedMediaTitle = bundle.getString("title");
-        if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
-            user = bundle.getString("user");
-        } else {
-            user = "";
-        }
 
-        if (bundle.getString("activity") != null && bundle.getString("activity").length() > 0) {
+        if (bundle.getString("user") != null && bundle.getString("user").length() > 0)
+            user = bundle.getString("user");
+        else
+            user = "";
+
+        if (bundle.getString("activity") != null && bundle.getString("activity").length() > 0)
             activity = bundle.getString("activity");
-        } else {
+        else
             activity = "search";
-        }
+
+        if (bundle.getString("mediaType") != null && bundle.getString("mediaType").length() > 0)
+            mediaType = bundle.getString("mediaType");
+        else
+            mediaType = "";
+
+        Log.v("TYPE", mediaType);
+
+        // Suffix that will be used if Wikipedia does not return correct description of media title
+        if (mediaType.equals("movie"))
+            wikiSuffix = "_(film)";
+        else if (mediaType.equals("book"))
+            wikiSuffix = "_(novel)";
+        else if (mediaType.equals("music"))
+            wikiSuffix = "_(band)";
 
         RelativeLayout ratio = (RelativeLayout) findViewById(R.id.contentPercentPrompt);
         if (activity.equals("recommendationsforyou")) {
@@ -110,8 +123,11 @@ public class MediaDetails extends AppCompatActivity {
             }
         });
 
-        WikipediaData wikipediaData = new WikipediaData();
-        wikipediaData.execute();
+        // Shows description from Wikipedia of media title selected
+        if (mediaType.length() > 0 && !mediaType.equals("")) {
+            WikipediaData wikipediaData = new WikipediaData();
+            wikipediaData.execute();
+        }
 
         // On click listener for "Save" button on selected tile
         ImageButton saveTitleButton = (ImageButton) findViewById(R.id.saveMediaTitleDetails);
@@ -215,14 +231,70 @@ public class MediaDetails extends AppCompatActivity {
         // Querying Wikipedia
         @Override
         protected String doInBackground(Void... params) {
-            // Logging in
             try {
-                String formattedForWiki = selectedMediaTitle.replace(" ", "_");
+                String formattedForWiki = "";
 
+                if (selectedMediaTitle.equals("1984")) {
+                    formattedForWiki = "Nineteen_Eighty-Four";
+                } else {
+                    formattedForWiki = selectedMediaTitle.replace(" ", "_");
+                }
+
+                String extract = wikiRequest(formattedForWiki);
+
+                if (extract.contains("may refer to")) { // If Wiki is suggesting multiple results
+                    // Appending media type
+                    formattedForWiki += wikiSuffix;
+
+                    // Making request again with media type appended to end of query
+                    extract = wikiRequest(formattedForWiki);
+
+                } else {
+                    if (mediaType.equals("movie")) {
+                        if (!extract.contains("film") && !extract.contains("movie")) {
+                            formattedForWiki += wikiSuffix;
+                            // Making request again with media type appended to end of query
+                            extract = wikiRequest(formattedForWiki);
+                        }
+                    } else if (mediaType.equals("book")) {
+                        if (!extract.contains("book") && !extract.contains("novel")) {
+                            formattedForWiki += wikiSuffix;
+                            // Making request again with media type appended to end of query
+                            extract = wikiRequest(formattedForWiki);
+                        }
+                    } else if (mediaType.equals("music")) {
+                        if (!extract.contains("music") && !extract.contains("band")) {
+                            formattedForWiki += wikiSuffix;
+                            // Making request again with media type appended to end of query
+                            extract = wikiRequest(formattedForWiki);
+                        }
+                    }
+                }
+                return extract;
+            }
+            catch (Exception e) {
+                Log.v("WIKI", e.getMessage());
+                return null;
+            }
+        }
+
+        // Once the async task is complete
+        @Override
+        protected void onPostExecute(String response) {
+            if (response == null) {
+                Log.v("WIKI", "No response from Wikipedia");
+            }
+            contentDetails = (TextView) findViewById(R.id.contentDetails);
+            contentDetails.setText(response);
+        }
+
+        private String wikiRequest(String formattedForWiki) {
+            try {
                 URL url = new URL
                         ("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + formattedForWiki);
-//                https://en.wikipedia.org/w/api.php?action=mobileview&page=Therion_(band)
+
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
                 try {
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                     StringBuilder stringBuilder = new StringBuilder();
@@ -241,11 +313,11 @@ public class MediaDetails extends AppCompatActivity {
 
                     JSONObject obj = pages.getJSONObject(pageID);
                     String extract = obj.getString("extract");
+
                     Log.v("TAGGGGG", extract);
 
                     return extract;
-                }
-                finally {
+                } finally {
                     urlConnection.disconnect();
                 }
             }
@@ -253,16 +325,6 @@ public class MediaDetails extends AppCompatActivity {
                 Log.v("WIKI", e.getMessage());
                 return null;
             }
-        }
-
-        // Once the async task is complete
-        @Override
-        protected void onPostExecute(String response) {
-            if (response == null) {
-                Log.v("WIKI", "No response from Wikipedia");
-            }
-            contentDetails = (TextView) findViewById(R.id.contentDetails);
-            contentDetails.setText(response);
         }
     }
 }

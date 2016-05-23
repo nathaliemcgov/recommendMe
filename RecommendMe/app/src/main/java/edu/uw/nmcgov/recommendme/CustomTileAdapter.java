@@ -61,9 +61,9 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
     public View getView(final int position, View convertView, final ViewGroup parent) {
 
         final View view = convertView;
+
         // Gets the title of the recommendation
         final RelatedObject object = getItem(position);
-
 
         // Checking if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
@@ -73,18 +73,17 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
 
         //Set up media type icon
         ImageView mediaTypeButton = (ImageView) convertView.findViewById(R.id.mediaType);
-        String mediaType = object.getType();
+        final String mediaType = object.getType();
         Log.v("taaaaaag", object.toString() + mediaType);
         int backgroundResource = R.drawable.ic_book_icon;
-        if(mediaType != null && mediaType.equals("music")) backgroundResource = R.drawable.ic_music_icon;
-        else if(mediaType != null && mediaType.equals("movie")) backgroundResource = R.drawable.ic_movie_icon;
+        if (mediaType != null && mediaType.equals("music")) backgroundResource = R.drawable.ic_music_icon;
+        else if (mediaType != null && mediaType.equals("movie")) backgroundResource = R.drawable.ic_movie_icon;
         mediaTypeButton.setBackgroundResource(backgroundResource);
 
         TextView mediaTitle = (TextView) convertView.findViewById(R.id.recommendationElement);
-        //TextView ratio = (TextView) convertView.findViewById(R.id.tileRatio);
 
         mediaTitle.setText(object.name);
-        //ratio.setText(((int) Math.floor(object.getRatio() * 100)) + "%");
+
         mediaTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +100,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                 intent.putExtra("title", title);
                 intent.putExtra("user", user);
                 intent.putExtra("activity", activity);
+                intent.putExtra("mediaType", mediaType);
                 mContext.startActivity(intent);
             }
         });
