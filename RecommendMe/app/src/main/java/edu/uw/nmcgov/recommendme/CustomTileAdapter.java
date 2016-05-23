@@ -47,11 +47,13 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
     private List<RelatedObject> recommendationList;
     private RCMDFirebase firebase;
     private String user;
+    private String titleSearchedFor;
 
-    public CustomTileAdapter(Context context, List<RelatedObject> titles, String user) {
+    public CustomTileAdapter(Context context, List<RelatedObject> titles, String user, String titleSearchedFor) {
         super(context, 0, titles);
         mContext = context;
         this.user = user;
+        this.titleSearchedFor = titleSearchedFor;
         Firebase.setAndroidContext(context);
         firebase = new RCMDFirebase();
         recommendationList = titles;
@@ -99,18 +101,19 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                 Intent intent = new Intent(mContext, MediaDetails.class);
                 intent.putExtra("title", title);
                 intent.putExtra("user", user);
+                intent.putExtra("searchTitle", titleSearchedFor);
                 intent.putExtra("activity", activity);
                 intent.putExtra("mediaType", mediaType);
                 mContext.startActivity(intent);
             }
         });
 
-        ImageButton button = (ImageButton) convertView.findViewById(R.id.thumbsUpBtn);
+        final ImageButton thumbsUpBtn = (ImageButton) convertView.findViewById(R.id.thumbsUpBtn);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        thumbsUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!v.isSelected() && user != null && !user.equals("")) {
+                if (!v.isSelected() && user != null && !user.equals("")) {
                     //v.setSelected(!v.isSelected());
                     Log.v("clicked", "clicked that shit" + user);
                     recommendationList.remove(position);
@@ -123,6 +126,11 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
 
+                } else if (v.isSelected() && user != null && !user.equals("")) {
+
+                    v.setSelected(v.isSelected());
+                    thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up);
+
                 } else if (user == null || user.equals("")) {
                     Context context = parent.getContext();
                     CharSequence text = "Please login to like media";
@@ -133,7 +141,32 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
             }
         });
 
+        final ImageButton thumbsDownBtn = (ImageButton) convertView.findViewById(R.id.thumbsDownBtn);
 
+        thumbsDownBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View button) {
+                //Set the button's appearance
+                if (!button.isSelected() && user != null && !user.equals("")) {    // If the user 'likes' the title
+//                    // Send to db the user's email + title of liked media
+                    button.setSelected(!button.isSelected());
+                    thumbsDownBtn.setImageResource(R.drawable.ic_thumbs_down_tile_selected);
+
+                    firebase.setDislike(user, object.name);
+                } else if (button.isSelected() && user != null && !user.equals("")) {
+
+                    button.setSelected(button.isSelected());
+                    thumbsDownBtn.setImageResource(R.drawable.ic_thumbs_down);
+
+                } else if (user == null || user.equals("")) {
+                    Context context = parent.getContext();
+                    CharSequence text = "Please login to dislike media";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+            }
+        });
 
         // On click listener for "Save" button on each tile
         ImageButton saveTitleButton = (ImageButton) convertView.findViewById(R.id.saveMediaTitle);

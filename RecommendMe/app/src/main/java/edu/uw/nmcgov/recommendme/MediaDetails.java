@@ -59,7 +59,9 @@ public class MediaDetails extends AppCompatActivity {
     private String user;
     private String activity;
     private String mediaType;
+    private String titleSearchedFor;
     private String wikiSuffix;
+    private ImageButton saveTitleButton;
 
     public MediaDetails() {
 
@@ -95,7 +97,12 @@ public class MediaDetails extends AppCompatActivity {
         else
             mediaType = "";
 
-        Log.v("TYPE", mediaType);
+        if (bundle.getString("searchTitle") != null && bundle.getString("searchTitle").length() > 0)
+            titleSearchedFor = bundle.getString("searchTitle");
+        else
+            titleSearchedFor = "";
+
+        Log.v("SEARCHED TITLE", titleSearchedFor + " hellrrrrrr");
 
         // Suffix that will be used if Wikipedia does not return correct description of media title
         if (mediaType.equals("movie"))
@@ -110,10 +117,11 @@ public class MediaDetails extends AppCompatActivity {
             ratio.setVisibility(View.GONE);
         } else {
             selectedTitle.setText(selectedMediaTitle);
+
+            TextView textView = (TextView) findViewById(R.id.searchTerm);
+            textView.setText(titleSearchedFor);
         }
-
-        selectedTitle.setText(selectedMediaTitle);
-
+        
         selectedTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +138,7 @@ public class MediaDetails extends AppCompatActivity {
         }
 
         // On click listener for "Save" button on selected tile
-        ImageButton saveTitleButton = (ImageButton) findViewById(R.id.saveMediaTitleDetails);
+        saveTitleButton = (ImageButton) findViewById(R.id.saveMediaTitleDetails);
 
         // Write title to phone's external storage
         saveTitleButton.setOnClickListener(new View.OnClickListener() {
@@ -150,9 +158,16 @@ public class MediaDetails extends AppCompatActivity {
                 if (!button.isSelected() && user != null && !user.equals("")) {    // If the user 'likes' the title
 //                    // Send to db the user's email + title of liked media
                     button.setSelected(!button.isSelected());
+                    thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up_tile_selected);
+
                     firebase.setLike(selectedMediaTitle, user);
 //                } else {      // If the user 'unlikes' the title
 //                    // Send to db the user's email + title of unliked media
+                } else if (button.isSelected() && user != null && !user.equals("")) {
+
+                    button.setSelected(button.isSelected());
+                    thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up);
+
                 } else if (user == null || user.equals("")) {
                     Context context = getApplicationContext();
                     CharSequence text = "Please login to like media";
@@ -171,9 +186,14 @@ public class MediaDetails extends AppCompatActivity {
                 if (!button.isSelected() && user != null && !user.equals("")) {    // If the user 'likes' the title
 //                    // Send to db the user's email + title of liked media
                     button.setSelected(!button.isSelected());
+                    thumbsDownBtn.setImageResource(R.drawable.ic_thumbs_down_tile_selected);
+
                     firebase.setDislike(user, selectedMediaTitle);
-//                } else {      // If the user 'undislikes' the title
-//                    // Send to db the user's email + title of undisliked media
+                } else if (button.isSelected() && user != null && !user.equals("")) {
+
+                    button.setSelected(button.isSelected());
+                    thumbsDownBtn.setImageResource(R.drawable.ic_thumbs_down);
+
                 } else if (user == null || user.equals("")) {
                     Context context = getApplicationContext();
                     CharSequence text = "Please login to dislike media";
@@ -187,6 +207,17 @@ public class MediaDetails extends AppCompatActivity {
 
     // Writes saved media title to phone's external storage
     public void handleSaveMediaTitle(String title) {
+        if (!saveTitleButton.isSelected() && user != null && !user.equals("")) {    // If the user 'likes' the title
+//                    // Send to db the user's email + title of liked media
+            saveTitleButton.setSelected(!saveTitleButton.isSelected());
+            saveTitleButton.setImageResource(R.drawable.ic_star);
+
+        } else if (saveTitleButton.isSelected() && user != null && !user.equals("")) {
+
+            saveTitleButton.setSelected(saveTitleButton.isSelected());
+            saveTitleButton.setImageResource(R.drawable.ic_star_unselected);
+        }
+
         if (isExternalStorageWritable()) {
             try {
                 File file = new File(Environment.getExternalStorageDirectory(), "mediaTitles.txt");

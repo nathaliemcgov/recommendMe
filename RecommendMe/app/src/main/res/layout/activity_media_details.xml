@@ -39,8 +39,6 @@
 
         </LinearLayout>
 
-
-
         <ImageButton
             android:id="@+id/saveMediaTitleDetails"
             android:layout_width="60dp"

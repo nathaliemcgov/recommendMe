@@ -34,6 +34,7 @@ public class RecommendationSearchResults extends AppCompatActivity
     private String user;
     private boolean inFirebase;
     private Context mContext;
+    private String titleSearched;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class RecommendationSearchResults extends AppCompatActivity
         titleSearchedFor = (TextView) findViewById(R.id.titleSearchedFor);
 
         Bundle bundle = getIntent().getExtras();
-        final String titleSearched = bundle.getString("title");
+        titleSearched = bundle.getString("title");
 
         if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
             user = bundle.getString("user");
@@ -64,6 +65,7 @@ public class RecommendationSearchResults extends AppCompatActivity
                 Intent intent = new Intent(getApplicationContext(), MediaDetails.class);
                 intent.putExtra("title", titleSearched);
                 intent.putExtra("user", user);
+                intent.putExtra("searchTitle", titleSearched);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getApplicationContext().startActivity(intent);
             }
@@ -114,6 +116,7 @@ public class RecommendationSearchResults extends AppCompatActivity
 
         Bundle bundle1 = new Bundle();
         bundle1.putString("user", user);
+        bundle1.putString("searchTitle", titleSearched);
 
         // Fragment to display tile grid
         FragmentManager fm = getSupportFragmentManager();
@@ -194,6 +197,7 @@ public class RecommendationSearchResults extends AppCompatActivity
         Intent intent = new Intent(this, MediaDetails.class);
         intent.putExtra("title", mediaTile);
         intent.putExtra("user", user);
+        intent.putExtra("searchTitle", titleSearched);
         intent.putExtra("activity", "RecommendationSearchResults");
         startActivity(intent);
     }
