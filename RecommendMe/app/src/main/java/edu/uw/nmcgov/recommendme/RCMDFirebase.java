@@ -124,11 +124,44 @@ public class RCMDFirebase {
 
     //Creates a user given the map
     //if map is "name" -> "tyler", "email" -> "tylerj11@uw.edu", firebase reflects this
-    public void createUser(Map<String, String> map) {
+    public void createUser(Map<String, Object> map) {
         Log.v("USER", "created user!");
-        map.put("name", map.get("name").trim());
+        map.put("name", makeStringFirebaseSafe(map.get("name").toString().trim()));
         Firebase userRef = myFirebaseUserRef.push();
         userRef.setValue(map);
+    }
+
+    //Checks firebase for the given password for the given user
+    //First callback is for successful password for user
+    //Second is if the username exists but password fails
+    //Third is if the username doesn't exist
+    public void checkPass(String user, final int password, final Firebase.CompletionListener complete,
+                          final Firebase.CompletionListener failPass, final Firebase.CompletionListener failUser) {
+        user = makeStringFirebaseSafe(user.trim());
+
+        Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot != null) {
+                    if(dataSnapshot.getValue() == null) failUser.onComplete(null, null);
+                    for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
+                        UserObject userObject = singleObject.getValue(UserObject.class);
+                        if(userObject.getPassword() == password)
+                            complete.onComplete(null, null);
+                        else
+                            failPass.onComplete(null, null);
+                    }
+                } else {
+                    failUser.onComplete(null, null);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     public void queryTitle(String title, String username, final List<RelatedObject> titleArray, final CustomTileAdapter adapter) {

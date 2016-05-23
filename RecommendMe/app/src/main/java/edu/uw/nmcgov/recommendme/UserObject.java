@@ -8,6 +8,7 @@ import java.util.Objects;
  */
 public class UserObject {
     private String name;
+    private int password;
     private Map<String, Object> liked;
     private Map<String, Object> disliked;
 
@@ -16,6 +17,8 @@ public class UserObject {
     public String getName() {
         return name;
     }
+
+    public int getPassword() { return password; }
 
     public Map<String, Object> getLiked() {
             return liked;
