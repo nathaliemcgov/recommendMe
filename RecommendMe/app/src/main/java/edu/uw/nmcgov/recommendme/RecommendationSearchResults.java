@@ -1,10 +1,13 @@
 package edu.uw.nmcgov.recommendme;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,12 +33,14 @@ public class RecommendationSearchResults extends AppCompatActivity
     private RCMDFirebase firebase;
     private String user;
     private boolean inFirebase;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommendation_search_results);
 
+        mContext = this;
         Firebase.setAndroidContext(this);
         firebase = new RCMDFirebase();
 
@@ -71,14 +76,29 @@ public class RecommendationSearchResults extends AppCompatActivity
 //        thumbsDownBtn = (ImageButton) rootView.findViewById(R.id.thumbsDownBtn);
 
         thumbsUpBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View button) {
+            public void onClick(final View button) {
                 //Set the button's appearance
                 Log.v("INFRRBASE", tileGridFragment.inFirebase() + "");
                 if (!button.isSelected()) {    // If the user 'likes' the title
                     // Send to db the user's email + title of liked media
+
                     if (user != null && !user.equals("")) {
-                        firebase.setLike(titleSearched, user);
-                        button.setSelected(!button.isSelected());
+                        if(tileGridFragment.inFirebase()) {
+                            firebase.setLike(titleSearched, user);
+                            button.setSelected(!button.isSelected());
+                        } else {
+                            String[] choices = {"Movie", "Music", "Book"};
+                            final String[] formattedChoices = {"movie", "music", "book"};
+                            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                            builder.setTitle("This item isn't in our database, what type of media is it?")
+                                    .setItems(choices, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            firebase.setLike(titleSearched, user, formattedChoices[which]);
+                                            button.setSelected(!button.isSelected());
+                                        }
+                                    });
+                            builder.create().show();
+                        }
                     } else {
                         Context context = getApplicationContext();
                         CharSequence text = "Please login to like media!";
