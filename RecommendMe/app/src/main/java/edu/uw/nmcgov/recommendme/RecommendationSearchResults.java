@@ -42,7 +42,6 @@ public class RecommendationSearchResults extends AppCompatActivity
         // TextView for header of screen
         titleSearchedFor = (TextView) findViewById(R.id.titleSearchedFor);
 
-
         Bundle bundle = getIntent().getExtras();
         final String titleSearched = bundle.getString("title");
 

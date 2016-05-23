@@ -184,7 +184,6 @@ public class RecommendationTileGrid extends Fragment {
 //            username = bundle.getString("user");
 //        }
 
-
         recommendationList.clear();
         customAdapter.notifyDataSetChanged();
         List<String> types = new ArrayList<String>();

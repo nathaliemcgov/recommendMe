@@ -95,13 +95,15 @@ public class MediaDetails extends AppCompatActivity {
         else
             mediaType = "";
 
+        Log.v("TYPE", mediaType);
+
         // Suffix that will be used if Wikipedia does not return correct description of media title
         if (mediaType.equals("movie"))
-            wikiSuffix = "_(Movie)";
+            wikiSuffix = "_(film)";
         else if (mediaType.equals("book"))
-            wikiSuffix = "_(Book)";
+            wikiSuffix = "_(novel)";
         else if (mediaType.equals("music"))
-            wikiSuffix = "_(Music)";
+            wikiSuffix = "_(band)";
 
         RelativeLayout ratio = (RelativeLayout) findViewById(R.id.contentPercentPrompt);
         if (activity.equals("recommendationsforyou")) {
@@ -122,8 +124,10 @@ public class MediaDetails extends AppCompatActivity {
         });
 
         // Shows description from Wikipedia of media title selected
-        WikipediaData wikipediaData = new WikipediaData();
-        wikipediaData.execute();
+        if (mediaType.length() > 0 && !mediaType.equals("")) {
+            WikipediaData wikipediaData = new WikipediaData();
+            wikipediaData.execute();
+        }
 
         // On click listener for "Save" button on selected tile
         ImageButton saveTitleButton = (ImageButton) findViewById(R.id.saveMediaTitleDetails);
@@ -228,7 +232,13 @@ public class MediaDetails extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... params) {
             try {
-                String formattedForWiki = selectedMediaTitle.replace(" ", "_");
+                String formattedForWiki = "";
+
+                if (selectedMediaTitle.equals("1984")) {
+                    formattedForWiki = "Nineteen_Eighty-Four";
+                } else {
+                    formattedForWiki = selectedMediaTitle.replace(" ", "_");
+                }
 
                 String extract = wikiRequest(formattedForWiki);
 
@@ -238,39 +248,28 @@ public class MediaDetails extends AppCompatActivity {
 
                     // Making request again with media type appended to end of query
                     extract = wikiRequest(formattedForWiki);
-                }
 
-//                URL url = new URL
-//                        ("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + formattedForWiki);
-//
-//                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-//
-//                try {
-//                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-//                    StringBuilder stringBuilder = new StringBuilder();
-//                    String line;
-//                    while ((line = bufferedReader.readLine()) != null) {
-//                        stringBuilder.append(line).append("\n");
-//                    }
-//                    bufferedReader.close();
-//                    String unformatted = stringBuilder.toString();
-//                    JSONObject json = new JSONObject(unformatted);
-//                    JSONObject description = new JSONObject(json.getString("query"));
-//                    JSONObject pages = new JSONObject(description.getString("pages"));
-//
-//                    JSONArray keySet = pages.names();
-//                    String pageID = keySet.get(0).toString();
-//
-//                    JSONObject obj = pages.getJSONObject(pageID);
-//                    String extract = obj.getString("extract");
-//
-//                    Log.v("TAGGGGG", extract);
-//
-//                    return extract;
-//                }
-//                finally {
-//                    urlConnection.disconnect();
-//                }
+                } else {
+                    if (mediaType.equals("movie")) {
+                        if (!extract.contains("film") && !extract.contains("movie")) {
+                            formattedForWiki += wikiSuffix;
+                            // Making request again with media type appended to end of query
+                            extract = wikiRequest(formattedForWiki);
+                        }
+                    } else if (mediaType.equals("book")) {
+                        if (!extract.contains("book") && !extract.contains("novel")) {
+                            formattedForWiki += wikiSuffix;
+                            // Making request again with media type appended to end of query
+                            extract = wikiRequest(formattedForWiki);
+                        }
+                    } else if (mediaType.equals("music")) {
+                        if (!extract.contains("music") && !extract.contains("band")) {
+                            formattedForWiki += wikiSuffix;
+                            // Making request again with media type appended to end of query
+                            extract = wikiRequest(formattedForWiki);
+                        }
+                    }
+                }
                 return extract;
             }
             catch (Exception e) {
