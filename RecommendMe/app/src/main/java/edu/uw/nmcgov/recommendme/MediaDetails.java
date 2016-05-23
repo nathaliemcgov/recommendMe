@@ -249,6 +249,8 @@ public class MediaDetails extends AppCompatActivity {
                     // Making request again with media type appended to end of query
                     extract = wikiRequest(formattedForWiki);
 
+                } else if (extract.contains("disambiguation")) {
+                    extract = "";
                 } else {
                     if (mediaType.equals("movie")) {
                         if (!extract.contains("film") && !extract.contains("movie")) {
