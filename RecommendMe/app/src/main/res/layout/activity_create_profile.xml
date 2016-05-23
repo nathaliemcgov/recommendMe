@@ -29,7 +29,7 @@
             android:textColor="@color/colorPrimary"
             android:text="Imagine you're stranded on\na desert island...What"/>
 
-        <TextView
+        <edu.uw.nmcgov.recommendme.SecondCustomTextView
             android:id="@+id/mediaTypeDI"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,6 +66,7 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:background="@drawable/text_input"
             android:layout_below="@+id/secondHalfTitle">
             <requestFocus />
         </AutoCompleteTextView>
@@ -75,6 +76,8 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:background="@drawable/text_input"
+            android:layout_margin="15dp"
             android:layout_below="@+id/searchMediaText1">
         </AutoCompleteTextView>
 
@@ -84,6 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_below="@+id/searchMediaText2"
+            android:background="@drawable/text_input"
             android:layout_marginBottom="15dp">
         </AutoCompleteTextView>
 

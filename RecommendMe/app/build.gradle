@@ -45,5 +45,17 @@ dependencies {
     compile 'com.android.support:support-v4:23.+'
 }
 dependencies {
+    compile 'com.google.android.gms:play-services-ads:8.4.0'
+}
+dependencies {
+    compile 'com.google.android.gms:play-services-auth:8.4.0'
+}
+dependencies {
+    compile 'com.firebase:firebase-client-android:2.3.1'
+}
+dependencies {
+    compile 'com.google.android.gms:play-services-gcm:8.4.0'
+}
+dependencies {
     compile 'org.scribe:scribe:1.1.0'
 }
