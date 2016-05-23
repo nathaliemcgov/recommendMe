@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
 import org.w3c.dom.Text;
 
@@ -45,7 +46,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private List<RelatedObject> recommendationList;
-    private RCMDFirebase firebase;
+    private RCMDFirebase myFirebase;
     private String user;
 
     public CustomTileAdapter(Context context, List<RelatedObject> titles, String user) {
@@ -53,7 +54,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         mContext = context;
         this.user = user;
         Firebase.setAndroidContext(context);
-        firebase = new RCMDFirebase();
+        myFirebase = new RCMDFirebase();
         recommendationList = titles;
     }
 
@@ -113,15 +114,30 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                 if(!v.isSelected() && user != null && !user.equals("")) {
                     //v.setSelected(!v.isSelected());
                     Log.v("clicked", "clicked that shit" + user);
-                    recommendationList.remove(position);
-                    notifyDataSetChanged();
-                    firebase.setLike(object.name, user);
+                    myFirebase.checkLike(object.name, user, object.getType(), new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            myFirebase.setLike(object.name, user);
+                            Context context = parent.getContext();
+                            CharSequence text = "Liked : " + object.name;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                            recommendationList.remove(position);
+                            notifyDataSetChanged();
+                        }
+                    }, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Log.v("HERE", "HERE");
+                            Context context = parent.getContext();
+                            CharSequence text = "You already like this!";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    });
 
-                    Context context = parent.getContext();
-                    CharSequence text = "Liked : " + object.name;
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
 
                 } else if (user == null || user.equals("")) {
                     Context context = parent.getContext();

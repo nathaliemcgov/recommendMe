@@ -619,7 +619,39 @@ public class RCMDFirebase {
         });
     }
 
+    //Like a given media (likedUnformatted) of type (type) for user (user). ifNotLiked runs the code if the object is not liked
+    //by the user. ifLiked runs the code if the object is liked
+    public void checkLike(String likedUnformatted, String user, final String type, final Firebase.CompletionListener ifNotLiked, final Firebase.CompletionListener ifLiked) {
+        likedUnformatted = makeStringFirebaseSafe(likedUnformatted.trim().toLowerCase());
+        final String likedFormatted = likedUnformatted;
+        Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
+                        UserObject object = singleObject.getValue(UserObject.class);
+                        singleObject.getRef().removeValue();
+                        Map<String, Object> liked = object.getLiked();
+                        if(liked.containsKey(likedFormatted)) {
+                            ifLiked.onComplete(null, null);
+                        } else {
+                            ifNotLiked.onComplete(null, null);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
     public void deleteUser(String user) {
+        Log.v(TAG, "indelete");
         Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
