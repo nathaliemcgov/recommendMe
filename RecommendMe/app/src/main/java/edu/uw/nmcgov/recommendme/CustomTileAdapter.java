@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,7 +72,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         }
 
         //Set up media type icon
-        ImageButton mediaTypeButton = (ImageButton) convertView.findViewById(R.id.mediaType);
+        ImageView mediaTypeButton = (ImageView) convertView.findViewById(R.id.mediaType);
         String mediaType = object.getType();
         Log.v("taaaaaag", object.toString() + mediaType);
         int backgroundResource = R.drawable.ic_book_icon;
