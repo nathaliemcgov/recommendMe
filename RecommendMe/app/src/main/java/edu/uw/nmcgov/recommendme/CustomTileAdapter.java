@@ -169,7 +169,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         });
 
         // On click listener for "Save" button on each tile
-        ImageButton saveTitleButton = (ImageButton) convertView.findViewById(R.id.saveMediaTitle);
+        final ImageButton saveTitleButton = (ImageButton) convertView.findViewById(R.id.saveMediaTitle);
 
         // Write title to phone's external storage
         saveTitleButton.setOnClickListener(new View.OnClickListener() {
@@ -179,6 +179,15 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
 
                 Toast toast = Toast.makeText(getContext(), text, duration);
                 toast.show();
+
+                if (!v.isSelected()) {
+                    v.setSelected(!v.isSelected());
+                    saveTitleButton.setImageResource(R.drawable.ic_star);
+
+                } else {
+                    v.setSelected(!v.isSelected());
+                    saveTitleButton.setImageResource(R.drawable.ic_star_unselected);
+                }
 
                 handleSaveMediaTitle(object);
             }

@@ -116,12 +116,12 @@ public class MediaDetails extends AppCompatActivity {
         if (activity.equals("recommendationsforyou")) {
             ratio.setVisibility(View.GONE);
         } else {
-            selectedTitle.setText(selectedMediaTitle);
-
             TextView textView = (TextView) findViewById(R.id.searchTerm);
             textView.setText(titleSearchedFor);
         }
-        
+
+        selectedTitle.setText(selectedMediaTitle);
+
         selectedTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,6 +143,15 @@ public class MediaDetails extends AppCompatActivity {
         // Write title to phone's external storage
         saveTitleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                if (!v.isSelected()) {
+                    v.setSelected(!v.isSelected());
+                    saveTitleButton.setImageResource(R.drawable.ic_star);
+
+                } else {
+                    v.setSelected(!v.isSelected());
+                    saveTitleButton.setImageResource(R.drawable.ic_star_unselected);
+                }
+
                 handleSaveMediaTitle(selectedMediaTitle);
             }
         });
@@ -207,16 +216,6 @@ public class MediaDetails extends AppCompatActivity {
 
     // Writes saved media title to phone's external storage
     public void handleSaveMediaTitle(String title) {
-        if (!saveTitleButton.isSelected() && user != null && !user.equals("")) {    // If the user 'likes' the title
-//                    // Send to db the user's email + title of liked media
-            saveTitleButton.setSelected(!saveTitleButton.isSelected());
-            saveTitleButton.setImageResource(R.drawable.ic_star);
-
-        } else if (saveTitleButton.isSelected() && user != null && !user.equals("")) {
-
-            saveTitleButton.setSelected(saveTitleButton.isSelected());
-            saveTitleButton.setImageResource(R.drawable.ic_star_unselected);
-        }
 
         if (isExternalStorageWritable()) {
             try {
@@ -252,8 +251,6 @@ public class MediaDetails extends AppCompatActivity {
     class WikipediaData extends AsyncTask<Void, Void, String> {
 
         private Exception exception;
-        private final String API_URL = "https://en.wikipedia.org/w/api.php";
-
         @Override
         protected void onPreExecute() {
             Log.v("WIKI", "Querying Wikipedia...");
