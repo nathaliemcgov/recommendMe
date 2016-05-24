@@ -77,9 +77,14 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         ImageView mediaTypeButton = (ImageView) convertView.findViewById(R.id.mediaType);
         final String mediaType = object.getType();
         Log.v("taaaaaag", object.toString() + mediaType);
+
+        // Setting background of tile
         int backgroundResource = R.drawable.ic_book_icon;
-        if (mediaType != null && mediaType.equals("music")) backgroundResource = R.drawable.ic_music_icon;
-        else if (mediaType != null && mediaType.equals("movie")) backgroundResource = R.drawable.ic_movie_icon;
+        if (mediaType != null && mediaType.equals("music"))
+            backgroundResource = R.drawable.ic_music_icon;
+        else if (mediaType != null && mediaType.equals("movie"))
+            backgroundResource = R.drawable.ic_movie_icon;
+
         mediaTypeButton.setBackgroundResource(backgroundResource);
 
         TextView mediaTitle = (TextView) convertView.findViewById(R.id.recommendationElement);
