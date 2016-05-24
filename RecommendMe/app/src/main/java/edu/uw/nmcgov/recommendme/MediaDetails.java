@@ -37,6 +37,7 @@ import org.scribe.model.Verb;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -146,13 +147,12 @@ public class MediaDetails extends AppCompatActivity {
                 if (!v.isSelected()) {
                     v.setSelected(!v.isSelected());
                     saveTitleButton.setImageResource(R.drawable.ic_star);
-
+                    handleSaveMediaTitle(selectedMediaTitle);
                 } else {
                     v.setSelected(!v.isSelected());
                     saveTitleButton.setImageResource(R.drawable.ic_star_unselected);
+                    handleRemoveTitleFromSaved(selectedMediaTitle);
                 }
-
-                handleSaveMediaTitle(selectedMediaTitle);
             }
         });
 
@@ -165,6 +165,10 @@ public class MediaDetails extends AppCompatActivity {
             public void onClick(View button) {
                 //Set the button's appearance
                 if (!button.isSelected() && user != null && !user.equals("")) {    // If the user 'likes' the title
+                    if (thumbsDownBtn.isSelected()) {    // Toggling
+                        thumbsDownBtn.setSelected(!thumbsDownBtn.isSelected());
+                        thumbsDownBtn.setImageResource(R.drawable.ic_thumbs_down);
+                    }
 //                    // Send to db the user's email + title of liked media
                     button.setSelected(!button.isSelected());
                     thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up_tile_selected);
@@ -192,8 +196,12 @@ public class MediaDetails extends AppCompatActivity {
             public void onClick(View button) {
                 //Set the button's appearance
                 Log.v("tag", selectedMediaTitle);
-                if (!button.isSelected() && user != null && !user.equals("")) {    // If the user 'likes' the title
-//                    // Send to db the user's email + title of liked media
+                if (!button.isSelected() && user != null && !user.equals("")) {
+                    if (thumbsUpBtn.isSelected()) { // Toggling
+                        thumbsUpBtn.setSelected(!thumbsUpBtn.isSelected());
+                        thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up);
+                    }
+
                     button.setSelected(!button.isSelected());
                     thumbsDownBtn.setImageResource(R.drawable.ic_thumbs_down_tile_selected);
 
@@ -233,6 +241,33 @@ public class MediaDetails extends AppCompatActivity {
                 }
 
                 Log.v("tag", "file written: " + mediaTitle);
+            } catch (Exception e) {
+                Log.v("ERROR", e.toString());
+            }
+        }
+    }
+
+    public void handleRemoveTitleFromSaved(String mediaTitle) {
+        if (isExternalStorageWritable()) {
+            try {
+                File file = new File(Environment.getExternalStorageDirectory(), "mediaTitles.txt");
+
+                try {
+                    BufferedReader reader = new BufferedReader(new FileReader(file));
+                    String line;
+
+                    FileWriter fw = new FileWriter(file, false);
+                    while ((line = reader.readLine()) != null) {
+                        Log.v("CHECKING", "" + line.contains(mediaTitle));
+                        if (!line.contains(mediaTitle)) {
+                            fw.append(line);
+                            fw.close();
+                        }
+                    }
+
+                } catch (IOException e) {
+                    Log.w("ExternalStorage", "Error writing " + file, e);
+                }
             } catch (Exception e) {
                 Log.v("ERROR", e.toString());
             }
