@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
 import org.w3c.dom.Text;
 
@@ -47,7 +48,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private List<RelatedObject> recommendationList;
-    private RCMDFirebase firebase;
+    private RCMDFirebase myFirebase;
     private String user;
     private String titleSearchedFor;
 
@@ -57,7 +58,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         this.user = user;
         this.titleSearchedFor = titleSearchedFor;
         Firebase.setAndroidContext(context);
-        firebase = new RCMDFirebase();
+        myFirebase = new RCMDFirebase();
         recommendationList = titles;
     }
 
@@ -123,15 +124,97 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                 if (!v.isSelected() && user != null && !user.equals("")) {
                     //v.setSelected(!v.isSelected());
                     Log.v("clicked", "clicked that shit" + user);
-                    recommendationList.remove(position);
-                    notifyDataSetChanged();
-                    firebase.setLike(object.name, user);
+                    myFirebase.checkLike(object.name, user, object.getType(), new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Log.v("CustomTileAdapter", "inNotLike");
+                            myFirebase.setLike(object.name, user);
+                            Context context = parent.getContext();
+                            CharSequence text = "Liked : " + object.name;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            thumbsUpBtn.setImageResource(R.drawable.thumbs_up_button);
+                            toast.show();
+                            recommendationList.remove(position);
+                            notifyDataSetChanged();
+                        }
+                    }, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Log.v("CustomTileAdapter", "inLike");
+                            Log.v("HERE", "HERE");
+                            Context context = parent.getContext();
+                            CharSequence text = "You already like " + object.name;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    }, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Context context = parent.getContext();
+                            CharSequence text = "You said you disliked " + object.name;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    });
 
+
+                } else if (user == null || user.equals("")) {
                     Context context = parent.getContext();
-                    CharSequence text = "Liked : " + object.name;
-                    int duration = Toast.LENGTH_SHORT;
+                    CharSequence text = "Please login to like media";
+                    int duration = Toast.LENGTH_LONG;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
+                }
+            }
+        });
+
+        final ImageButton buttonDown = (ImageButton) convertView.findViewById(R.id.thumbsDownBtn);
+
+        buttonDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!v.isSelected() && user != null && !user.equals("")) {
+                    //v.setSelected(!v.isSelected());
+                    Log.v("clicked", "clicked that shit" + user);
+                    myFirebase.checkDislike(object.name, user, object.getType(), new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Log.v("CustomTileAdapter", "inNotLike");
+                            myFirebase.setDislike(object.name, user);
+                            Context context = parent.getContext();
+                            CharSequence text = "Disliked : " + object.name;
+                            buttonDown.setImageResource(R.drawable.ic_thumbs_down_tile_selected);
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                            recommendationList.remove(position);
+                            notifyDataSetChanged();
+                        }
+                    }, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Log.v("CustomTileAdapter", "inLike");
+                            Log.v("HERE", "HERE");
+                            Context context = parent.getContext();
+                            CharSequence text = "You already dislike : " + object.name;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    }, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Context context = parent.getContext();
+                            CharSequence text = "You said you liked " + object.name;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    });
+
 
                 } else if (v.isSelected() && user != null && !user.equals("")) {
 
@@ -148,32 +231,6 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
             }
         });
 
-        final ImageButton thumbsDownBtn = (ImageButton) convertView.findViewById(R.id.thumbsDownBtn);
-
-        thumbsDownBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View button) {
-                //Set the button's appearance
-                if (!button.isSelected() && user != null && !user.equals("")) {    // If the user 'likes' the title
-//                    // Send to db the user's email + title of liked media
-                    button.setSelected(!button.isSelected());
-                    thumbsDownBtn.setImageResource(R.drawable.ic_thumbs_down_tile_selected);
-
-                    firebase.setDislike(user, object.name);
-                } else if (button.isSelected() && user != null && !user.equals("")) {
-
-                    button.setSelected(button.isSelected());
-                    thumbsDownBtn.setImageResource(R.drawable.ic_thumbs_down);
-
-                } else if (user == null || user.equals("")) {
-                    Context context = parent.getContext();
-                    CharSequence text = "Please login to dislike media";
-                    int duration = Toast.LENGTH_LONG;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
-                }
-            }
-        });
 
         // On click listener for "Save" button on each tile
         final ImageButton saveTitleButton = (ImageButton) convertView.findViewById(R.id.saveMediaTitle);

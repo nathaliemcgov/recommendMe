@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -52,7 +53,7 @@ public class MediaDetails extends AppCompatActivity {
     private TextView selectedTitle;
     private ImageButton thumbsUpBtn;
     private ImageButton thumbsDownBtn;
-    private RCMDFirebase firebase;
+    private RCMDFirebase myFirebase;
 
     private String selectedMediaTitle;
     private TextView contentDetails;
@@ -74,7 +75,7 @@ public class MediaDetails extends AppCompatActivity {
         setContentView(R.layout.activity_media_details);
 
         Firebase.setAndroidContext(this);
-        firebase = new RCMDFirebase();
+        myFirebase = new RCMDFirebase();
 
         // Sets header to selected media title
         selectedTitle = (TextView) findViewById(R.id.selectedMediaTitle);
@@ -162,14 +163,45 @@ public class MediaDetails extends AppCompatActivity {
         thumbsDownBtn = (ImageButton) findViewById(R.id.thumbsDownBtn);
 
         thumbsUpBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View button) {
+            public void onClick(final View button) {
                 //Set the button's appearance
                 if (!button.isSelected() && user != null && !user.equals("")) {    // If the user 'likes' the title
 //                    // Send to db the user's email + title of liked media
-                    button.setSelected(!button.isSelected());
-                    thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up_tile_selected);
+                    myFirebase.checkLike(selectedMediaTitle, user, mediaType, new Firebase.CompletionListener()
+                    {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Log.v("CustomTileAdapter", "inNotLike");
+                            myFirebase.setLike(selectedMediaTitle, user);
+                            Context context = getApplicationContext();
+                            CharSequence text = "Liked : " + selectedMediaTitle;
+                            thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up_tile_selected);
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                            button.setSelected(!button.isSelected());
+                        }
+                    }, new Firebase.CompletionListener() {
 
-                    firebase.setLike(selectedMediaTitle, user);
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Context context = getApplicationContext();
+                            CharSequence text = "You already like this!";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    }, new Firebase.CompletionListener() {
+
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Context context = getApplicationContext();
+                            CharSequence text = "You said you dislike this!";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    });
 //                } else {      // If the user 'unlikes' the title
 //                    // Send to db the user's email + title of unliked media
                 } else if (button.isSelected() && user != null && !user.equals("")) {
@@ -189,20 +221,48 @@ public class MediaDetails extends AppCompatActivity {
 
         thumbsDownBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View button) {
+            public void onClick(final View button) {
                 //Set the button's appearance
                 Log.v("tag", selectedMediaTitle);
                 if (!button.isSelected() && user != null && !user.equals("")) {    // If the user 'likes' the title
 //                    // Send to db the user's email + title of liked media
-                    button.setSelected(!button.isSelected());
-                    thumbsDownBtn.setImageResource(R.drawable.ic_thumbs_down_tile_selected);
+                    myFirebase.checkDislike(selectedMediaTitle, user, mediaType, new Firebase.CompletionListener()
+                    {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Log.v("CustomTileAdapter", "inNotLike");
+                            myFirebase.setDislike(selectedMediaTitle, user);
+                            Context context = getApplicationContext();
+                            CharSequence text = "Dislike : " + selectedMediaTitle;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            thumbsDownBtn.setImageResource(R.drawable.ic_thumbs_down_tile_selected);
+                            toast.show();
+                            button.setSelected(!button.isSelected());
+                        }
+                    }, new Firebase.CompletionListener() {
 
-                    firebase.setDislike(user, selectedMediaTitle);
-                } else if (button.isSelected() && user != null && !user.equals("")) {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Context context = getApplicationContext();
+                            CharSequence text = "You already dislike this!";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    }, new Firebase.CompletionListener() {
 
-                    button.setSelected(button.isSelected());
-                    thumbsDownBtn.setImageResource(R.drawable.ic_thumbs_down);
-
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Context context = getApplicationContext();
+                            CharSequence text = "You said you like this!";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    });
+//                } else {      // If the user 'undislikes' the title
+//                    // Send to db the user's email + title of undisliked media
                 } else if (user == null || user.equals("")) {
                     Context context = getApplicationContext();
                     CharSequence text = "Please login to dislike media";
