@@ -38,9 +38,6 @@ public class SavedActivity extends AppCompatActivity implements RecommendationTi
             }
         }
 
-        // Reading from local file (return list of titles to send to RecommendationTileGrid?)
-        readFromLocalSavedFile();
-
         // Fragment to display tile grid for saved media titles
         FragmentManager fm = getSupportFragmentManager();
 
@@ -51,10 +48,6 @@ public class SavedActivity extends AppCompatActivity implements RecommendationTi
         tileGridFragment.setArguments(bundle);
         ft.add(R.id.gridContainer3, tileGridFragment, "Grid");
         ft.commit();
-    }
-
-    public void readFromLocalSavedFile() {
-
     }
 
     @Override

@@ -205,8 +205,6 @@ public class RecommendationTileGrid extends Fragment {
 
     // If the user reached screen by saved recommendations
     private void populateTilesForSavedRecommendations() {
-        Log.v("USERRR", user);
-
         // Getting list of saved media titles
         if (isExternalStorageWritable()) {
             try {
@@ -232,7 +230,10 @@ public class RecommendationTileGrid extends Fragment {
             }
         }
 
-        if(savedList == null) savedList = new ArrayList<RelatedObject>();
+        if(savedList == null)
+            savedList = new ArrayList<RelatedObject>();
+        Log.v("LIST OF SAVED", "" + savedList);
+
         CustomTileAdapter customAdapter = new CustomTileAdapter(this.getContext(), savedList, user, titleSearchedFor);
         tileGrid.setAdapter(customAdapter);
     }
