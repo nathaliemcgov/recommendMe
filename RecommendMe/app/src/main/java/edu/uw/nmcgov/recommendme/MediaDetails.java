@@ -298,6 +298,7 @@ public class MediaDetails extends AppCompatActivity {
                     FileWriter fw = new FileWriter(file, true);
                     fw.append(mediaTitle);
                     fw.close();
+                    Log.v("SAVING", mediaTitle);
 
                 } catch (IOException e) {
                     Log.w("ExternalStorage", "Error writing " + file, e);
@@ -318,6 +319,8 @@ public class MediaDetails extends AppCompatActivity {
                 try {
                     BufferedReader reader = new BufferedReader(new FileReader(file));
                     String line;
+
+                    Log.v("UNSAVING", mediaTitle);
 
                     FileWriter fw = new FileWriter(file, false);
                     while ((line = reader.readLine()) != null) {
