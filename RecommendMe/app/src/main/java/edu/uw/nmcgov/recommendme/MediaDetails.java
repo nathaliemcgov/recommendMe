@@ -174,7 +174,7 @@ public class MediaDetails extends AppCompatActivity {
 //                    // Send to db the user's email + title of unliked media
                 } else if (button.isSelected() && user != null && !user.equals("")) {
 
-                    button.setSelected(button.isSelected());
+                    button.setSelected(!button.isSelected());
                     thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up);
 
                 } else if (user == null || user.equals("")) {
@@ -200,7 +200,7 @@ public class MediaDetails extends AppCompatActivity {
                     firebase.setDislike(user, selectedMediaTitle);
                 } else if (button.isSelected() && user != null && !user.equals("")) {
 
-                    button.setSelected(button.isSelected());
+                    button.setSelected(!button.isSelected());
                     thumbsDownBtn.setImageResource(R.drawable.ic_thumbs_down);
 
                 } else if (user == null || user.equals("")) {
