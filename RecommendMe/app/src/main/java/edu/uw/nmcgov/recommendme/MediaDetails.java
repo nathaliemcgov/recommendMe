@@ -141,6 +141,9 @@ public class MediaDetails extends AppCompatActivity {
         // On click listener for "Save" button on selected tile
         saveTitleButton = (ImageButton) findViewById(R.id.saveMediaTitleDetails);
 
+        // Check if the user has already saved the item
+        boolean checkSave = hasSavedTitle();
+
         // Write title to phone's external storage
         saveTitleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -202,8 +205,6 @@ public class MediaDetails extends AppCompatActivity {
                             toast.show();
                         }
                     });
-//                } else {      // If the user 'unlikes' the title
-//                    // Send to db the user's email + title of unliked media
                 } else if (button.isSelected() && user != null && !user.equals("")) {
                     Context context = getApplicationContext();
                     CharSequence text = "You already like this!";
@@ -303,6 +304,14 @@ public class MediaDetails extends AppCompatActivity {
                 Log.v("ERROR", e.toString());
             }
         }
+    }
+
+    public boolean hasSavedTitle() {
+        boolean isSaved = false;
+
+//        selectedMediaTitle
+
+        return isSaved;
     }
 
     public boolean isExternalStorageWritable() {
