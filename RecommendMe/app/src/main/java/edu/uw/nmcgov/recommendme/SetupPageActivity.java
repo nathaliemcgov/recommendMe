@@ -33,7 +33,6 @@ public class SetupPageActivity extends Activity {
                 searchForRecommendations();
             }
         });
-
     }
 
     // Starts create profile activity

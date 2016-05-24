@@ -160,7 +160,6 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                         }
                     });
 
-
                 } else if (user == null || user.equals("")) {
                     Context context = parent.getContext();
                     CharSequence text = "Please login to like media";
@@ -214,13 +213,11 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                             toast.show();
                         }
                     });
-
-
                 } else if (v.isSelected() && user != null && !user.equals("")) {
-
                     v.setSelected(v.isSelected());
                     thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up);
-
+                    buttonDown.setSelected(!buttonDown.isSelected());
+                    buttonDown.setImageResource(R.drawable.ic_thumbs_down);
                 } else if (user == null || user.equals("")) {
                     Context context = parent.getContext();
                     CharSequence text = "Please login to like media";
@@ -238,22 +235,25 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         // Write title to phone's external storage
         saveTitleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                CharSequence text = "Saved : " + object.toString();
+                CharSequence text = "";
+
+                if (!v.isSelected()) {
+                    handleSaveMediaTitle(object);
+
+                    v.setSelected(!v.isSelected());
+                    saveTitleButton.setImageResource(R.drawable.ic_star);
+                    text = "Saved : " + object.toString();
+                } else {
+                    handleRemoveTitleFromSaved(object);
+
+                    v.setSelected(!v.isSelected());
+                    saveTitleButton.setImageResource(R.drawable.ic_star_unselected);
+                    text = "Removed from saved list : " + object.toString();
+                }
                 int duration = Toast.LENGTH_SHORT;
 
                 Toast toast = Toast.makeText(getContext(), text, duration);
                 toast.show();
-
-                if (!v.isSelected()) {
-                    v.setSelected(!v.isSelected());
-                    saveTitleButton.setImageResource(R.drawable.ic_star);
-
-                } else {
-                    v.setSelected(!v.isSelected());
-                    saveTitleButton.setImageResource(R.drawable.ic_star_unselected);
-                }
-
-                handleSaveMediaTitle(object);
             }
         });
 
@@ -284,6 +284,34 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                         fw.close();
                         Log.v("tag", "file written: " + mediaTitle);
                     }
+
+                } catch (IOException e) {
+                    Log.w("ExternalStorage", "Error writing " + file, e);
+                }
+            } catch (Exception e) {
+                Log.v("ERROR", e.toString());
+            }
+        }
+    }
+
+    public void handleRemoveTitleFromSaved(RelatedObject object) {
+        if (isExternalStorageWritable()) {
+            try {
+                File file = new File(Environment.getExternalStorageDirectory(), "mediaTitles.txt");
+
+                try {
+                    BufferedReader reader = new BufferedReader(new FileReader(file));
+                    String line;
+
+                    FileWriter fw = new FileWriter(file, false);
+                    while ((line = reader.readLine()) != null) {
+                        Log.v("CHECKING", "" + line.contains(object.name));
+                        if (!line.contains(object.name)) {
+                            fw.append(line);
+                            fw.close();
+                        }
+                    }
+                    Log.v("tag", "title removed: " + object.name);
 
                 } catch (IOException e) {
                     Log.w("ExternalStorage", "Error writing " + file, e);

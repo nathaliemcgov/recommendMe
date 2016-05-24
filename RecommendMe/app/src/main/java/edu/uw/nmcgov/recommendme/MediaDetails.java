@@ -205,10 +205,11 @@ public class MediaDetails extends AppCompatActivity {
 //                } else {      // If the user 'unlikes' the title
 //                    // Send to db the user's email + title of unliked media
                 } else if (button.isSelected() && user != null && !user.equals("")) {
-
-                    button.setSelected(button.isSelected());
-                    thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up);
-
+                    Context context = getApplicationContext();
+                    CharSequence text = "You already like this!";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                 } else if (user == null || user.equals("")) {
                     Context context = getApplicationContext();
                     CharSequence text = "Please login to like media";
@@ -261,8 +262,13 @@ public class MediaDetails extends AppCompatActivity {
                             toast.show();
                         }
                     });
-//                } else {      // If the user 'undislikes' the title
-//                    // Send to db the user's email + title of undisliked media
+                } else if (button.isSelected() && user != null && !user.equals("")) {
+                    Context context = getApplicationContext();
+                    CharSequence text = "You already dislike this!";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
                 } else if (user == null || user.equals("")) {
                     Context context = getApplicationContext();
                     CharSequence text = "Please login to dislike media";
