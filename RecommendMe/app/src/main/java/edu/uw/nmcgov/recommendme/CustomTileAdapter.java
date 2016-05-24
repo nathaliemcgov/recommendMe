@@ -27,8 +27,10 @@ import com.firebase.client.Firebase;
 
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -203,22 +205,32 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
 
     // Writes saved media title to phone's external storage
     public void handleSaveMediaTitle(RelatedObject object) {
+        boolean match = false;
         if (isExternalStorageWritable()) {
             try {
                 File file = new File(Environment.getExternalStorageDirectory(), "mediaTitles.txt");
                 String mediaTitle = object.name + "\n";
 
                 try {
-                    // create a filewriter and set append modus to true
-                    FileWriter fw = new FileWriter(file, true);
-                    fw.append(mediaTitle);
-                    fw.close();
+                    BufferedReader reader = new BufferedReader(new FileReader(file));
+                    String line;
+
+                    while ((line = reader.readLine()) != null && !match) {
+                        if (line.contains(object.name))
+                            match = true;
+                    }
+
+                    if (!match) {
+                        // create a filewriter and set append modus to true
+                        FileWriter fw = new FileWriter(file, true);
+                        fw.append(mediaTitle);
+                        fw.close();
+                        Log.v("tag", "file written: " + mediaTitle);
+                    }
 
                 } catch (IOException e) {
                     Log.w("ExternalStorage", "Error writing " + file, e);
                 }
-
-                Log.v("tag", "file written: " + mediaTitle);
             } catch (Exception e) {
                 Log.v("ERROR", e.toString());
             }
