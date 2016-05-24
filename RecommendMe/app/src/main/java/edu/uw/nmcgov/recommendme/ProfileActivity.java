@@ -76,7 +76,7 @@ public class ProfileActivity extends AppCompatActivity {
             logout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View V) {
-                    Intent intent = new Intent(V.getContext(), SetupPageActivity.class);
+                    Intent intent = new Intent(V.getContext(), HomePageActivity.class);
                     startActivity(intent);
                 }
             });

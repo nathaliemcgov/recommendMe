@@ -117,6 +117,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                     myFirebase.checkLike(object.name, user, object.getType(), new Firebase.CompletionListener() {
                         @Override
                         public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Log.v("CustomTileAdapter", "inNotLike");
                             myFirebase.setLike(object.name, user);
                             Context context = parent.getContext();
                             CharSequence text = "Liked : " + object.name;
@@ -129,9 +130,73 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                     }, new Firebase.CompletionListener() {
                         @Override
                         public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Log.v("CustomTileAdapter", "inLike");
                             Log.v("HERE", "HERE");
                             Context context = parent.getContext();
-                            CharSequence text = "You already like this!";
+                            CharSequence text = "You already like " + object.name;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    }, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Context context = parent.getContext();
+                            CharSequence text = "You said you disliked " + object.name;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    });
+
+
+                } else if (user == null || user.equals("")) {
+                    Context context = parent.getContext();
+                    CharSequence text = "Please login to like media";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+            }
+        });
+
+        ImageButton buttonDown = (ImageButton) convertView.findViewById(R.id.thumbsDownBtn);
+
+        buttonDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!v.isSelected() && user != null && !user.equals("")) {
+                    //v.setSelected(!v.isSelected());
+                    Log.v("clicked", "clicked that shit" + user);
+                    myFirebase.checkDislike(object.name, user, object.getType(), new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Log.v("CustomTileAdapter", "inNotLike");
+                            myFirebase.setDislike(object.name, user);
+                            Context context = parent.getContext();
+                            CharSequence text = "Disliked : " + object.name;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                            recommendationList.remove(position);
+                            notifyDataSetChanged();
+                        }
+                    }, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Log.v("CustomTileAdapter", "inLike");
+                            Log.v("HERE", "HERE");
+                            Context context = parent.getContext();
+                            CharSequence text = "You already dislike : " + object.name;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    }, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Context context = parent.getContext();
+                            CharSequence text = "You said you liked " + object.name;
                             int duration = Toast.LENGTH_SHORT;
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
