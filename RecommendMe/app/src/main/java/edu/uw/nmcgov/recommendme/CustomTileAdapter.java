@@ -35,7 +35,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static android.app.PendingIntent.getActivity;
 
@@ -51,6 +54,9 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
     private RCMDFirebase myFirebase;
     private String user;
     private String titleSearchedFor;
+    private Set<String> myLikes;
+    private Set<String> myDislikes;
+
 
     public CustomTileAdapter(Context context, List<RelatedObject> titles, String user, String titleSearchedFor) {
         super(context, 0, titles);
@@ -60,6 +66,10 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         Firebase.setAndroidContext(context);
         myFirebase = new RCMDFirebase();
         recommendationList = titles;
+        myLikes = new HashSet<String>();
+        myDislikes = new HashSet<String>();
+        myFirebase.getLikesDislikes(user, myLikes, myDislikes);
+
     }
 
     @Override
@@ -75,6 +85,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.recommendation_element,
                     parent, false);
         }
+
 
         //Set up media type icon
         ImageView mediaTypeButton = (ImageView) convertView.findViewById(R.id.mediaType);
@@ -131,8 +142,9 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                             int duration = Toast.LENGTH_SHORT;
                             Toast toast = Toast.makeText(context, text, duration);
                             thumbsUpBtn.setImageResource(R.drawable.thumbs_up_button);
+                            myLikes.add(object.name);
                             toast.show();
-                            recommendationList.remove(position);
+                            //recommendationList.remove(position);
                             notifyDataSetChanged();
                         }
                     }, new Firebase.CompletionListener() {
@@ -178,14 +190,15 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                         @Override
                         public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                             Log.v("CustomTileAdapter", "inNotLike");
-                            myFirebase.setDislike(object.name, user);
+                            myFirebase.setDislike(user, object.name);
                             Context context = parent.getContext();
                             CharSequence text = "Disliked : " + object.name;
                             buttonDown.setImageResource(R.drawable.ic_thumbs_down_tile_selected);
                             int duration = Toast.LENGTH_SHORT;
+                            myDislikes.add(object.name);
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
-                            recommendationList.remove(position);
+                            //recommendationList.remove(position);
                             notifyDataSetChanged();
                         }
                     }, new Firebase.CompletionListener() {
@@ -252,6 +265,15 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                 toast.show();
             }
         });
+
+        if(myLikes.contains(object.name)) {
+            thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up_tile_selected);
+        } else if (myDislikes.contains(object.name)) {
+            buttonDown.setImageResource(R.drawable.ic_thumbs_down_tile_selected);
+        } else {
+            thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up);
+            buttonDown.setImageResource(R.drawable.ic_thumbs_down);
+        }
 
         return convertView;
     }

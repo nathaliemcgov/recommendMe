@@ -209,6 +209,7 @@ public class RCMDFirebase {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
+                    //this should run once
                     for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
                         MediaObject object = singleObject.getValue(MediaObject.class);
                         Map<String, Object> map = object.getRelated();
@@ -442,16 +443,18 @@ public class RCMDFirebase {
     }
 
     // Given a username - sets a dislike for the selected media title
-    public void setDislike(String user, String dislikedTitle) {
+    public void setDislike(final String user, String dislikedTitle) {
         if (!user.equals("") && user != null) {
             Log.v("FIREBASE", "Reached dislike");
-            final String disliked = dislikedTitle.toLowerCase();
+            final String disliked = dislikedTitle;
             Query getUser = myFirebaseUserRef.orderByChild("name").equalTo(user);
 
             getUser.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.v(TAG, "Inside user outside loop" + user);
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
+                        Log.v(TAG, "Inside user");
                         UserObject object = child.getValue(UserObject.class);
 
                         Map<String, Object> dislikes = object.getDisliked();
@@ -469,6 +472,7 @@ public class RCMDFirebase {
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     // If title does not exist - create media obj in firebase
                                     if (dataSnapshot.getValue() == null) {
+                                        Log.v(TAG, "In dislike, create new");
                                         // Pushes media titles and sets total # of dislikes of title to 1
                                         Firebase newEntryRef = myFirebaseMoviesRef.push();
                                         newEntryRef.child("name").setValue(disliked);
@@ -477,6 +481,7 @@ public class RCMDFirebase {
                                     // If title exists
                                     } else {
                                         for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                            Log.v(TAG, "In dislike, create new");
                                             // Finds the media title and increments the total # of dislikes
                                             MediaObject object = child.getValue(MediaObject.class);
                                             int totalUserDislikes = object.getTotalUserDislikes();
@@ -547,6 +552,11 @@ public class RCMDFirebase {
                     for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
                         UserObject object = singleObject.getValue(UserObject.class);
                         Map<String, Object> tempUserLikes = object.getLiked();
+                        Map<String, Object> tempUserDislikes = object.getDisliked();
+                        if(tempUserDislikes == null) {
+                            tempUserDislikes = new HashMap<String, Object>();
+                        }
+                        final Set<String> dislikes = tempUserDislikes.keySet();
                         if(tempUserLikes == null) tempUserLikes = new HashMap<String, Object>();
                         final Map<String, Object> userLikes = tempUserLikes;
                         for(String liked : userLikes.keySet()) {
@@ -578,7 +588,7 @@ public class RCMDFirebase {
                                                                     for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
                                                                         MediaObject object = singleObject.getValue(MediaObject.class);
                                                                         related.type = object.getType();
-                                                                        if(types.contains(object.getType())) {
+                                                                        if(types.contains(object.getType()) && !dislikes.contains(related.name)) {
                                                                             Log.v(TAG, related.toString());
                                                                             list.add(related);
                                                                             adapter.notifyDataSetChanged();
@@ -782,5 +792,34 @@ public class RCMDFirebase {
         }
 
         return input;
+    }
+
+    public void getLikesDislikes(String user, final Set<String> likes, final Set<String> dislikes) {
+        Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
+                        UserObject object = singleObject.getValue(UserObject.class);
+                        Map<String, Object> liked = object.getLiked();
+                        Map<String, Object> disliked = object.getDisliked();
+                        if(liked == null) liked = new HashMap<String, Object>();
+                        if(disliked == null) disliked = new HashMap<String, Object>();
+                        for(String key : liked.keySet()) {
+                            likes.add(key);
+                        }
+                        for(String key : disliked.keySet()) {
+                            dislikes.add(key);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 }
