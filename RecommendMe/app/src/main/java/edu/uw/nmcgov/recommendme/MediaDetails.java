@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,6 +64,7 @@ public class MediaDetails extends AppCompatActivity {
     private String titleSearchedFor;
     private String wikiSuffix;
     private ImageButton saveTitleButton;
+    private ImageView mediaIcon;
 
     public MediaDetails() {
 
@@ -79,6 +81,8 @@ public class MediaDetails extends AppCompatActivity {
 
         // Sets header to selected media title
         selectedTitle = (TextView) findViewById(R.id.selectedMediaTitle);
+
+        mediaIcon = (ImageView) findViewById(R.id.mediaType);
 
         Bundle bundle = getIntent().getExtras();
         selectedMediaTitle = bundle.getString("title");
@@ -106,12 +110,16 @@ public class MediaDetails extends AppCompatActivity {
         Log.v("SEARCHED TITLE", titleSearchedFor + " hellrrrrrr");
 
         // Suffix that will be used if Wikipedia does not return correct description of media title
-        if (mediaType.equals("movie"))
+        if (mediaType.equals("movie")) {
             wikiSuffix = "_(film)";
-        else if (mediaType.equals("book"))
+            mediaIcon.setBackgroundResource(R.drawable.ic_movie_icon);
+        } else if (mediaType.equals("book")) {
             wikiSuffix = "_(novel)";
-        else if (mediaType.equals("music"))
+            mediaIcon.setBackgroundResource(R.drawable.ic_book_icon);
+        } else if (mediaType.equals("music")) {
             wikiSuffix = "_(band)";
+            mediaIcon.setBackgroundResource(R.drawable.ic_music_icon);
+        }
 
         RelativeLayout ratio = (RelativeLayout) findViewById(R.id.contentPercentPrompt);
         if (activity.equals("recommendationsforyou")) {
