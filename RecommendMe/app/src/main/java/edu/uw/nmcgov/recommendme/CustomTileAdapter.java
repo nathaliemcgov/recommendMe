@@ -79,7 +79,6 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         //Set up media type icon
         ImageView mediaTypeButton = (ImageView) convertView.findViewById(R.id.mediaType);
         final String mediaType = object.getType();
-        Log.v("taaaaaag", object.toString() + mediaType);
 
         // Setting background of tile
         int backgroundResource = R.drawable.ic_book_icon;
@@ -100,10 +99,8 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                 // Media title
                 TextView titleView = (TextView) v.findViewById(R.id.recommendationElement);
                 String title = titleView.getText().toString();
-                Log.v("tag", title);
 
                 String activity = "random";
-                Log.v("tile adapter", mContext.toString());
                 if (mContext instanceof RecommendationsForYou) activity = "recommendationsforyou";
 
                 Intent intent = new Intent(mContext, MediaDetails.class);
@@ -112,6 +109,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                 intent.putExtra("searchTitle", titleSearchedFor);
                 intent.putExtra("activity", activity);
                 intent.putExtra("mediaType", mediaType);
+                intent.putExtra("ratio", object.getRatio());
                 mContext.startActivity(intent);
             }
         });
@@ -122,7 +120,6 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
             @Override
             public void onClick(View v) {
                 if (!v.isSelected() && user != null && !user.equals("")) {
-                    //v.setSelected(!v.isSelected());
                     Log.v("clicked", "clicked that shit" + user);
                     myFirebase.checkLike(object.name, user, object.getType(), new Firebase.CompletionListener() {
                         @Override
@@ -142,7 +139,6 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                         @Override
                         public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                             Log.v("CustomTileAdapter", "inLike");
-                            Log.v("HERE", "HERE");
                             Context context = parent.getContext();
                             CharSequence text = "You already like " + object.name;
                             int duration = Toast.LENGTH_SHORT;

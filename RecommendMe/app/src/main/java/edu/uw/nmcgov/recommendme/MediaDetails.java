@@ -65,6 +65,7 @@ public class MediaDetails extends AppCompatActivity {
     private String wikiSuffix;
     private ImageButton saveTitleButton;
     private ImageView mediaIcon;
+    private double mediaRatio;
 
     public MediaDetails() {
 
@@ -107,7 +108,10 @@ public class MediaDetails extends AppCompatActivity {
         else
             titleSearchedFor = "";
 
-        Log.v("SEARCHED TITLE", titleSearchedFor + " hellrrrrrr");
+        if (bundle.getDouble("ratio") != 0.0)
+            mediaRatio = bundle.getDouble("ratio");
+        else
+            mediaRatio = 0.0;
 
         // Suffix that will be used if Wikipedia does not return correct description of media title
         if (mediaType.equals("movie")) {
@@ -127,6 +131,9 @@ public class MediaDetails extends AppCompatActivity {
         } else {
             TextView textView = (TextView) findViewById(R.id.searchTerm);
             textView.setText(titleSearchedFor);
+
+            TextView ratioTextView = (TextView) findViewById(R.id.contentPercent);
+            ratioTextView.setText((int) Math.ceil(mediaRatio * 100) + "%");
         }
 
         selectedTitle.setText(selectedMediaTitle);

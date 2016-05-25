@@ -149,6 +149,8 @@ public class RecommendationTileGrid extends Fragment {
             populateTilesForSavedRecommendations();
         }
 
+        Log.v("REC_LIST", recommendationList.toString());
+
         // Listens for click on specific media recommendation
         tileGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
