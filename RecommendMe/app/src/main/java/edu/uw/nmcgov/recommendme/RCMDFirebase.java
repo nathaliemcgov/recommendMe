@@ -551,6 +551,11 @@ public class RCMDFirebase {
                     for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
                         UserObject object = singleObject.getValue(UserObject.class);
                         Map<String, Object> tempUserLikes = object.getLiked();
+                        Map<String, Object> tempUserDislikes = object.getDisliked();
+                        if(tempUserDislikes == null) {
+                            tempUserDislikes = new HashMap<String, Object>();
+                        }
+                        final Set<String> dislikes = tempUserDislikes.keySet();
                         if(tempUserLikes == null) tempUserLikes = new HashMap<String, Object>();
                         final Map<String, Object> userLikes = tempUserLikes;
                         for(String liked : userLikes.keySet()) {
@@ -582,7 +587,7 @@ public class RCMDFirebase {
                                                                     for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
                                                                         MediaObject object = singleObject.getValue(MediaObject.class);
                                                                         related.type = object.getType();
-                                                                        if(types.contains(object.getType())) {
+                                                                        if(types.contains(object.getType()) && !dislikes.contains(related.name)) {
                                                                             Log.v(TAG, related.toString());
                                                                             list.add(related);
                                                                             adapter.notifyDataSetChanged();
@@ -786,5 +791,34 @@ public class RCMDFirebase {
         }
 
         return input;
+    }
+
+    public void getLikesDislikes(String user, final Set<String> likes, final Set<String> dislikes) {
+        Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
+                        UserObject object = singleObject.getValue(UserObject.class);
+                        Map<String, Object> liked = object.getLiked();
+                        Map<String, Object> disliked = object.getDisliked();
+                        if(liked == null) liked = new HashMap<String, Object>();
+                        if(disliked == null) disliked = new HashMap<String, Object>();
+                        for(String key : liked.keySet()) {
+                            likes.add(key);
+                        }
+                        for(String key : disliked.keySet()) {
+                            dislikes.add(key);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 }

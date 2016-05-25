@@ -7,10 +7,10 @@ import java.util.Objects;
  * Created by iguest on 3/3/16.
  */
 public class UserObject {
-    private String name;
+    public String name;
     private int password;
-    private Map<String, Object> liked;
-    private Map<String, Object> disliked;
+    public Map<String, Object> liked;
+    public Map<String, Object> disliked;
 
     public UserObject() {}
 
