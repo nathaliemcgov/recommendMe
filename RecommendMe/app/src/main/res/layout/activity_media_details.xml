@@ -82,8 +82,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/textColor"
                 android:textAlignment="center"
-                android:textSize="40dp"
-                android:text="99%"/>
+                android:textSize="40dp" />
 
             <TextView
                 android:id="@+id/contentLine2"
