@@ -38,7 +38,7 @@ public class RecommendationTileGrid extends Fragment {
 
     private final String TAG = "RecommendationTileGrid";
 
-    private TextView titleSearchedFor;
+    private String titleSearchedFor;
     private GridView tileGrid;
     private List<RelatedObject> recommendationList;
     private ArrayAdapter<String> adapter;
@@ -85,15 +85,21 @@ public class RecommendationTileGrid extends Fragment {
         firebase = new RCMDFirebase();
 
         Bundle bundle = this.getArguments();
-        if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
+        if (bundle.getString("user") != null && bundle.getString("user").length() > 0)
             user = bundle.getString("user");
-        }
+        else
+            user = "";
+
+        if (bundle.getString("searchTitle") != null && bundle.getString("searchTitle").length() > 0)
+            titleSearchedFor = bundle.getString("searchTitle");
+        else
+            titleSearchedFor = "";
 
         // Container for tiles
         tileGrid = (GridView) rootView.findViewById(R.id.recommendationList);
         recommendationList = new ArrayList<RelatedObject>();
 
-        customAdapter = new CustomTileAdapter(this.getContext(), recommendationList, user);
+        customAdapter = new CustomTileAdapter(this.getContext(), recommendationList, user, titleSearchedFor);
 
         tileGrid.setAdapter(customAdapter);
 
@@ -146,12 +152,12 @@ public class RecommendationTileGrid extends Fragment {
         // Listens for click on specific media recommendation
         tileGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            // Gets the media tile that was selected
-            String selectedMedia = parent.getItemAtPosition(position).toString();
+                // Gets the media tile that was selected
+                String selectedMedia = parent.getItemAtPosition(position).toString();
 
-            Log.v(TAG, "Selected media: " + selectedMedia);
+                Log.v(TAG, "Selected media: " + selectedMedia);
 
-            ((OnMediaSelectionListener) getActivity()).onMediaSelected(selectedMedia);
+                ((OnMediaSelectionListener) getActivity()).onMediaSelected(selectedMedia);
             }
         });
 
@@ -161,7 +167,6 @@ public class RecommendationTileGrid extends Fragment {
 
     // If the user reached screen by searching media title
     private void populateTilesForSearch() {
-
 
         recommendationList.clear();
         customAdapter.notifyDataSetChanged();
@@ -200,8 +205,6 @@ public class RecommendationTileGrid extends Fragment {
 
     // If the user reached screen by saved recommendations
     private void populateTilesForSavedRecommendations() {
-        Log.v("USERRR", user);
-
         // Getting list of saved media titles
         if (isExternalStorageWritable()) {
             try {
@@ -227,8 +230,11 @@ public class RecommendationTileGrid extends Fragment {
             }
         }
 
-        if(savedList == null) savedList = new ArrayList<RelatedObject>();
-        CustomTileAdapter customAdapter = new CustomTileAdapter(this.getContext(), savedList, user);
+        if(savedList == null)
+            savedList = new ArrayList<RelatedObject>();
+        Log.v("LIST OF SAVED", "" + savedList);
+
+        CustomTileAdapter customAdapter = new CustomTileAdapter(this.getContext(), savedList, user, titleSearchedFor);
         tileGrid.setAdapter(customAdapter);
     }
 

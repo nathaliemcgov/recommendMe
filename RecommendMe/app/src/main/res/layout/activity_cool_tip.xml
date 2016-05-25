@@ -16,10 +16,10 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:id="@+id/toolTipTitle">
-        <TextView
+        <edu.uw.nmcgov.recommendme.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="HOW IT WORKS"
+            android:text="HOW THIS WORKS"
             android:gravity="center"
             android:textSize="40dp"
             android:layout_marginBottom="5dp"
@@ -32,4 +32,15 @@
         android:background="#ffffff"
         android:layout_below="@+id/exploreTitle"
         android:layout_marginBottom="10dp"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_cool_tip"/>
+
+    </RelativeLayout>
 </LinearLayout>

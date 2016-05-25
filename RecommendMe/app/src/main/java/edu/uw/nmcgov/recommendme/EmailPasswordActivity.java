@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class EmailPasswordActivity extends AppCompatActivity {
 
@@ -89,8 +90,9 @@ public class EmailPasswordActivity extends AppCompatActivity {
                         int hashedPass = password1.hashCode();
 
                         // Adding user to firebase
-                        Map<String, String> userMap = new HashMap<String, String>();
+                        Map<String, Object> userMap = new HashMap<String, Object>();
                         userMap.put("name", email);
+                        userMap.put("password", hashedPass);
                         myFirebase.createUser(userMap);
 
                         // Send desert island lists to firebase

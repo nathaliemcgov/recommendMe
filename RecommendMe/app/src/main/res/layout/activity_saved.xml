@@ -11,18 +11,27 @@
     android:background="@color/background"
     tools:context="edu.uw.nmcgov.recommendme.SavedActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/savedHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
+
+        <edu.uw.nmcgov.recommendme.CustomTextView
+            android:id="@+id/savedTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#000000"
             android:textSize="30dp"
             android:textAlignment="center"
-            android:text="Saved Recommendations"/>
-    </LinearLayout>
+            android:text="YOUR SAVED ITEMS:"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#ffffff"
+            android:layout_below="@+id/savedTitle"
+            android:layout_marginBottom="20dp"/>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/gridContainer3"

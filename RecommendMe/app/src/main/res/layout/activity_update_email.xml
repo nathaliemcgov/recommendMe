@@ -11,7 +11,7 @@
     android:background="@color/background"
     tools:context="edu.uw.nmcgov.recommendme.UpdateEmailActivity">
 
-    <TextView
+    <edu.uw.nmcgov.recommendme.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="New Email"
@@ -20,8 +20,9 @@
         android:id="@+id/newEmailEntry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/text_input"
         />
-    <TextView
+    <edu.uw.nmcgov.recommendme.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Confirm Email"
@@ -30,10 +31,14 @@
         android:id="@+id/confirmEmailEntry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/text_input"
         />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
         android:id="@id/updateEmailBtn"
-        android:text="DONE"/>
+        android:text="DONE"
+        android:background="@drawable/tile_shape"/>
 </LinearLayout>

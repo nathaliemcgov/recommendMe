@@ -16,14 +16,15 @@
         android:id="@+id/rcmdsForYouHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
+        <edu.uw.nmcgov.recommendme.CustomTextView
             android:id="@+id/tileHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Recommendations For You"
+            android:text="RECOMMENDATIONS FOR YOU:"
             android:textColor="#000000"
-            android:textSize="30dp"
-            android:textAlignment="center"/>
+            android:textSize="26dp"
+            android:textAlignment="center"
+            android:layout_marginBottom="10dp"/>
     </LinearLayout>
 
     <LinearLayout

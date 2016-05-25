@@ -16,7 +16,7 @@
         android:id="@+id/manageAccountTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <TextView
+        <edu.uw.nmcgov.recommendme.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="MANAGE ACCOUNT"

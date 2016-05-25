@@ -123,11 +123,44 @@ public class RCMDFirebase {
 
     //Creates a user given the map
     //if map is "name" -> "tyler", "email" -> "tylerj11@uw.edu", firebase reflects this
-    public void createUser(Map<String, String> map) {
+    public void createUser(Map<String, Object> map) {
         Log.v("USER", "created user!");
-        map.put("name", map.get("name").trim());
+        map.put("name", makeStringFirebaseSafe(map.get("name").toString().trim()));
         Firebase userRef = myFirebaseUserRef.push();
         userRef.setValue(map);
+    }
+
+    //Checks firebase for the given password for the given user
+    //First callback is for successful password for user
+    //Second is if the username exists but password fails
+    //Third is if the username doesn't exist
+    public void checkPass(String user, final int password, final Firebase.CompletionListener complete,
+                          final Firebase.CompletionListener failPass, final Firebase.CompletionListener failUser) {
+        user = makeStringFirebaseSafe(user.trim());
+
+        Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot != null) {
+                    if(dataSnapshot.getValue() == null) failUser.onComplete(null, null);
+                    for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
+                        UserObject userObject = singleObject.getValue(UserObject.class);
+                        if(userObject.getPassword() == password)
+                            complete.onComplete(null, null);
+                        else
+                            failPass.onComplete(null, null);
+                    }
+                } else {
+                    failUser.onComplete(null, null);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     public void queryTitle(String title, String username, final List<RelatedObject> titleArray, final CustomTileAdapter adapter) {
@@ -586,7 +619,70 @@ public class RCMDFirebase {
         });
     }
 
+    //Like a given media (likedUnformatted) of type (type) for user (user). ifNotLiked runs the code if the object is not liked
+    //by the user. ifLiked runs the code if the object is liked
+    public void checkLike(final String likedUnformatted, String user, final String type, final Firebase.CompletionListener ifNotLiked, final Firebase.CompletionListener ifLiked, final Firebase.CompletionListener ifDisliked) {
+        Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
+                        UserObject object = singleObject.getValue(UserObject.class);
+                        Map<String, Object> liked = object.getLiked();
+                        Map<String, Object> disliked = object.getDisliked();
+                        if(disliked == null) disliked = new HashMap<String, Object>();
+                        if(disliked.containsKey(likedUnformatted))
+                            ifDisliked.onComplete(null, null);
+                        else if(liked.containsKey(likedUnformatted)) {
+                            ifLiked.onComplete(null, null);
+                        } else {
+                            ifNotLiked.onComplete(null, null);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public void checkDislike(final String dislike, String user, final String type, final Firebase.CompletionListener ifNotDisliked, final Firebase.CompletionListener ifDisliked, final Firebase.CompletionListener ifLiked) {
+        Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
+                        UserObject object = singleObject.getValue(UserObject.class);
+                        Map<String, Object> liked = object.getLiked();
+                        Map<String, Object> disliked = object.getDisliked();
+                        if(disliked == null) disliked = new HashMap<String, Object>();
+                        if(liked.containsKey(dislike))
+                            ifLiked.onComplete(null, null);
+                        else if(disliked.containsKey(dislike)) {
+                            ifDisliked.onComplete(null, null);
+                        } else {
+                            ifNotDisliked.onComplete(null, null);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
     public void deleteUser(String user) {
+        Log.v(TAG, "indelete");
         Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 

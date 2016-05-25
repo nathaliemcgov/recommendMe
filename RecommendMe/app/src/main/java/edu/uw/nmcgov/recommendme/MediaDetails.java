@@ -20,11 +20,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -52,14 +54,17 @@ public class MediaDetails extends AppCompatActivity {
     private TextView selectedTitle;
     private ImageButton thumbsUpBtn;
     private ImageButton thumbsDownBtn;
-    private RCMDFirebase firebase;
+    private RCMDFirebase myFirebase;
 
     private String selectedMediaTitle;
     private TextView contentDetails;
     private String user;
     private String activity;
     private String mediaType;
+    private String titleSearchedFor;
     private String wikiSuffix;
+    private ImageButton saveTitleButton;
+    private ImageView mediaIcon;
 
     public MediaDetails() {
 
@@ -72,10 +77,12 @@ public class MediaDetails extends AppCompatActivity {
         setContentView(R.layout.activity_media_details);
 
         Firebase.setAndroidContext(this);
-        firebase = new RCMDFirebase();
+        myFirebase = new RCMDFirebase();
 
         // Sets header to selected media title
         selectedTitle = (TextView) findViewById(R.id.selectedMediaTitle);
+
+        mediaIcon = (ImageView) findViewById(R.id.mediaType);
 
         Bundle bundle = getIntent().getExtras();
         selectedMediaTitle = bundle.getString("title");
@@ -95,21 +102,31 @@ public class MediaDetails extends AppCompatActivity {
         else
             mediaType = "";
 
-        Log.v("TYPE", mediaType);
+        if (bundle.getString("searchTitle") != null && bundle.getString("searchTitle").length() > 0)
+            titleSearchedFor = bundle.getString("searchTitle");
+        else
+            titleSearchedFor = "";
+
+        Log.v("SEARCHED TITLE", titleSearchedFor + " hellrrrrrr");
 
         // Suffix that will be used if Wikipedia does not return correct description of media title
-        if (mediaType.equals("movie"))
+        if (mediaType.equals("movie")) {
             wikiSuffix = "_(film)";
-        else if (mediaType.equals("book"))
+            mediaIcon.setBackgroundResource(R.drawable.ic_movie_icon);
+        } else if (mediaType.equals("book")) {
             wikiSuffix = "_(novel)";
-        else if (mediaType.equals("music"))
+            mediaIcon.setBackgroundResource(R.drawable.ic_book_icon);
+        } else if (mediaType.equals("music")) {
             wikiSuffix = "_(band)";
+            mediaIcon.setBackgroundResource(R.drawable.ic_music_icon);
+        }
 
         RelativeLayout ratio = (RelativeLayout) findViewById(R.id.contentPercentPrompt);
         if (activity.equals("recommendationsforyou")) {
             ratio.setVisibility(View.GONE);
         } else {
-            selectedTitle.setText(selectedMediaTitle);
+            TextView textView = (TextView) findViewById(R.id.searchTerm);
+            textView.setText(titleSearchedFor);
         }
 
         selectedTitle.setText(selectedMediaTitle);
@@ -130,11 +147,20 @@ public class MediaDetails extends AppCompatActivity {
         }
 
         // On click listener for "Save" button on selected tile
-        ImageButton saveTitleButton = (ImageButton) findViewById(R.id.saveMediaTitleDetails);
+        saveTitleButton = (ImageButton) findViewById(R.id.saveMediaTitleDetails);
 
         // Write title to phone's external storage
         saveTitleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                if (!v.isSelected()) {
+                    v.setSelected(!v.isSelected());
+                    saveTitleButton.setImageResource(R.drawable.ic_star);
+
+                } else {
+                    v.setSelected(!v.isSelected());
+                    saveTitleButton.setImageResource(R.drawable.ic_star_unselected);
+                }
+
                 handleSaveMediaTitle(selectedMediaTitle);
             }
         });
@@ -145,14 +171,53 @@ public class MediaDetails extends AppCompatActivity {
         thumbsDownBtn = (ImageButton) findViewById(R.id.thumbsDownBtn);
 
         thumbsUpBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View button) {
+            public void onClick(final View button) {
                 //Set the button's appearance
                 if (!button.isSelected() && user != null && !user.equals("")) {    // If the user 'likes' the title
 //                    // Send to db the user's email + title of liked media
-                    button.setSelected(!button.isSelected());
-                    firebase.setLike(selectedMediaTitle, user);
+                    myFirebase.checkLike(selectedMediaTitle, user, mediaType, new Firebase.CompletionListener()
+                    {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Log.v("CustomTileAdapter", "inNotLike");
+                            myFirebase.setLike(selectedMediaTitle, user);
+                            Context context = getApplicationContext();
+                            CharSequence text = "Liked : " + selectedMediaTitle;
+                            thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up_tile_selected);
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                            button.setSelected(!button.isSelected());
+                        }
+                    }, new Firebase.CompletionListener() {
+
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Context context = getApplicationContext();
+                            CharSequence text = "You already like this!";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    }, new Firebase.CompletionListener() {
+
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Context context = getApplicationContext();
+                            CharSequence text = "You said you dislike this!";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    });
 //                } else {      // If the user 'unlikes' the title
 //                    // Send to db the user's email + title of unliked media
+                } else if (button.isSelected() && user != null && !user.equals("")) {
+                    Context context = getApplicationContext();
+                    CharSequence text = "You already like this!";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                 } else if (user == null || user.equals("")) {
                     Context context = getApplicationContext();
                     CharSequence text = "Please login to like media";
@@ -165,15 +230,53 @@ public class MediaDetails extends AppCompatActivity {
 
         thumbsDownBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View button) {
+            public void onClick(final View button) {
                 //Set the button's appearance
                 Log.v("tag", selectedMediaTitle);
                 if (!button.isSelected() && user != null && !user.equals("")) {    // If the user 'likes' the title
 //                    // Send to db the user's email + title of liked media
-                    button.setSelected(!button.isSelected());
-                    firebase.setDislike(user, selectedMediaTitle);
-//                } else {      // If the user 'undislikes' the title
-//                    // Send to db the user's email + title of undisliked media
+                    myFirebase.checkDislike(selectedMediaTitle, user, mediaType, new Firebase.CompletionListener()
+                    {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Log.v("CustomTileAdapter", "inNotLike");
+                            myFirebase.setDislike(selectedMediaTitle, user);
+                            Context context = getApplicationContext();
+                            CharSequence text = "Dislike : " + selectedMediaTitle;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            thumbsDownBtn.setImageResource(R.drawable.ic_thumbs_down_tile_selected);
+                            toast.show();
+                            button.setSelected(!button.isSelected());
+                        }
+                    }, new Firebase.CompletionListener() {
+
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Context context = getApplicationContext();
+                            CharSequence text = "You already dislike this!";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    }, new Firebase.CompletionListener() {
+
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Context context = getApplicationContext();
+                            CharSequence text = "You said you like this!";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    });
+                } else if (button.isSelected() && user != null && !user.equals("")) {
+                    Context context = getApplicationContext();
+                    CharSequence text = "You already dislike this!";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
                 } else if (user == null || user.equals("")) {
                     Context context = getApplicationContext();
                     CharSequence text = "Please login to dislike media";
@@ -187,6 +290,7 @@ public class MediaDetails extends AppCompatActivity {
 
     // Writes saved media title to phone's external storage
     public void handleSaveMediaTitle(String title) {
+
         if (isExternalStorageWritable()) {
             try {
                 File file = new File(Environment.getExternalStorageDirectory(), "mediaTitles.txt");
@@ -221,8 +325,6 @@ public class MediaDetails extends AppCompatActivity {
     class WikipediaData extends AsyncTask<Void, Void, String> {
 
         private Exception exception;
-        private final String API_URL = "https://en.wikipedia.org/w/api.php";
-
         @Override
         protected void onPreExecute() {
             Log.v("WIKI", "Querying Wikipedia...");

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
 import java.util.HashMap;
 
@@ -53,14 +54,39 @@ public class ExistingLogin extends Activity {
                 passwordField = (EditText) findViewById(R.id.existing_password_entry);
                 password = passwordField.getText().toString().trim();
 
-                if (username.length() > 0 && password.length() > 0) {
+                if (username.length() == 0 || password.length() == 0) {
                     Context context = getApplicationContext();
                     CharSequence text = "Please fill enter email address and password";
                     int duration = Toast.LENGTH_LONG;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 } else {
-                    recommendationsForYou(username, password);
+                    final Context context = getApplicationContext();
+                    firebase.checkPass(username, password.hashCode(), new Firebase.CompletionListener() {
+                        @Override
+                        //Complete
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            recommendationsForYou(username, password);
+                        }
+                    }, new Firebase.CompletionListener() {
+                        @Override
+                        //Fail For Password
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            CharSequence text = "Password does not match our database for user : " + username;
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    }, new Firebase.CompletionListener() {
+                        @Override
+                        //Fail for user
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            CharSequence text = "Could not find user " + username;
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    });
                 }
             }
         });
