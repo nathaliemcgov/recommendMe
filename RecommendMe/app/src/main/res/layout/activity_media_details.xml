@@ -23,7 +23,6 @@
                 android:layout_width="65dp"
                 android:layout_height="60dp"
                 android:background="@drawable/ic_book_icon"
-
                 />
 
             <edu.uw.nmcgov.recommendme.CustomTextView
