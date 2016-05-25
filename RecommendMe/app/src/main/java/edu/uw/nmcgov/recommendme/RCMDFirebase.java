@@ -442,16 +442,18 @@ public class RCMDFirebase {
     }
 
     // Given a username - sets a dislike for the selected media title
-    public void setDislike(String user, String dislikedTitle) {
+    public void setDislike(final String user, String dislikedTitle) {
         if (!user.equals("") && user != null) {
             Log.v("FIREBASE", "Reached dislike");
-            final String disliked = dislikedTitle.toLowerCase();
+            final String disliked = dislikedTitle;
             Query getUser = myFirebaseUserRef.orderByChild("name").equalTo(user);
 
             getUser.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.v(TAG, "Inside user outside loop" + user);
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
+                        Log.v(TAG, "Inside user");
                         UserObject object = child.getValue(UserObject.class);
 
                         Map<String, Object> dislikes = object.getDisliked();
@@ -469,6 +471,7 @@ public class RCMDFirebase {
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     // If title does not exist - create media obj in firebase
                                     if (dataSnapshot.getValue() == null) {
+                                        Log.v(TAG, "In dislike, create new");
                                         // Pushes media titles and sets total # of dislikes of title to 1
                                         Firebase newEntryRef = myFirebaseMoviesRef.push();
                                         newEntryRef.child("name").setValue(disliked);
@@ -477,6 +480,7 @@ public class RCMDFirebase {
                                     // If title exists
                                     } else {
                                         for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                            Log.v(TAG, "In dislike, create new");
                                             // Finds the media title and increments the total # of dislikes
                                             MediaObject object = child.getValue(MediaObject.class);
                                             int totalUserDislikes = object.getTotalUserDislikes();

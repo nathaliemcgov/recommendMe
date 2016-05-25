@@ -182,7 +182,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                         @Override
                         public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                             Log.v("CustomTileAdapter", "inNotLike");
-                            myFirebase.setDislike(object.name, user);
+                            myFirebase.setDislike(user, object.name);
                             Context context = parent.getContext();
                             CharSequence text = "Disliked : " + object.name;
                             buttonDown.setImageResource(R.drawable.ic_thumbs_down_tile_selected);
