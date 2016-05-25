@@ -373,6 +373,10 @@ public class MediaDetails extends AppCompatActivity {
                             extract = wikiRequest(formattedForWiki);
                         }
                     }
+
+                    if (extract.contains("disambiguation")) {
+                        extract = "";
+                    }
                 }
                 return extract;
             }
