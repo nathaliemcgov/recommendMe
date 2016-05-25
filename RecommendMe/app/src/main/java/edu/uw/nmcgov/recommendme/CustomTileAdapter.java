@@ -65,19 +65,19 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
 
-        final View view = convertView;
+        View view = convertView;
 
         // Gets the title of the recommendation
         final RelatedObject object = getItem(position);
 
         // Checking if an existing view is being reused, otherwise inflate the view
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.recommendation_element,
+        if (view == null) {
+            view = LayoutInflater.from(getContext()).inflate(R.layout.recommendation_element,
                     parent, false);
         }
 
         //Set up media type icon
-        ImageView mediaTypeButton = (ImageView) convertView.findViewById(R.id.mediaType);
+        ImageView mediaTypeButton = (ImageView) view.findViewById(R.id.mediaType);
         final String mediaType = object.getType();
         Log.v("taaaaaag", object.toString() + mediaType);
 
@@ -90,7 +90,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
 
         mediaTypeButton.setBackgroundResource(backgroundResource);
 
-        TextView mediaTitle = (TextView) convertView.findViewById(R.id.recommendationElement);
+        TextView mediaTitle = (TextView) view.findViewById(R.id.recommendationElement);
 
         mediaTitle.setText(object.name);
 
@@ -116,7 +116,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
             }
         });
 
-        final ImageButton thumbsUpBtn = (ImageButton) convertView.findViewById(R.id.thumbsUpBtn);
+        final ImageButton thumbsUpBtn = (ImageButton) view.findViewById(R.id.thumbsUpBtn);
 
         thumbsUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,7 +170,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
             }
         });
 
-        final ImageButton buttonDown = (ImageButton) convertView.findViewById(R.id.thumbsDownBtn);
+        final ImageButton buttonDown = (ImageButton) view.findViewById(R.id.thumbsDownBtn);
 
         buttonDown.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,7 +230,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
 
 
         // On click listener for "Save" button on each tile
-        final ImageButton saveTitleButton = (ImageButton) convertView.findViewById(R.id.saveMediaTitle);
+        final ImageButton saveTitleButton = (ImageButton) view.findViewById(R.id.saveMediaTitle);
 
         // Write title to phone's external storage
         saveTitleButton.setOnClickListener(new View.OnClickListener() {
@@ -257,7 +257,7 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
             }
         });
 
-        return convertView;
+        return view;
     }
 
     // Writes saved media title to phone's external storage
