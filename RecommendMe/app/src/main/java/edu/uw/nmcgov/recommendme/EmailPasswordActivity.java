@@ -66,26 +66,41 @@ public class EmailPasswordActivity extends AppCompatActivity {
                     EditText emailAddrCreateAcc = (EditText) findViewById(R.id.emailAddrCreateAcc);
                     email = emailAddrCreateAcc.getText().toString();
 
-                    index++;
+                    myFirebase.checkUniqueUser(email, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            index++;
+                            Log.v("Log", "Unique");
+                            // Reached password entry screen
+                            // Change text at top of page
+                            TextView titleText = (TextView) findViewById(R.id.credsTitle);
+                            titleText.setText("Now set a password\n(Enter it twice)");
 
-                    // Reached password entry screen
-                    // Change text at top of page
-                    TextView titleText = (TextView) findViewById(R.id.credsTitle);
-                    titleText.setText("Now set a password\n(Enter it twice)");
+                            // Hide email address edit text
+                            EditText emailEntry = (EditText) findViewById(R.id.emailAddrCreateAcc);
+                            emailEntry.setVisibility(View.INVISIBLE);
 
-                    // Hide email address edit text
-                    EditText emailEntry = (EditText) findViewById(R.id.emailAddrCreateAcc);
-                    emailEntry.setVisibility(View.INVISIBLE);
+                            password1CreateAcc.setVisibility(View.VISIBLE);
+                            password2CreateAcc.setVisibility(View.VISIBLE);
+                        }
+                    }, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Log.v("Log", "non-unique");
+                            int duration = Toast.LENGTH_LONG;
+                            CharSequence text = "User already exists, please enter a different username";
+                            Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+                            toast.show();
+                        }
+                    });
 
-                    password1CreateAcc.setVisibility(View.VISIBLE);
-                    password2CreateAcc.setVisibility(View.VISIBLE);
                 } else {
                     // User is done entering email address and password
                     // Getting password entered in field 1 and 2
                     String password1 = password1CreateAcc.getText().toString();
                     String password2 = password2CreateAcc.getText().toString();
 
-                    if (password1.equals(password2)) {  // Passwords match - account created
+                    if (password1.equals(password2) && password1.length() > 0) {  // Passwords match - account created
                         // Getting hashcode of password
                         int hashedPass = password1.hashCode();
 
@@ -117,8 +132,10 @@ public class EmailPasswordActivity extends AppCompatActivity {
                                 });// Books
                             }
                         });// Movies
-                    } else {
+                    } else if (password1.length() == 0){
                         toasted("nopassword");
+                    } else {
+                        toasted("shitboy");
                     }
                 }
             }
