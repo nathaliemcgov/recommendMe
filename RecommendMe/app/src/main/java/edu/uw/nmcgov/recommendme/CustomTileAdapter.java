@@ -45,7 +45,7 @@ import static android.app.PendingIntent.getActivity;
 /**
  * Created by iguest on 3/8/16.
  */
-public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
+public class  CustomTileAdapter extends ArrayAdapter<RelatedObject> {
 
     //private RecommendationTileGrid.BtnClickListener mClickListener = null;
     private Context mContext;
