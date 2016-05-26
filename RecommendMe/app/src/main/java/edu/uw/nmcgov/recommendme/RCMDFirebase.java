@@ -165,6 +165,7 @@ public class RCMDFirebase {
 
     public void queryTitle(String title, String username, final List<RelatedObject> titleArray, final CustomTileAdapter adapter) {
         List<String> types = new ArrayList<String>();
+        username = makeStringFirebaseSafe(username);
         types.add("movie");
         types.add("music");
         types.add("book");
@@ -175,7 +176,7 @@ public class RCMDFirebase {
     //query and sort related titles based on relevance
     public void queryTitle(String title, String username, final List<RelatedObject> titleArray, final CustomTileAdapter adapter, final List<String> types) {
         String userHold = "";
-        if (username != null) userHold = username.toLowerCase();
+        if (username != null) userHold = makeStringFirebaseSafe(username.toLowerCase());
         final String user = userHold;
         Log.v("Query title", user + " is the user");
         title = title.trim();
@@ -569,6 +570,7 @@ public class RCMDFirebase {
                                         for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
                                             MediaObject object = singleObject.getValue(MediaObject.class);
                                             Map<String, Object> map = object.getRelated();
+                                            if(map == null) map = new HashMap<String, Object>();
                                             int totalLikes = object.getTotalUserLikes();
                                             Set<RelatedObject> relatedObjects = new TreeSet<RelatedObject>();
                                             for(String key : map.keySet()) {

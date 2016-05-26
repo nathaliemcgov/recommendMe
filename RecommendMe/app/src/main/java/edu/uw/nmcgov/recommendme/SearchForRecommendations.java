@@ -50,7 +50,7 @@ public class SearchForRecommendations extends AppCompatActivity {
         final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, lst);
 
         searchMediaText.setAdapter(adapter);
-        searchMediaText.setThreshold(1);
+        searchMediaText.setThreshold(0);
 
         searchMediaText.setOnKeyListener(new View.OnKeyListener() {
             @Override
