@@ -87,8 +87,8 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         }
 
         // To send liked data to media details
-        liked = 0;
-        disliked = 0;
+        liked = 1;
+        disliked = 1;
 
         //Set up media type icon
         ImageView mediaTypeButton = (ImageView) view.findViewById(R.id.mediaType);
@@ -272,10 +272,10 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
 
         if(myLikes.contains(object.name)) {
             thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up_tile_selected);
-            liked = 1;
+            liked = 2;
         } else if (myDislikes.contains(object.name)) {
             buttonDown.setImageResource(R.drawable.ic_thumbs_down_tile_selected);
-            disliked = 1;
+            disliked = 2;
         } else {
             thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up);
             buttonDown.setImageResource(R.drawable.ic_thumbs_down);

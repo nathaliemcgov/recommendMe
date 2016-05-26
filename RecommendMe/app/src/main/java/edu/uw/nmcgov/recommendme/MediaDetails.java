@@ -66,6 +66,8 @@ public class MediaDetails extends AppCompatActivity {
     private ImageButton saveTitleButton;
     private ImageView mediaIcon;
     private double mediaRatio;
+    private int liked;
+    private int disliked;
 
     public MediaDetails() {
 
@@ -113,13 +115,23 @@ public class MediaDetails extends AppCompatActivity {
         else
             mediaRatio = 0.0;
 
-        if (bundle.getString("ifLiked") != null && bundle.getString("mediaType").length() > 0)
-            mediaType = bundle.getString("mediaType");
+        if (bundle.getInt("ifLiked") != 0)
+            liked = bundle.getInt("ifLiked");
         else
-            mediaType = "";
+            liked = 0;
 
-//        intent.putExtra("ifLiked", liked);
-//        intent.putExtra("ifDisliked", disliked);
+        if (bundle.getInt("ifDisliked") != 0)
+            disliked = bundle.getInt("ifDisliked");
+        else
+            disliked = 0;
+
+        if (liked == 2) {
+            thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up_tile_selected);
+        }
+
+        if (disliked == 2) {
+            thumbsDownBtn.setImageResource(R.drawable.ic_thumbs_down_tile_selected);
+        }
 
         // Suffix that will be used if Wikipedia does not return correct description of media title
         if (mediaType.equals("movie")) {
