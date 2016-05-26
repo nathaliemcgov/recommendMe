@@ -1,7 +1,9 @@
 package edu.uw.nmcgov.recommendme;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +21,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +36,11 @@ public class SearchForRecommendations extends AppCompatActivity {
     private Button searchTitleBtn;
     private String user;
     private RCMDFirebase firebase;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +57,7 @@ public class SearchForRecommendations extends AppCompatActivity {
         searchMediaText = (AutoCompleteTextView) findViewById(R.id.searchMediaText);
         String[] suggestions = {};
         ArrayList<String> lst = new ArrayList<String>(Arrays.asList(suggestions));
-        final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, lst);
+        final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, lst);
 
         searchMediaText.setAdapter(adapter);
         searchMediaText.setThreshold(0);
@@ -55,8 +65,11 @@ public class SearchForRecommendations extends AppCompatActivity {
         searchMediaText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(event.getAction() == KeyEvent.ACTION_UP)
+                if (event.getAction() == KeyEvent.ACTION_UP) {
                     firebase.autoComplete(searchMediaText.getText().toString(), adapter);
+                    Log.v(TAG, "Inside keyup");
+                }
+                Log.v(TAG, "Inside keylistener");
                 return false;
             }
         });
@@ -80,6 +93,9 @@ public class SearchForRecommendations extends AppCompatActivity {
                 user = bundle.getString("user");
             }
         }
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     // Creates the options menu in the action bar
@@ -151,5 +167,45 @@ public class SearchForRecommendations extends AppCompatActivity {
             Toast.makeText(SearchForRecommendations.this, "Please enter a book title, music artist,"
                     + " or movie title.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "SearchForRecommendations Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://edu.uw.nmcgov.recommendme/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "SearchForRecommendations Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://edu.uw.nmcgov.recommendme/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 }
