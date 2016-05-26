@@ -69,7 +69,6 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         myLikes = new HashSet<String>();
         myDislikes = new HashSet<String>();
         myFirebase.getLikesDislikes(user, myLikes, myDislikes);
-
     }
 
     @Override
@@ -205,7 +204,6 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                         @Override
                         public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                             Log.v("CustomTileAdapter", "inLike");
-                            Log.v("HERE", "HERE");
                             Context context = parent.getContext();
                             CharSequence text = "You already dislike : " + object.name;
                             int duration = Toast.LENGTH_SHORT;
