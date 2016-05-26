@@ -56,7 +56,8 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
     private String titleSearchedFor;
     private Set<String> myLikes;
     private Set<String> myDislikes;
-
+    private int liked;
+    private int disliked;
 
     public CustomTileAdapter(Context context, List<RelatedObject> titles, String user, String titleSearchedFor) {
         super(context, 0, titles);
@@ -85,6 +86,9 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                     parent, false);
         }
 
+        // To send liked data to media details
+        liked = 0;
+        disliked = 0;
 
         //Set up media type icon
         ImageView mediaTypeButton = (ImageView) view.findViewById(R.id.mediaType);
@@ -120,6 +124,8 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                 intent.putExtra("activity", activity);
                 intent.putExtra("mediaType", mediaType);
                 intent.putExtra("ratio", object.getRatio());
+                intent.putExtra("ifLiked", liked);
+                intent.putExtra("ifDisliked", disliked);
                 mContext.startActivity(intent);
             }
         });
@@ -266,8 +272,10 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
 
         if(myLikes.contains(object.name)) {
             thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up_tile_selected);
+            liked = 1;
         } else if (myDislikes.contains(object.name)) {
             buttonDown.setImageResource(R.drawable.ic_thumbs_down_tile_selected);
+            disliked = 1;
         } else {
             thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up);
             buttonDown.setImageResource(R.drawable.ic_thumbs_down);

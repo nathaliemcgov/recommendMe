@@ -113,6 +113,14 @@ public class MediaDetails extends AppCompatActivity {
         else
             mediaRatio = 0.0;
 
+        if (bundle.getString("ifLiked") != null && bundle.getString("mediaType").length() > 0)
+            mediaType = bundle.getString("mediaType");
+        else
+            mediaType = "";
+
+//        intent.putExtra("ifLiked", liked);
+//        intent.putExtra("ifDisliked", disliked);
+
         // Suffix that will be used if Wikipedia does not return correct description of media title
         if (mediaType.equals("movie")) {
             wikiSuffix = "_(film)";
