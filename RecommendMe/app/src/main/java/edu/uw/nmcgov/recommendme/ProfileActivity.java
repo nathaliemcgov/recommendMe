@@ -9,18 +9,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
-/**
- * Created by austinweale on 3/3/16.
- */
 public class ProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "profile activity";
     private boolean pick;
     private String user;
     private RCMDFirebase firebase;
+    private TextView profileUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +49,9 @@ public class ProfileActivity extends AppCompatActivity {
 
             login.setVisibility(View.GONE);
             signUp.setVisibility(View.GONE);
+
+            profileUsername = (TextView) findViewById(R.id.profileUsername);
+            profileUsername.setText(user);
 
             manageAccount.setOnClickListener(new View.OnClickListener() {
                 @Override
