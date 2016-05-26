@@ -43,7 +43,11 @@
         android:layout_marginBottom="20dp"
         android:layout_below="@+id/exploreTitle">
 
+<<<<<<< HEAD
         <edu.uw.nmcgov.recommendme.RegularFontTextView
+=======
+        <edu.uw.nmcgov.recommendme.RegularTextView
+>>>>>>> 8870f783fe018344dce7fa1d4ccc5619f79267ad
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Search a unique musical artist,\n author, or film to get started."

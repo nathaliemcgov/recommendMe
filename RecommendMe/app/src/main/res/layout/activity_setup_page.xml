@@ -17,7 +17,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="6dp">
 
-        <edu.uw.nmcgov.recommendme.RegularFontTextView
+
+        <edu.uw.nmcgov.recommendme.RegularTextView
             android:id="@+id/promtLineOne"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -79,7 +80,8 @@
         android:layout_below="@+id/viewLine"
         android:layout_marginBottom="20dp">
 
-        <edu.uw.nmcgov.recommendme.RegularFontTextView
+
+        <edu.uw.nmcgov.recommendme.RegularTextView
             android:id="@+id/profileBlurb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,7 +91,8 @@
             android:textSize="19dp"
             android:gravity="center_horizontal"/>
 
-        <edu.uw.nmcgov.recommendme.RegularFontTextView
+
+        <edu.uw.nmcgov.recommendme.RegularTextView
             android:id="@+id/profileBlurb2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -121,7 +124,8 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/profilePrompt">
 
-        <edu.uw.nmcgov.recommendme.RegularFontTextView
+
+        <edu.uw.nmcgov.recommendme.RegularTextView
             android:id="@+id/exploreBlurb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

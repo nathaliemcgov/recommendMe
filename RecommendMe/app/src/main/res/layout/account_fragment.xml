@@ -28,7 +28,8 @@
         android:layout_below="@+id/linkedTitle"
         android:layout_marginBottom="10dp"/>
 
-    <edu.uw.nmcgov.recommendme.RegularFontTextView
+
+    <edu.uw.nmcgov.recommendme.RegularTextView
         android:id="@+id/linkedBlurb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

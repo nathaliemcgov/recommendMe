@@ -125,7 +125,7 @@ public class RCMDFirebase {
     //if map is "name" -> "tyler", "email" -> "tylerj11@uw.edu", firebase reflects this
     public void createUser(Map<String, Object> map) {
         Log.v("USER", "created user!");
-        map.put("name", makeStringFirebaseSafe(map.get("name").toString().trim()));
+        map.put("name", makeStringFirebaseSafe(map.get("name").toString().trim().toLowerCase()));
         Firebase userRef = myFirebaseUserRef.push();
         userRef.setValue(map);
     }
@@ -136,7 +136,7 @@ public class RCMDFirebase {
     //Third is if the username doesn't exist
     public void checkPass(String user, final int password, final Firebase.CompletionListener complete,
                           final Firebase.CompletionListener failPass, final Firebase.CompletionListener failUser) {
-        user = makeStringFirebaseSafe(user.trim());
+        user = makeStringFirebaseSafe(user.trim().toLowerCase());
 
         Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -165,6 +165,7 @@ public class RCMDFirebase {
 
     public void queryTitle(String title, String username, final List<RelatedObject> titleArray, final CustomTileAdapter adapter) {
         List<String> types = new ArrayList<String>();
+        username = makeStringFirebaseSafe(username.trim().toLowerCase());
         types.add("movie");
         types.add("music");
         types.add("book");
@@ -175,7 +176,7 @@ public class RCMDFirebase {
     //query and sort related titles based on relevance
     public void queryTitle(String title, String username, final List<RelatedObject> titleArray, final CustomTileAdapter adapter, final List<String> types) {
         String userHold = "";
-        if (username != null) userHold = username.toLowerCase();
+        if (username != null) userHold = makeStringFirebaseSafe(userHold.trim().toLowerCase());
         final String user = userHold;
         Log.v("Query title", user + " is the user");
         title = title.trim();
@@ -267,18 +268,18 @@ public class RCMDFirebase {
     //Adds likes to a user. Will also update connections to other objects
     public void setManyLikes(List<String> toLike, String user, String type) {
         Log.v("SETMANY", "SET SET");
-        setManyLikes(toLike, user, 0, type, null);
+        setManyLikes(toLike, makeStringFirebaseSafe(user.trim().toLowerCase()), 0, type, null);
     }
 
     public void setManyLikes(List<String> toLike, String user, String type, Firebase.CompletionListener complete) {
-        setManyLikes(toLike, user, 0, type, complete);
+        setManyLikes(toLike, makeStringFirebaseSafe(user.trim().toLowerCase()), 0, type, complete);
     }
 
     //Used by the public set many likes method. Recursive :)
-    private void setManyLikes(final List<String> toLike, final String user, final int pos, final String type, final Firebase.CompletionListener complete) {
+    private void setManyLikes(final List<String> toLike, String tempUser, final int pos, final String type, final Firebase.CompletionListener complete) {
         if(pos < toLike.size()) {
-            Log.v("tag", toLike.get(pos) + ' ' + user);
             final String liked = makeStringFirebaseSafe(toLike.get(pos));
+            final String user = makeStringFirebaseSafe(tempUser.trim().toLowerCase());
             Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
             userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -363,12 +364,13 @@ public class RCMDFirebase {
 
     public void setLike(String likedUnformatted, String user) {
         likedUnformatted = makeStringFirebaseSafe(likedUnformatted);
-        setLike(likedUnformatted, user, "movie");
+        setLike(likedUnformatted, makeStringFirebaseSafe(user.trim().toLowerCase()), "movie");
     }
 
     //Sets a single like given a username
     public void setLike(String likedUnformatted, String user, final String type) {
         likedUnformatted = makeStringFirebaseSafe(likedUnformatted);
+        user = makeStringFirebaseSafe(user.trim().toLowerCase());
         if (user != null && !user.equals("")) {
             Log.v("tag", "tagtagtag");
             //Get user
@@ -443,7 +445,8 @@ public class RCMDFirebase {
     }
 
     // Given a username - sets a dislike for the selected media title
-    public void setDislike(final String user, String dislikedTitle) {
+    public void setDislike(String tempUser, String dislikedTitle) {
+        final String user = makeStringFirebaseSafe(tempUser.trim().toLowerCase());
         if (!user.equals("") && user != null) {
             Log.v("FIREBASE", "Reached dislike");
             final String disliked = dislikedTitle;
@@ -513,7 +516,7 @@ public class RCMDFirebase {
     }
 
     public void checkUserExists(String user, String password, final Intent success, final Activity activity, final Toast toast) {
-        user = user.toLowerCase();
+        user = makeStringFirebaseSafe(user.trim().toLowerCase());
         Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -541,7 +544,7 @@ public class RCMDFirebase {
     public void recommendationsForUser(String user, final List<RelatedObject> list,
                                        final CustomTileAdapter adapter, final List<String> types) {
         Log.v("rcmdsForUser", user);
-        user = user.toLowerCase();
+        user = makeStringFirebaseSafe(user.trim().toLowerCase());
         final Map<String, RelatedObject> overAllMap = new HashMap<String, RelatedObject>();
         Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -569,6 +572,7 @@ public class RCMDFirebase {
                                         for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
                                             MediaObject object = singleObject.getValue(MediaObject.class);
                                             Map<String, Object> map = object.getRelated();
+                                            if(map == null) map = new HashMap<String, Object>();
                                             int totalLikes = object.getTotalUserLikes();
                                             Set<RelatedObject> relatedObjects = new TreeSet<RelatedObject>();
                                             for(String key : map.keySet()) {
@@ -632,6 +636,7 @@ public class RCMDFirebase {
     //Like a given media (likedUnformatted) of type (type) for user (user). ifNotLiked runs the code if the object is not liked
     //by the user. ifLiked runs the code if the object is liked
     public void checkLike(final String likedUnformatted, String user, final String type, final Firebase.CompletionListener ifNotLiked, final Firebase.CompletionListener ifLiked, final Firebase.CompletionListener ifDisliked) {
+        user = makeStringFirebaseSafe(user.trim().toLowerCase());
         Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -662,6 +667,7 @@ public class RCMDFirebase {
     }
 
     public void checkDislike(final String dislike, String user, final String type, final Firebase.CompletionListener ifNotDisliked, final Firebase.CompletionListener ifDisliked, final Firebase.CompletionListener ifLiked) {
+        user = makeStringFirebaseSafe(user.trim().toLowerCase());
         Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -692,6 +698,7 @@ public class RCMDFirebase {
     }
 
     public void deleteUser(String user) {
+        user = makeStringFirebaseSafe(user.trim().toLowerCase());
         Log.v(TAG, "indelete");
         Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -763,6 +770,7 @@ public class RCMDFirebase {
     }
 
     public void changeEmail(String currUser, final String newUser) {
+        currUser = makeStringFirebaseSafe(currUser.trim().toLowerCase());
         Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(currUser);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -795,6 +803,7 @@ public class RCMDFirebase {
     }
 
     public void getLikesDislikes(String user, final Set<String> likes, final Set<String> dislikes) {
+        user = makeStringFirebaseSafe(user.trim().toLowerCase());
         Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -813,6 +822,26 @@ public class RCMDFirebase {
                             dislikes.add(key);
                         }
                     }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public void checkUniqueUser(String user, final Firebase.CompletionListener unique, final Firebase.CompletionListener notUnique) {
+        user = makeStringFirebaseSafe(user.toLowerCase().trim());
+
+        Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    if(dataSnapshot.getValue() == null) unique.onComplete(null, null);
+                    else notUnique.onComplete(null, null);
                 }
             }
 

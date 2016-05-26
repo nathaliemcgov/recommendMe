@@ -73,6 +73,12 @@ public class AccountsActivity extends AppCompatActivity {
                 } else {
                     LastFMData data = new LastFMData(username);
                     data.execute();
+
+                    CharSequence text = "Uploading top 50 artists";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+                    toast.show();
                 }
 
             }
@@ -128,7 +134,7 @@ public class AccountsActivity extends AppCompatActivity {
                     JSONArray artists = top.getJSONArray("artist");
 
 
-                    for(int i = 0; i < 5; i++) {
+                    for(int i = 0; i < 50; i++) {
                         JSONObject artist = artists.getJSONObject(i);
                         if(!artist.getString("name").contains("/") &&
                                 !artist.getString("name").contains(".") &&

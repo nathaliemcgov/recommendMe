@@ -30,8 +30,8 @@
             android:background="@drawable/ic_book_icon"
             />
 
-        <edu.uw.nmcgov.recommendme.TileTitleFont
-            xmlns:android="http://schemas.android.com/apk/res/android"
+
+        <edu.uw.nmcgov.recommendme.TileTitleText
             android:id="@+id/recommendationElement"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
