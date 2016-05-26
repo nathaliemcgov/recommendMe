@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
 public class RecommendationSearchResults extends AppCompatActivity
         implements RecommendationTileGrid.OnMediaSelectionListener {
@@ -85,13 +86,42 @@ public class RecommendationSearchResults extends AppCompatActivity
 
                     if (user != null && !user.equals("")) {
                         if(tileGridFragment.inFirebase()) {
-                            firebase.setLike(titleSearched, user);
-                            button.setSelected(!button.isSelected());
+
+                            firebase.checkLike(titleSearched, user, "", new Firebase.CompletionListener() {
+
+                                @Override
+                                public void onComplete(FirebaseError firebaseError, Firebase f) {
+                                    firebase.setLike(titleSearched, user);
+                                    button.setSelected(!button.isSelected());
+                                }
+                            }, new Firebase.CompletionListener() {
+
+                                @Override
+                                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                    Context context = getApplicationContext();
+                                    CharSequence text = "You already like this!";
+                                    int duration = Toast.LENGTH_SHORT;
+
+                                    Toast toast = Toast.makeText(context, text, duration);
+                                    toast.show();
+                                }
+                            }, new Firebase.CompletionListener() {
+
+                                @Override
+                                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                    Context context = getApplicationContext();
+                                    CharSequence text = "You already dislike this!";
+                                    int duration = Toast.LENGTH_SHORT;
+
+                                    Toast toast = Toast.makeText(context, text, duration);
+                                    toast.show();
+                                }
+                            });
                         } else {
                             String[] choices = {"Movie", "Music", "Book"};
                             final String[] formattedChoices = {"movie", "music", "book"};
                             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                            builder.setTitle("This item isn't in our database, what type of media is it?")
+                            builder.setTitle("This item isn't in our database yet, what type of media is it?")
                                     .setItems(choices, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
                                             firebase.setLike(titleSearched, user, formattedChoices[which]);
@@ -126,6 +156,11 @@ public class RecommendationSearchResults extends AppCompatActivity
         tileGridFragment.setArguments(bundle1);
         ft.add(R.id.gridContainer, tileGridFragment, "Grid");
         ft.commit();
+
+//        if(!tileGridFragment.inFirebase()) {
+//            TextView noResults = (TextView) findViewById(R.id.noResults);
+//            noResults.setVisibility(View.VISIBLE);
+//        }
     }
 
     // Creates the options menu in the action bar
