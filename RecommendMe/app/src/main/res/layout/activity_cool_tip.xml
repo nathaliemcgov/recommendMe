@@ -22,7 +22,6 @@
             android:text="HOW THIS WORKS"
             android:gravity="center"
             android:textSize="40dp"
-            android:layout_marginBottom="5dp"
             android:textColor="#000000"/>
     </LinearLayout>
 
@@ -30,17 +29,34 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:background="#ffffff"
-        android:layout_below="@+id/exploreTitle"
-        android:layout_marginBottom="10dp"/>
+        android:layout_below="@+id/exploreTitle" />
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <ImageView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="100">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_cool_tip"/>
+            android:layout_height="wrap_content"
+            android:layout_weight="96">
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/toolTip"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/tool_tip"/>
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/tile_shape"
+            android:text="got it!"
+            android:layout_below="@+id/toolTip"/>
+
+    </LinearLayout>
+
+
 </LinearLayout>

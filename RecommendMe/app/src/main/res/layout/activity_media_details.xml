@@ -152,7 +152,7 @@
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
             android:fillViewport="true">
-            <TextView
+            <edu.uw.nmcgov.recommendme.RegularFontTextView
                 android:id="@+id/contentDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

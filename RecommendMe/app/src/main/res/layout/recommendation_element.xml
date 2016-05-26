@@ -30,7 +30,7 @@
             android:background="@drawable/ic_book_icon"
             />
 
-        <edu.uw.nmcgov.recommendme.RegularFontTextView
+        <edu.uw.nmcgov.recommendme.TileTitleFont
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/recommendationElement"
             android:layout_width="fill_parent"
@@ -38,8 +38,7 @@
             android:textAlignment="center"
             android:layout_margin="15dp"
             android:textColor="@color/textColor"
-            android:textSize="18dp"
-            android:textWeight="bold"
+            android:textSize="22dp"
             android:text="title title title"
             />
 
