@@ -1,5 +1,6 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
@@ -10,7 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp">
-
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -63,8 +63,8 @@
 
     <RelativeLayout
         android:id="@+id/contentContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/whiteBar">
 
         <RelativeLayout
@@ -116,10 +116,11 @@
                 android:text="also like this"/>
         </RelativeLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/thumbBtnContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:layout_below="@+id/contentPercentPrompt"
             android:layout_centerHorizontal="true">
 
@@ -144,55 +145,43 @@
                 android:background="@drawable/thumbs_up_button"
                 android:src="@drawable/ic_thumbs_up"
                 android:layout_toRightOf="@+id/thumbsDownBtn"/>
-        </RelativeLayout>
+        </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/thumbBtnContainer">
-        <ScrollView
-            android:id="@+id/SCROLLER_ID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            android:fillViewport="true">
-
-            <edu.uw.nmcgov.recommendme.RegularTextView
-                android:id="@+id/contentDetails"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/thumbBtnContainer">
+            <ScrollView
+                android:id="@+id/SCROLLER_ID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_marginBottom="15dp"
-                android:textColor="@color/textColor"
-                android:textSize="18dp" />
-        </ScrollView>
+                android:scrollbars="vertical"
+                android:fillViewport="true">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <edu.uw.nmcgov.recommendme.RegularTextView
+                        android:padding="10dp"
+                        android:id="@+id/contentDetails"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_weight="1.0"
+                        android:layout_marginBottom="15dp"
+                        android:textColor="@color/textColor"
+                        android:textSize="18dp" />
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
     </RelativeLayout>
 
-
-    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/fragContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/detailHeader"
         android:layout_centerInParent="true">
-
-        </RelativeLayout>
-
-    <!--<RelativeLayout-->
-        <!--android:id="@+id/saveBtnContainer"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/thumbBtnContainer">-->
-        <!--<Button-->
-            <!--android:id="@+id/saveBtn"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Save Recommendation"-->
-            <!--/>-->
-    <!--</RelativeLayout>-->
-
-</RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>
