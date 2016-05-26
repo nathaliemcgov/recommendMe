@@ -107,29 +107,6 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
 
         mediaTitle.setText(object.name);
 
-        mediaTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Media title
-                TextView titleView = (TextView) v.findViewById(R.id.recommendationElement);
-                String title = titleView.getText().toString();
-
-                String activity = "random";
-                if (mContext instanceof RecommendationsForYou) activity = "recommendationsforyou";
-
-                Intent intent = new Intent(mContext, MediaDetails.class);
-                intent.putExtra("title", title);
-                intent.putExtra("user", user);
-                intent.putExtra("searchTitle", titleSearchedFor);
-                intent.putExtra("activity", activity);
-                intent.putExtra("mediaType", mediaType);
-                intent.putExtra("ratio", object.getRatio());
-                intent.putExtra("ifLiked", liked);
-                intent.putExtra("ifDisliked", disliked);
-                mContext.startActivity(intent);
-            }
-        });
-
         final ImageButton thumbsUpBtn = (ImageButton) view.findViewById(R.id.thumbsUpBtn);
 
         thumbsUpBtn.setOnClickListener(new View.OnClickListener() {
@@ -241,6 +218,39 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
             }
         });
 
+        if(myLikes.contains(object.name)) {
+            thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up_tile_selected);
+            liked = 2;
+        } else if (myDislikes.contains(object.name)) {
+            buttonDown.setImageResource(R.drawable.ic_thumbs_down_tile_selected);
+            disliked = 2;
+        } else {
+            thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up);
+            buttonDown.setImageResource(R.drawable.ic_thumbs_down);
+        }
+
+        mediaTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Media title
+                TextView titleView = (TextView) v.findViewById(R.id.recommendationElement);
+                String title = titleView.getText().toString();
+
+                String activity = "random";
+                if (mContext instanceof RecommendationsForYou) activity = "recommendationsforyou";
+
+                Intent intent = new Intent(mContext, MediaDetails.class);
+                intent.putExtra("title", title);
+                intent.putExtra("user", user);
+                intent.putExtra("searchTitle", titleSearchedFor);
+                intent.putExtra("activity", activity);
+                intent.putExtra("mediaType", mediaType);
+                intent.putExtra("ratio", object.getRatio());
+                intent.putExtra("ifLiked", liked);
+                intent.putExtra("ifDisliked", disliked);
+                mContext.startActivity(intent);
+            }
+        });
 
         // On click listener for "Save" button on each tile
         final ImageButton saveTitleButton = (ImageButton) view.findViewById(R.id.saveMediaTitle);
@@ -269,17 +279,6 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                 toast.show();
             }
         });
-
-        if(myLikes.contains(object.name)) {
-            thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up_tile_selected);
-            liked = 2;
-        } else if (myDislikes.contains(object.name)) {
-            buttonDown.setImageResource(R.drawable.ic_thumbs_down_tile_selected);
-            disliked = 2;
-        } else {
-            thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up);
-            buttonDown.setImageResource(R.drawable.ic_thumbs_down);
-        }
 
         return view;
     }
