@@ -98,7 +98,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/existing_password_entry"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/text_input"/>
+            android:background="@drawable/text_input"
+            android:inputType="textPassword"/>
     </LinearLayout>
     <Button
         android:layout_width="wrap_content"

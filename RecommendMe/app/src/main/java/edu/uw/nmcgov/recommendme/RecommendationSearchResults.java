@@ -1,10 +1,13 @@
 package edu.uw.nmcgov.recommendme;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,23 +29,27 @@ public class RecommendationSearchResults extends AppCompatActivity
     private TextView titleSearchedFor;
     private ImageButton thumbsUpBtn;
     private ImageButton thumbsDownBtn;
+    private RecommendationTileGrid tileGridFragment;
     private RCMDFirebase firebase;
     private String user;
+    private boolean inFirebase;
+    private Context mContext;
+    private String titleSearched;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommendation_search_results);
 
+        mContext = this;
         Firebase.setAndroidContext(this);
         firebase = new RCMDFirebase();
 
         // TextView for header of screen
         titleSearchedFor = (TextView) findViewById(R.id.titleSearchedFor);
 
-
         Bundle bundle = getIntent().getExtras();
-        final String titleSearched = bundle.getString("title");
+        titleSearched = bundle.getString("title");
 
         if (bundle.getString("user") != null && bundle.getString("user").length() > 0) {
             user = bundle.getString("user");
@@ -58,6 +65,7 @@ public class RecommendationSearchResults extends AppCompatActivity
                 Intent intent = new Intent(getApplicationContext(), MediaDetails.class);
                 intent.putExtra("title", titleSearched);
                 intent.putExtra("user", user);
+                intent.putExtra("searchTitle", titleSearched);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getApplicationContext().startActivity(intent);
             }
@@ -69,14 +77,29 @@ public class RecommendationSearchResults extends AppCompatActivity
 //        thumbsDownBtn = (ImageButton) rootView.findViewById(R.id.thumbsDownBtn);
 
         thumbsUpBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View button) {
+            public void onClick(final View button) {
                 //Set the button's appearance
-                Log.v("tag", titleSearched);
+                Log.v("INFRRBASE", tileGridFragment.inFirebase() + "");
                 if (!button.isSelected()) {    // If the user 'likes' the title
-//                    // Send to db the user's email + title of liked media
+                    // Send to db the user's email + title of liked media
+
                     if (user != null && !user.equals("")) {
-                        firebase.setLike(titleSearched, user);
-                        button.setSelected(!button.isSelected());
+                        if(tileGridFragment.inFirebase()) {
+                            firebase.setLike(titleSearched, user);
+                            button.setSelected(!button.isSelected());
+                        } else {
+                            String[] choices = {"Movie", "Music", "Book"};
+                            final String[] formattedChoices = {"movie", "music", "book"};
+                            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                            builder.setTitle("This item isn't in our database, what type of media is it?")
+                                    .setItems(choices, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            firebase.setLike(titleSearched, user, formattedChoices[which]);
+                                            button.setSelected(!button.isSelected());
+                                        }
+                                    });
+                            builder.create().show();
+                        }
                     } else {
                         Context context = getApplicationContext();
                         CharSequence text = "Please login to like media!";
@@ -93,12 +116,13 @@ public class RecommendationSearchResults extends AppCompatActivity
 
         Bundle bundle1 = new Bundle();
         bundle1.putString("user", user);
+        bundle1.putString("searchTitle", titleSearched);
 
         // Fragment to display tile grid
         FragmentManager fm = getSupportFragmentManager();
 
         FragmentTransaction ft = fm.beginTransaction();
-        RecommendationTileGrid tileGridFragment = new RecommendationTileGrid();
+        tileGridFragment = new RecommendationTileGrid();
         tileGridFragment.setArguments(bundle1);
         ft.add(R.id.gridContainer, tileGridFragment, "Grid");
         ft.commit();
@@ -132,6 +156,9 @@ public class RecommendationSearchResults extends AppCompatActivity
                 Log.v(TAG, "in profile");
                 showProfile();
                 return true;
+            case R.id.savedRecommendations:
+                showSavedRecommendations();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -164,6 +191,12 @@ public class RecommendationSearchResults extends AppCompatActivity
         startActivity(intent);
     }
 
+    private void showSavedRecommendations() {
+        Intent intent = new Intent(this, SavedActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+    }
+
     // When a tile is selected, move to fragment that gives details about the tile selected
     @Override
     public void onMediaSelected(String mediaTile) {
@@ -173,6 +206,7 @@ public class RecommendationSearchResults extends AppCompatActivity
         Intent intent = new Intent(this, MediaDetails.class);
         intent.putExtra("title", mediaTile);
         intent.putExtra("user", user);
+        intent.putExtra("searchTitle", titleSearched);
         intent.putExtra("activity", "RecommendationSearchResults");
         startActivity(intent);
     }

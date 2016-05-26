@@ -83,15 +83,11 @@ public class DrawingSurfaceView extends SurfaceView implements SurfaceHolder.Cal
         list = new ArrayList<RelatedObject>();
         distAndDirection = new ArrayList<float[]>();
         currXY = new ArrayList<float[]>();
-        CustomTileAdapter adapter = new CustomTileAdapter(this.getContext(), list, "");
+        CustomTileAdapter adapter = new CustomTileAdapter(this.getContext(), list, "", "");
         base = ((CircleGraphicActivity) context).getFireBaseTitle();
         firebase.queryTitle(base, "", list, adapter);
         List<float[]> distAndDirection = new ArrayList<float[]>();
-
-
-
     }
-
 
     /**
      * Helper method for the "game loop"

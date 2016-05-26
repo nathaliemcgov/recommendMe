@@ -1,5 +1,7 @@
 package edu.uw.nmcgov.recommendme;
 
+import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,7 +37,11 @@ public class UpdateEmailActivity extends AppCompatActivity {
         updateEmailFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firebase.changeEmail(user, ((EditText) findViewById(R.id.newEmailEntry)).getText().toString());
+                String newUser = ((EditText) findViewById(R.id.newEmailEntry)).getText().toString();
+                firebase.changeEmail(user, newUser);
+                Intent intent = new Intent(v.getContext(), ProfileActivity.class);
+                intent.putExtra("user", newUser);
+                startActivity(intent);
             }
         });
     }

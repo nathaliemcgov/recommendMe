@@ -23,7 +23,6 @@
                 android:layout_width="65dp"
                 android:layout_height="60dp"
                 android:background="@drawable/ic_book_icon"
-
                 />
 
             <edu.uw.nmcgov.recommendme.CustomTextView
@@ -38,8 +37,6 @@
                 android:text="TITLE"/>
 
         </LinearLayout>
-
-
 
         <ImageButton
             android:id="@+id/saveMediaTitleDetails"
@@ -84,8 +81,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/textColor"
                 android:textAlignment="center"
-                android:textSize="40dp"
-                android:text="99%"/>
+                android:textSize="40dp" />
 
             <edu.uw.nmcgov.recommendme.RegularFontTextView
                 android:id="@+id/contentLine2"

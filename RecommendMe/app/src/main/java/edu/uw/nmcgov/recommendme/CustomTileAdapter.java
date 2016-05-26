@@ -19,19 +19,26 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static android.app.PendingIntent.getActivity;
 
@@ -40,78 +47,186 @@ import static android.app.PendingIntent.getActivity;
  */
 public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
 
-    private RecommendationTileGrid.BtnClickListener mClickListener = null;
+    //private RecommendationTileGrid.BtnClickListener mClickListener = null;
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    private List<String> recommendationList;
-    private RCMDFirebase firebase;
+    private List<RelatedObject> recommendationList;
+    private RCMDFirebase myFirebase;
     private String user;
+    private String titleSearchedFor;
+    private Set<String> myLikes;
+    private Set<String> myDislikes;
 
-    public CustomTileAdapter(Context context, List<RelatedObject> titles, String user) {
+
+    public CustomTileAdapter(Context context, List<RelatedObject> titles, String user, String titleSearchedFor) {
         super(context, 0, titles);
         mContext = context;
         this.user = user;
+        this.titleSearchedFor = titleSearchedFor;
         Firebase.setAndroidContext(context);
-        firebase = new RCMDFirebase();
+        myFirebase = new RCMDFirebase();
+        recommendationList = titles;
+        myLikes = new HashSet<String>();
+        myDislikes = new HashSet<String>();
+        myFirebase.getLikesDislikes(user, myLikes, myDislikes);
+
     }
 
     @Override
-    public View getView(int position, View convertView, final ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
 
-        final View view = convertView;
+        View view = convertView;
+
         // Gets the title of the recommendation
         final RelatedObject object = getItem(position);
 
-
         // Checking if an existing view is being reused, otherwise inflate the view
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.recommendation_element,
+        if (view == null) {
+            view = LayoutInflater.from(getContext()).inflate(R.layout.recommendation_element,
                     parent, false);
         }
 
+
         //Set up media type icon
-        ImageButton mediaTypeButton = (ImageButton) convertView.findViewById(R.id.mediaType);
-        String mediaType = object.getType();
-        Log.v("taaaaaag", object.toString() + mediaType);
+        ImageView mediaTypeButton = (ImageView) view.findViewById(R.id.mediaType);
+        final String mediaType = object.getType();
+
+        // Setting background of tile
         int backgroundResource = R.drawable.ic_book_icon;
-        if(mediaType != null && mediaType.equals("music")) backgroundResource = R.drawable.ic_music_icon;
-        else if(mediaType != null && mediaType.equals("movie")) backgroundResource = R.drawable.ic_movie_icon;
+        if (mediaType != null && mediaType.equals("music"))
+            backgroundResource = R.drawable.ic_music_icon;
+        else if (mediaType != null && mediaType.equals("movie"))
+            backgroundResource = R.drawable.ic_movie_icon;
+
         mediaTypeButton.setBackgroundResource(backgroundResource);
 
-        TextView mediaTitle = (TextView) convertView.findViewById(R.id.recommendationElement);
-        //TextView ratio = (TextView) convertView.findViewById(R.id.tileRatio);
+        TextView mediaTitle = (TextView) view.findViewById(R.id.recommendationElement);
 
         mediaTitle.setText(object.name);
-        //ratio.setText(((int) Math.floor(object.getRatio() * 100)) + "%");
+
         mediaTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Media title
                 TextView titleView = (TextView) v.findViewById(R.id.recommendationElement);
                 String title = titleView.getText().toString();
-                Log.v("tag", title);
 
                 String activity = "random";
-                Log.v("tile adapter", mContext.toString());
                 if (mContext instanceof RecommendationsForYou) activity = "recommendationsforyou";
 
                 Intent intent = new Intent(mContext, MediaDetails.class);
                 intent.putExtra("title", title);
                 intent.putExtra("user", user);
+                intent.putExtra("searchTitle", titleSearchedFor);
                 intent.putExtra("activity", activity);
+                intent.putExtra("mediaType", mediaType);
+                intent.putExtra("ratio", object.getRatio());
                 mContext.startActivity(intent);
             }
         });
 
-        ImageButton button = (ImageButton) convertView.findViewById(R.id.thumbsUpBtn);
-        button.setOnClickListener(new View.OnClickListener() {
+        final ImageButton thumbsUpBtn = (ImageButton) view.findViewById(R.id.thumbsUpBtn);
+
+        thumbsUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("clicked", "clicked that shit" + user);
-                if(!v.isSelected() && user != null && !user.equals("")) {
-                    v.setSelected(!v.isSelected());
+                if (!v.isSelected() && user != null && !user.equals("")) {
                     Log.v("clicked", "clicked that shit" + user);
-                    firebase.setLike(object.name, user);
+                    myFirebase.checkLike(object.name, user, object.getType(), new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Log.v("CustomTileAdapter", "inNotLike");
+                            myFirebase.setLike(object.name, user);
+                            Context context = parent.getContext();
+                            CharSequence text = "Liked : " + object.name;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            thumbsUpBtn.setImageResource(R.drawable.thumbs_up_button);
+                            myLikes.add(object.name);
+                            toast.show();
+                            //recommendationList.remove(position);
+                            notifyDataSetChanged();
+                        }
+                    }, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Log.v("CustomTileAdapter", "inLike");
+                            Context context = parent.getContext();
+                            CharSequence text = "You already like " + object.name;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    }, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Context context = parent.getContext();
+                            CharSequence text = "You said you disliked " + object.name;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    });
+
+                } else if (user == null || user.equals("")) {
+                    Context context = parent.getContext();
+                    CharSequence text = "Please login to like media";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+            }
+        });
+
+        final ImageButton buttonDown = (ImageButton) view.findViewById(R.id.thumbsDownBtn);
+
+        buttonDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!v.isSelected() && user != null && !user.equals("")) {
+                    //v.setSelected(!v.isSelected());
+                    Log.v("clicked", "clicked that shit" + user);
+                    myFirebase.checkDislike(object.name, user, object.getType(), new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Log.v("CustomTileAdapter", "inNotLike");
+                            myFirebase.setDislike(user, object.name);
+                            Context context = parent.getContext();
+                            CharSequence text = "Disliked : " + object.name;
+                            buttonDown.setImageResource(R.drawable.ic_thumbs_down_tile_selected);
+                            int duration = Toast.LENGTH_SHORT;
+                            myDislikes.add(object.name);
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                            //recommendationList.remove(position);
+                            notifyDataSetChanged();
+                        }
+                    }, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Log.v("CustomTileAdapter", "inLike");
+                            Log.v("HERE", "HERE");
+                            Context context = parent.getContext();
+                            CharSequence text = "You already dislike : " + object.name;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    }, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            Context context = parent.getContext();
+                            CharSequence text = "You said you liked " + object.name;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    });
+                } else if (v.isSelected() && user != null && !user.equals("")) {
+                    v.setSelected(v.isSelected());
+                    thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up);
+                    buttonDown.setSelected(!buttonDown.isSelected());
+                    buttonDown.setImageResource(R.drawable.ic_thumbs_down);
                 } else if (user == null || user.equals("")) {
                     Context context = parent.getContext();
                     CharSequence text = "Please login to like media";
@@ -123,44 +238,102 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
         });
 
 
-
         // On click listener for "Save" button on each tile
-        ImageButton saveTitleButton = (ImageButton) convertView.findViewById(R.id.saveMediaTitle);
+        final ImageButton saveTitleButton = (ImageButton) view.findViewById(R.id.saveMediaTitle);
 
         // Write title to phone's external storage
         saveTitleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                CharSequence text = "Saved : " + object.toString();
+                CharSequence text = "";
+
+                if (!v.isSelected()) {
+                    handleSaveMediaTitle(object);
+
+                    v.setSelected(!v.isSelected());
+                    saveTitleButton.setImageResource(R.drawable.ic_star);
+                    text = "Saved : " + object.toString();
+                } else {
+                    handleRemoveTitleFromSaved(object);
+
+                    v.setSelected(!v.isSelected());
+                    saveTitleButton.setImageResource(R.drawable.ic_star_unselected);
+                    text = "Removed from saved list : " + object.toString();
+                }
                 int duration = Toast.LENGTH_SHORT;
 
                 Toast toast = Toast.makeText(getContext(), text, duration);
                 toast.show();
-
-                handleSaveMediaTitle(object);
             }
         });
 
-        return convertView;
+        if(myLikes.contains(object.name)) {
+            thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up_tile_selected);
+        } else if (myDislikes.contains(object.name)) {
+            buttonDown.setImageResource(R.drawable.ic_thumbs_down_tile_selected);
+        } else {
+            thumbsUpBtn.setImageResource(R.drawable.ic_thumbs_up);
+            buttonDown.setImageResource(R.drawable.ic_thumbs_down);
+        }
+
+        return view;
     }
 
     // Writes saved media title to phone's external storage
     public void handleSaveMediaTitle(RelatedObject object) {
+        boolean match = false;
         if (isExternalStorageWritable()) {
             try {
                 File file = new File(Environment.getExternalStorageDirectory(), "mediaTitles.txt");
                 String mediaTitle = object.name + "\n";
 
                 try {
-                    // create a filewriter and set append modus to true
-                    FileWriter fw = new FileWriter(file, true);
-                    fw.append(mediaTitle);
-                    fw.close();
+                    BufferedReader reader = new BufferedReader(new FileReader(file));
+                    String line;
+
+                    while ((line = reader.readLine()) != null && !match) {
+                        if (line.contains(object.name))
+                            match = true;
+                    }
+
+                    if (!match) {
+                        // create a filewriter and set append modus to true
+                        FileWriter fw = new FileWriter(file, true);
+                        fw.append(mediaTitle);
+                        fw.close();
+                        Log.v("tag", "file written: " + mediaTitle);
+                    }
 
                 } catch (IOException e) {
                     Log.w("ExternalStorage", "Error writing " + file, e);
                 }
+            } catch (Exception e) {
+                Log.v("ERROR", e.toString());
+            }
+        }
+    }
 
-                Log.v("tag", "file written: " + mediaTitle);
+    public void handleRemoveTitleFromSaved(RelatedObject object) {
+        if (isExternalStorageWritable()) {
+            try {
+                File file = new File(Environment.getExternalStorageDirectory(), "mediaTitles.txt");
+
+                try {
+                    BufferedReader reader = new BufferedReader(new FileReader(file));
+                    String line;
+
+                    FileWriter fw = new FileWriter(file, false);
+                    while ((line = reader.readLine()) != null) {
+                        Log.v("CHECKING", "" + line.contains(object.name));
+                        if (!line.contains(object.name)) {
+                            fw.append(line);
+                            fw.close();
+                        }
+                    }
+                    Log.v("tag", "title removed: " + object.name);
+
+                } catch (IOException e) {
+                    Log.w("ExternalStorage", "Error writing " + file, e);
+                }
             } catch (Exception e) {
                 Log.v("ERROR", e.toString());
             }

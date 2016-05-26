@@ -86,9 +86,9 @@ public class CreateProfileActivity extends Activity {
         desertIslandList = new ArrayList<String>();
 
         types = new String[5];
-        types[0] = "Movies";
-        types[1] = "Books";
-        types[2] = "Musical Artists";
+        types[0] = "MOVIES";
+        types[1] = "BOOKS";
+        types[2] = "MUSICAL ARTISTS";
         types[3] = "Email Address";
         types[4] = "Password";
 
@@ -151,7 +151,7 @@ public class CreateProfileActivity extends Activity {
     }
 
     public void toasted(String mediaType) {
-        CharSequence text = "Please input at least one " + mediaType;
+        CharSequence text = "Please input at least one " + mediaType.substring(0, mediaType.length() - 1).toLowerCase();
         int duration = Toast.LENGTH_SHORT;
 
         Toast toast = Toast.makeText(this, text, duration);
