@@ -9,8 +9,8 @@ import android.widget.Button;
 public class SetupPageActivity extends Activity {
 
     private static final String TAG = "start";
-    Button createProfBtn;
-    Button exploreButton;
+    private Button createProfBtn;
+    private Button exploreButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,7 @@ public class SetupPageActivity extends Activity {
         exploreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchForRecommendations();
+                showFirstToolTip();
             }
         });
     }
@@ -41,9 +41,9 @@ public class SetupPageActivity extends Activity {
         startActivity(intent);
     }
 
-    // Starts activity so user can search title
-    private void searchForRecommendations() {
-        Intent intent = new Intent(this, SearchForRecommendations.class);
+    // Shows the first tooltip screen
+    private void showFirstToolTip() {
+        Intent intent = new Intent(this, CoolTipActivity.class);
         startActivity(intent);
     }
 }

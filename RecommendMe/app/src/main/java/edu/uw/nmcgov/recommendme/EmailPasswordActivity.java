@@ -108,7 +108,9 @@ public class EmailPasswordActivity extends AppCompatActivity {
                                             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                                                 // Send user to recommendationsForYou
                                                 Log.v("Final OnComplete", "Here");
-                                                Intent intent = new Intent(mContext, RecommendationsForYou.class);
+
+                                                Intent intent = new Intent(mContext, CoolTipActivity.class);
+                                                intent.putExtra("activity", "emailpassword");
                                                 intent.putExtra("user", email);
                                                 startActivity(intent);
                                             }

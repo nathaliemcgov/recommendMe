@@ -50,9 +50,7 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/second_tool_tip"
                 />
-
         </LinearLayout>
-
 
         <Button
             android:id="@+id/goButton"
