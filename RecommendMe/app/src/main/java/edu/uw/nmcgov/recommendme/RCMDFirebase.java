@@ -831,4 +831,24 @@ public class RCMDFirebase {
             }
         });
     }
+
+    public void checkUniqueUser(String user, final Firebase.CompletionListener unique, final Firebase.CompletionListener notUnique) {
+        user = makeStringFirebaseSafe(user.toLowerCase().trim());
+
+        Query userQuery = myFirebaseUserRef.orderByChild("name").equalTo(user);
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    if(dataSnapshot.getValue() == null) unique.onComplete(null, null);
+                    else notUnique.onComplete(null, null);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
 }
