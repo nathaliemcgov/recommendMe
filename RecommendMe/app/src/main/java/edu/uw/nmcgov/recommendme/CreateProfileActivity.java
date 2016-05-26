@@ -71,7 +71,7 @@ public class CreateProfileActivity extends Activity {
 
         for (final AutoCompleteTextView searchMediaText : texts) {
             searchMediaText.setAdapter(adapter);
-            searchMediaText.setThreshold(1);
+            searchMediaText.setThreshold(0);
 
             searchMediaText.setOnKeyListener(new View.OnKeyListener() {
                 @Override
