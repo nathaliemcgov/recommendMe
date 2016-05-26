@@ -38,6 +38,7 @@ import org.scribe.model.OAuthRequest;
 import org.scribe.model.Verb;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -304,16 +305,23 @@ public class MediaDetails extends AppCompatActivity {
                 String mediaTitle = title + "\n";
 
                 try {
+                    Log.v("MEDIA DETAILS", mediaTitle);
                     // create a filewriter and set append modus to true
-                    FileWriter fw = new FileWriter(file, true);
-                    fw.append(mediaTitle);
-                    fw.close();
+//                    FileWriter fw = new FileWriter(file, true);
+//                    fw.append(mediaTitle);
+//                    fw.close();
+
+
+                    BufferedWriter outStream = new BufferedWriter(new FileWriter(file, true));
+                    outStream.newLine();
+                    outStream.write(mediaTitle);
+                    outStream.close();
+
+                    Log.v("tag", "file written: " + mediaTitle);
 
                 } catch (IOException e) {
                     Log.w("ExternalStorage", "Error writing " + file, e);
                 }
-
-                Log.v("tag", "file written: " + mediaTitle);
             } catch (Exception e) {
                 Log.v("ERROR", e.toString());
             }

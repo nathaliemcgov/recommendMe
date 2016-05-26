@@ -29,6 +29,7 @@ import com.firebase.client.FirebaseError;
 import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -85,7 +86,6 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
             view = LayoutInflater.from(getContext()).inflate(R.layout.recommendation_element,
                     parent, false);
         }
-
 
         //Set up media type icon
         ImageView mediaTypeButton = (ImageView) view.findViewById(R.id.mediaType);
@@ -290,18 +290,21 @@ public class CustomTileAdapter extends ArrayAdapter<RelatedObject> {
                     BufferedReader reader = new BufferedReader(new FileReader(file));
                     String line;
 
-                    while ((line = reader.readLine()) != null && !match) {
-                        if (line.contains(object.name))
-                            match = true;
-                    }
+//                    while ((line = reader.readLine()) != null && !match) {
+//                        Log.v("LINE", line);
+//                        if (line.contains(object.name))
+//                            match = true;
+//                    }
 
-                    if (!match) {
+//                    if (!match) {
                         // create a filewriter and set append modus to true
-                        FileWriter fw = new FileWriter(file, true);
-                        fw.append(mediaTitle);
-                        fw.close();
-                        Log.v("tag", "file written: " + mediaTitle);
-                    }
+                    FileWriter fw = new FileWriter(file, true);
+                    BufferedWriter bufferFileWriter  = new BufferedWriter(fw);
+                    bufferFileWriter.write(mediaTitle);
+                    bufferFileWriter.close();
+
+                    Log.v("tag", "file written: " + mediaTitle);
+//                    }
 
                 } catch (IOException e) {
                     Log.w("ExternalStorage", "Error writing " + file, e);

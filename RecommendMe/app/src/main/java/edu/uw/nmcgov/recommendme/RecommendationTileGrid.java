@@ -149,8 +149,6 @@ public class RecommendationTileGrid extends Fragment {
             populateTilesForSavedRecommendations();
         }
 
-        Log.v("REC_LIST", recommendationList.toString());
-
         // Listens for click on specific media recommendation
         tileGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -207,6 +205,7 @@ public class RecommendationTileGrid extends Fragment {
 
     // If the user reached screen by saved recommendations
     private void populateTilesForSavedRecommendations() {
+
         // Getting list of saved media titles
         if (isExternalStorageWritable()) {
             try {
@@ -220,21 +219,23 @@ public class RecommendationTileGrid extends Fragment {
                 savedList = new ArrayList<RelatedObject>();
                 String line;
 
+                Log.v("TILE GRID", reader.readLine() + " read line");
+
                 while ((line = reader.readLine()) != null) {
                     RelatedObject relatedObject = new RelatedObject(line);
+                    Log.v("TAG", relatedObject.toString());
                     savedList.add(relatedObject);
                 }
 
                 Log.v("SavedActivity", "" + savedList);
             }
-            catch(IOException ioe){
+            catch(IOException ioe) {
                 ioe.printStackTrace();
             }
         }
 
         if(savedList == null)
             savedList = new ArrayList<RelatedObject>();
-        Log.v("LIST OF SAVED", "" + savedList);
 
         CustomTileAdapter customAdapter = new CustomTileAdapter(this.getContext(), savedList, user, titleSearchedFor);
         tileGrid.setAdapter(customAdapter);
