@@ -100,7 +100,7 @@ public class EmailPasswordActivity extends AppCompatActivity {
                     String password1 = password1CreateAcc.getText().toString();
                     String password2 = password2CreateAcc.getText().toString();
 
-                    if (password1.equals(password2)) {  // Passwords match - account created
+                    if (password1.equals(password2) && password1.length() > 0) {  // Passwords match - account created
                         // Getting hashcode of password
                         int hashedPass = password1.hashCode();
 
@@ -132,8 +132,10 @@ public class EmailPasswordActivity extends AppCompatActivity {
                                 });// Books
                             }
                         });// Movies
-                    } else {
+                    } else if (password1.length() == 0){
                         toasted("nopassword");
+                    } else {
+                        toasted("shitboy");
                     }
                 }
             }

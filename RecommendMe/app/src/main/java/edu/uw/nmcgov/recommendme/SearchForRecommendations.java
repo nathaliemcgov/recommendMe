@@ -57,6 +57,7 @@ public class SearchForRecommendations extends AppCompatActivity {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if(event.getAction() == KeyEvent.ACTION_UP)
                     firebase.autoComplete(searchMediaText.getText().toString(), adapter);
+                searchMediaText.showDropDown();
                 return false;
             }
         });
