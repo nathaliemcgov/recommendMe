@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +43,7 @@ public class CreateProfileActivity extends Activity {
     private AutoCompleteTextView field1;
     private AutoCompleteTextView field2;
     private AutoCompleteTextView field3;
+    private ImageView mediaIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,9 @@ public class CreateProfileActivity extends Activity {
             });
         }
 
+        mediaIcon = (ImageView) findViewById(R.id.mediaType);
+        mediaIcon.setBackgroundResource(R.drawable.ic_movie_icon);
+
         desertIslandList = new ArrayList<String>();
 
         types = new String[5];
@@ -93,6 +98,16 @@ public class CreateProfileActivity extends Activity {
         types[4] = "Password";
 
         index = 0;
+
+//        if (mediaType.equals("movie")) {
+//            wikiSuffix = "_(film)";
+//            mediaIcon.setBackgroundResource(R.drawable.ic_movie_icon);
+//        } else if (mediaType.equals("book")) {
+//            wikiSuffix = "_(novel)";
+//        } else if (mediaType.equals("music")) {
+//            wikiSuffix = "_(band)";
+//            mediaIcon.setBackgroundResource(R.drawable.ic_music_icon);
+//        }
 
         // Movies
         TextView text = (TextView) findViewById(R.id.mediaTypeDI);
@@ -110,6 +125,12 @@ public class CreateProfileActivity extends Activity {
                 // Checking if any of the fields were filled in + enforcing at least one desert island field to be filled
                 if (firstField.length() > 0 || secondField.length() > 0 || thirdField.length() > 0) {
                     index++;
+
+                    if (index == 1) {
+                        mediaIcon.setBackgroundResource(R.drawable.ic_book_icon);
+                    } else if (index == 2) {
+                        mediaIcon.setBackgroundResource(R.drawable.ic_music_icon);
+                    }
                     if (index < 3) {
                         // Enforcing at least one desert island field to be filled
                         // 3 titles

@@ -38,7 +38,6 @@
             android:gravity="center"
             android:textSize="30dp"
             android:textColor="@color/colorAccent"
-            android:text="SHIT"
             android:layout_marginTop="5dp"
             android:layout_below="@+id/firstHalfTitle"/>
 

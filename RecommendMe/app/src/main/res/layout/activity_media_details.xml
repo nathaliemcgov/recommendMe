@@ -81,7 +81,6 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/textColor"
                 android:textAlignment="center"
-                android:text="67%"
                 android:textSize="40dp" />
 
             <edu.uw.nmcgov.recommendme.RegularTextView
