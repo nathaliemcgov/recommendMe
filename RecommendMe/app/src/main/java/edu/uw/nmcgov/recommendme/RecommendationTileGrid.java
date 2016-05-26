@@ -78,6 +78,8 @@ public class RecommendationTileGrid extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        recommendationList = new ArrayList<RelatedObject>();
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_recommendation_tile_grid, container, false);
 
@@ -97,7 +99,6 @@ public class RecommendationTileGrid extends Fragment {
 
         // Container for tiles
         tileGrid = (GridView) rootView.findViewById(R.id.recommendationList);
-        recommendationList = new ArrayList<RelatedObject>();
 
         customAdapter = new CustomTileAdapter(this.getContext(), recommendationList, user, titleSearchedFor);
 

@@ -98,7 +98,7 @@ public class RCMDFirebase {
         } else { //Create or add a relationship for movieOne and movieTwo if movieOne exists
             int i = 0;
             for (DataSnapshot singleObject : dataSnapshot.getChildren()) { // this should really only loop once
-                Firebase postRef = singleObject.getRef();
+                final Firebase postRef = singleObject.getRef();
                 i++;
                 MediaObject object = singleObject.getValue(MediaObject.class);
                 Map<String, Object> map = object.getRelated();
@@ -106,15 +106,31 @@ public class RCMDFirebase {
                 if(map == null)
                     map = new HashMap<String, Object>();
                 if (map.get(movieTwo) != null) {
-                    Log.v("modest mouse bug", map.toString() + ' ' + object.getName() + movieOne + movieTwo);
+                    Log.v(TAG, "inside if");
                     map.put(movieTwo, Integer.parseInt(map.get(movieTwo).toString()) + 1);
-                    Log.v("modest", map.toString() + movieOne + movieTwo);
                     postRef.child("related").updateChildren(map);
                 } else {
-                    Log.v("modest mouse bugCHECK", map.toString() + ' ' + object.getName() + movieOne + movieTwo);
-                    Map<String, Object> newMap = new HashMap<String, Object>();
-                    newMap.put(movieTwo, 1);
-                    postRef.child("related").updateChildren(newMap);
+                    Log.v(TAG, "inside else");
+                    //Search for upper case name of movieTwo
+                    Query mediaQuery = myFirebaseMoviesRef.orderByChild("nameLowerCase").equalTo(movieTwo.toLowerCase());
+                    mediaQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(dataSnapshot != null) {
+                                for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
+                                    MediaObject media = singleObject.getValue(MediaObject.class);
+                                    Map<String, Object> newMap = new HashMap<String, Object>();
+                                    newMap.put(media.getName(), 1);
+                                    postRef.child("related").updateChildren(newMap);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
                 }
                 //postRef.child("totalUserLikes").setValue(object.getTotalUserLikes() + 1);
             }
@@ -369,7 +385,7 @@ public class RCMDFirebase {
 
     //Sets a single like given a username
     public void setLike(String likedUnformatted, String user, final String type) {
-        likedUnformatted = makeStringFirebaseSafe(likedUnformatted);
+        likedUnformatted = makeStringFirebaseSafe(likedUnformatted).trim();
         user = makeStringFirebaseSafe(user.trim().toLowerCase());
         if (user != null && !user.equals("")) {
             Log.v("tag", "tagtagtag");
@@ -851,4 +867,32 @@ public class RCMDFirebase {
             }
         });
     }
+
+    public void checkExists(String toCheck, final Firebase.CompletionListener exists,
+                          final Firebase.CompletionListener doesntExist) {
+        toCheck = makeStringFirebaseSafe(toCheck.trim());
+
+        Query mediaQuery = myFirebaseMoviesRef.orderByChild("nameLowerCase").equalTo(toCheck.toLowerCase());
+        mediaQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot != null) {
+                    if(dataSnapshot.getValue() == null) doesntExist.onComplete(null, null);
+                    for (DataSnapshot singleObject : dataSnapshot.getChildren()) {
+                        MediaObject media = singleObject.getValue(MediaObject.class);
+                        exists.onComplete(null, null);
+                    }
+                } else {
+                    doesntExist.onComplete(null, null);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+
 }
