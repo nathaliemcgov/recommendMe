@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
-        <TextView
+        <edu.uw.nmcgov.recommendme.RegularTextView
             android:id="@+id/firstHalfTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
             android:layout_marginBottom="5dp"
             android:layout_below="@+id/firstHalfTitle"/>
 
-        <TextView
+        <edu.uw.nmcgov.recommendme.RegularTextView
             android:id="@+id/secondHalfTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

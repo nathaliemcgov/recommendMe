@@ -11,7 +11,7 @@
     android:background="@color/background"
     tools:context="edu.uw.nmcgov.recommendme.UpdateEmailActivity">
 
-    <edu.uw.nmcgov.recommendme.CustomTextView
+    <edu.uw.nmcgov.recommendme.RegularTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="New Email"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/text_input"
         />
-    <edu.uw.nmcgov.recommendme.CustomTextView
+    <edu.uw.nmcgov.recommendme.RegularTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Confirm Email"

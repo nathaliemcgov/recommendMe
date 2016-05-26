@@ -30,14 +30,14 @@
             android:background="@drawable/ic_book_icon"
             />
 
-        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        <edu.uw.nmcgov.recommendme.TileTitleText
             android:id="@+id/recommendationElement"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:layout_margin="15dp"
             android:textColor="@color/textColor"
-            android:textSize="18dp"
+            android:textSize="22dp"
             android:text="title title title"
             />
 

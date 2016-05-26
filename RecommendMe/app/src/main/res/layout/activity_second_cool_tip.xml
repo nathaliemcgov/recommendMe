@@ -9,7 +9,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/background"
     android:orientation="vertical"
-    tools:context="edu.uw.nmcgov.recommendme.CoolTipActivity">
+    tools:context="edu.uw.nmcgov.recommendme.SecondCoolTipActivity">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +20,7 @@
         <edu.uw.nmcgov.recommendme.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="HOW THIS WORKS"
+            android:text="HOW THIS WORKS pt. 2"
             android:gravity="center"
             android:textSize="35dp"
             android:textColor="#000000"/>
@@ -41,31 +42,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="90">
+            android:layout_weight="95">
 
             <ImageView
                 android:id="@+id/toolTip"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/tool_tip"
+                android:src="@drawable/second_tool_tip"
                 />
 
         </LinearLayout>
 
-        <edu.uw.nmcgov.recommendme.SecondCustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:text="*click on the tile to see details*"/>
 
         <Button
-            android:id="@+id/nextButton"
+            android:id="@+id/goButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/tile_shape"
-            android:text="next"
+            android:text="let's go!"
             android:layout_below="@+id/toolTip"
             />
     </LinearLayout>
