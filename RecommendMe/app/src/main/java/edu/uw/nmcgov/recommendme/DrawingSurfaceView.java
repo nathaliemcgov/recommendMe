@@ -95,7 +95,7 @@ public class DrawingSurfaceView extends SurfaceView implements SurfaceHolder.Cal
     public void update(){
         //update the "game state" here (move things around, etc.
         //TODO: fill in your own logic here!
-        for(int i = 0; i < Math.min(Math.min(list.size(), currXY.size()), MAX); i++) {
+        for(int i = 0; i < Math.min(list.size(), MAX); i++) {
             RelatedObject object = list.get(i);
             if(distAndDirection.size() <= i) {
                 float[] distAndDirectionArray = new float[3];
@@ -146,7 +146,7 @@ public class DrawingSurfaceView extends SurfaceView implements SurfaceHolder.Cal
 
         canvas.drawText(base,  viewWidth / 2 - getMiddleOfWord(base), viewHeight / 2, redPaint);
 
-        for(int i = 0; i < Math.min(list.size(), MAX); i++) {
+        for(int i = 0; i < Math.min(Math.min(list.size(), currXY.size()), MAX); i++) {
             RelatedObject object = list.get(i);
             float[] currXYArray = currXY.get(i);
 
