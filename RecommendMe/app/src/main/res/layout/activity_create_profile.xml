@@ -18,14 +18,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
+
         <edu.uw.nmcgov.recommendme.RegularTextView
             android:id="@+id/firstHalfTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textSize="20dp"
-            android:layout_marginTop="15dp"
+            android:textSize="22dp"
+            android:layout_marginTop="10dp"
             android:textColor="@color/colorPrimary"
             android:text="Imagine you're stranded on\na desert island...What"/>
 
@@ -39,8 +40,17 @@
             android:textColor="@color/colorAccent"
             android:text="SHIT"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
             android:layout_below="@+id/firstHalfTitle"/>
+
+        <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/mediaType"
+            android:layout_gravity="center"
+            android:layout_width="80dp"
+            android:layout_height="70dp"
+            android:textAlignment="center"
+            android:background="@drawable/ic_book_icon"
+            />
+
 
         <edu.uw.nmcgov.recommendme.RegularTextView
             android:id="@+id/secondHalfTitle"
@@ -48,9 +58,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textSize="20dp"
+            android:textSize="22dp"
             android:layout_below="@+id/mediaTypeDI"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:textColor="@color/colorPrimary"
             android:text="would you bring?" />
 
@@ -59,7 +69,7 @@
             android:layout_height="2dp"
             android:background="#ffffff"
             android:layout_below="@+id/credsTitle"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="15dp"/>
 
         <AutoCompleteTextView
             android:id="@+id/searchMediaText1"
@@ -107,5 +117,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </LinearLayout>
-
 </LinearLayout>

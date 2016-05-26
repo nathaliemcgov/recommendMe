@@ -30,6 +30,16 @@
         android:layout_below="@+id/profileTitle"
         android:layout_marginBottom="10dp"/>
 
+    <edu.uw.nmcgov.recommendme.CustomTextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="15dp"
+        android:layout_marginBottom="16dp"
+        android:text="username:"/>
+
     <Button
         android:layout_width="300dp"
         android:layout_height="wrap_content"

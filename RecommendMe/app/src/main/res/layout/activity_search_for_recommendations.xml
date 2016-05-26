@@ -43,6 +43,7 @@
         android:layout_marginBottom="20dp"
         android:layout_below="@+id/exploreTitle">
 
+
         <edu.uw.nmcgov.recommendme.RegularTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -5,6 +5,7 @@
     android:background="@color/background"
     android:weightSum="1">
 
+
     <edu.uw.nmcgov.recommendme.RegularTextView
         android:id="@+id/emailBlurb"
         android:layout_width="wrap_content"
