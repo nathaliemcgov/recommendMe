@@ -119,6 +119,7 @@
             android:id="@+id/thumbBtnContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:layout_below="@+id/contentPercentPrompt"
             android:layout_centerHorizontal="true">
 
@@ -148,7 +149,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_below="@id/thumbBtnContainer">
         <ScrollView
             android:id="@+id/SCROLLER_ID"
